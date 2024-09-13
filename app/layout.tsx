@@ -2,24 +2,13 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Switch } from "@/components/ui/switch"
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Edit, 
-  Image, 
-  MoreHorizontal,
+import {
   BarChart2,
   Database,
+  PersonStanding,
   Settings,
-  Plus
 } from "lucide-react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
+import Link from "next/link";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -42,31 +31,74 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const routes = [
+    {
+      name: 'Docs',
+      href: '/docs'
+    },
+    {
+      name: 'Teachers',
+      href: '/teachers'
+    },
+    {
+      name: 'Teachers',
+      href: '/teachers'
+    },
+  ]
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex h-screen bg-gray-100">
-      <aside className="w-64 bg-white p-6 hidden md:block">
-        <nav className="space-y-2">
-          <Button variant="ghost" className="w-full justify-start">
-            <BarChart2 className="mr-2 h-4 w-4" />
-            Overview
-          </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <Database className="mr-2 h-4 w-4" />
-            CRUD
-          </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
-          </Button>
+        <nav className="flex px-12 py-3 border justify-between">
+          <h1 className="">
+            Logo
+          </h1>
+          <div className="flex gap-x-10">
+            {
+              routes.map((route, index) => {
+                return (
+                  <a key={index}>{route.name}</a>
+                )
+              })
+            }
+          </div>
         </nav>
-      </aside>
-      {children}
-    </div>
+
+        <div className="flex h-screen bg-gray-100">
+          <aside className="w-64 bg-white p-6 hidden md:block">
+            <nav className="space-y-2">
+              <Button variant="ghost" className="w-full justify-start">
+                <BarChart2 className="mr-2 h-4 w-4" />
+                Overview
+              </Button>
+              <Link href={'/teachers'}>
+                <Button variant="ghost" className="w-full justify-start">
+                  <Database className="mr-2 h-4 w-4" />
+                  Teacher
+                </Button>
+              </Link>
+              <Link href='/students'>
+                <Button variant="ghost" className="w-full justify-start">
+                  <PersonStanding className="mr-2 h-4 w-4" />
+                  Student
+                </Button>
+              </Link>
+              <Link href='#'>
+                <Button variant="ghost" className="w-full justify-start">
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
+                </Button>
+              </Link>
+            </nav>
+          </aside>
+          <main className="flex-1 p-6">
+            <div className="bg-white rounded-lg shadow p-6">
+              {children}
+            </div>
+          </main>
+        </div>
       </body>
-    </html>
+    </html >
   );
 }
