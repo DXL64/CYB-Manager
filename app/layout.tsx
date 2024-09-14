@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Button } from "@/components/ui/button"
-import {
-  BarChart2,
-  Database,
-  PersonStanding,
-  Settings,
-} from "lucide-react"
+import { Button } from "@/components/ui/button";
+import { BarChart2, Database, PersonStanding, Settings } from "lucide-react";
 import Link from "next/link";
 
 const geistSans = localFont({
@@ -33,35 +28,37 @@ export default function RootLayout({
 }>) {
   const routes = [
     {
-      name: 'Docs',
-      href: '/docs'
+      name: "Trang chủ",
+      href: "/  ",
     },
     {
-      name: 'Teachers',
-      href: '/teachers'
+      name: "Chỉnh sửa thông tin",
+      href: "/teachers",
     },
     {
-      name: 'Teachers',
-      href: '/teachers'
+      name: "Hướng dẫn",
+      href: "/docs",
     },
-  ]
+  ];
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <nav className="flex px-12 py-3 border justify-between">
-          <h1 className="">
-            Logo
-          </h1>
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <nav className="flex px-8 py-1 border justify-between items-center">
+          <a href="/">
+            <img src="assets/logo-cyb.jpg" alt="logo" className="h-12 w-12" />
+          </a>
           <div className="flex gap-x-10">
-            {
-              routes.map((route, index) => {
-                return (
-                  <a key={index}>{route.name}</a>
-                )
-              })
-            }
+            {routes.map((route, index) => {
+              return (
+                <a
+                  href={route.href}
+                  className="hover:bg-accent hover:text-accent-foreground px-3 py-2 rounded"
+                  key={index}>
+                  {route.name}
+                </a>
+              );
+            })}
           </div>
         </nav>
 
@@ -72,19 +69,19 @@ export default function RootLayout({
                 <BarChart2 className="mr-2 h-4 w-4" />
                 Overview
               </Button>
-              <Link href={'/teachers'}>
+              <Link href={"/teachers"}>
                 <Button variant="ghost" className="w-full justify-start">
                   <Database className="mr-2 h-4 w-4" />
                   Teacher
                 </Button>
               </Link>
-              <Link href='/students'>
+              <Link href="/students">
                 <Button variant="ghost" className="w-full justify-start">
                   <PersonStanding className="mr-2 h-4 w-4" />
                   Student
                 </Button>
               </Link>
-              <Link href='#'>
+              <Link href="#">
                 <Button variant="ghost" className="w-full justify-start">
                   <Settings className="mr-2 h-4 w-4" />
                   Settings
@@ -93,12 +90,10 @@ export default function RootLayout({
             </nav>
           </aside>
           <main className="flex-1 p-6">
-            <div className="bg-white rounded-lg shadow p-6">
-              {children}
-            </div>
+            <div className="bg-white rounded-lg shadow p-6">{children}</div>
           </main>
         </div>
       </body>
-    </html >
+    </html>
   );
 }
