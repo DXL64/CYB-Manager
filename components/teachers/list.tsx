@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,14 +10,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Switch } from "@/components/ui/switch";
 import {
-  ChevronLeft,
-  ChevronRight,
   Edit,
   Eye,
   Image,
-  MoreHorizontal,
   Plus,
 } from "lucide-react";
 import {
@@ -29,31 +25,19 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Paginate } from "../ui/paginate";
 import { Teacher } from "@/models/teacher";
 import { Avatar } from "@/components/ui/avatar";
-
-const teachers: Teacher[] = [
-  {
-    id: "1",
-    name: "Jssa Jas",
-    email: "@email.com",
-    phone: "+84123456789",
-    imgSrc: "assets/logo-cyb.jpg",
-    major: "Ly",
-    dob: "09 Apr 2021",
-    gender: "female",
-  },
-];
+import axiosClient from "@/composables/axios.client";
 
 export default function TeachersTable() {
+  const [teachers, setTeachers] = useState<Teacher[]>([])
   const [searchTerm, setSearchTerm] = useState("");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
+  // const [dateFrom, setDateFrom] = useState("");
+  // const [dateTo, setDateTo] = useState("");
   const [isNewTeacherModalOpen, setIsNewTeacherModalOpen] = useState(false);
   const [editingTeacher, setEditingTeacher] = useState<Teacher | null>(null);
-  const [viewTeacher, setViewTeacher] = useState<Teacher | null>(null);
+  // const [viewTeacher, setViewTeacher] = useState<Teacher | null>(null);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
   const filtered = teachers.filter((teacher) =>
@@ -75,6 +59,70 @@ export default function TeachersTable() {
     setEditingTeacher(teacher);
     setIsNewTeacherModalOpen(true);
   };
+
+  const handleSubmit = async () => {
+    try { 
+      if (!editingTeacher) {
+        setEditingTeacher({
+          id: "", 
+          name: "",
+          email: "",
+          phone: "",
+          imgSrc: "",
+          position: "",
+          major: "",
+          dob: "",
+          workSince: "",
+          workUntil: "",
+          gender: "male", // You can default to either "male" or "female"
+          achievements: "",
+        });
+        console.log(editingTeacher);
+      }
+
+      // Create a new FormData object
+      const formData = new FormData();
+
+      // Append all fields to formData
+      formData.append("id", editingTeacher?.id || "");
+      formData.append("name", editingTeacher?.name || "");
+      formData.append("email", editingTeacher?.email || "");
+      formData.append("phone", editingTeacher?.phone || "");
+      formData.append("imgSrc", editingTeacher?.imgSrc || "");
+      formData.append("position", editingTeacher?.position || "");
+      formData.append("major", editingTeacher?.major || "");
+      formData.append("dob", editingTeacher?.dob || "");
+      formData.append("workSince", editingTeacher?.workSince || "");
+      formData.append("workUntil", editingTeacher?.workUntil || "");
+      formData.append("gender", editingTeacher?.gender || "male");
+      formData.append("achievements", editingTeacher?.achievements || "");
+
+      const res = await axiosClient.post('http://localhost:8000/v1/teachers', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Set the appropriate header for form-data
+        },
+      });
+
+      console.log(res);
+      return res;
+    } catch (err) {
+      console.error('Error post teacher:', err);
+    }
+
+  }
+
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const res = await axiosClient.get("http://localhost:8000/v1/teachers");
+        setTeachers(res.data["results"]);
+        console.log(res.data["results"]);
+      } catch (error) {
+        console.error("Error fetching teachers:", error);
+      }
+    };
+    fetchTeachers();
+  }, []); // Empty dependency array to run effect only once
 
   return (
     <>
@@ -259,7 +307,7 @@ export default function TeachersTable() {
                 />
               </div>
             </div>
-            <Button type="submit"> Lưu thay đổi </Button>
+            <Button type="button" onClick={handleSubmit}> Lưu thay đổi </Button>
           </DialogContent>
         </Dialog>
       </div>
