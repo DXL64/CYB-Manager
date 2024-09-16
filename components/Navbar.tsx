@@ -3,8 +3,8 @@
 import { Book, Edit, Home } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { cn } from "../lib/utils";
 import { usePathname } from "next/navigation";
+import { cn } from "../lib/utils";
 
 const routes = [
   {
@@ -51,7 +51,7 @@ const Navbar = () => {
               href={route.href}
               className={cn(
                 "hover:bg-accent hover:text-accent-foreground px-3 py-2 rounded flex items-center gap-2 text-sm",
-                (route.href === path || (path !== "/" && route.href.includes(path))) && "bg-accent text-accent-foreground"
+                (route.href === path || (route.href !== "/" && path.includes(route.href))) && "bg-accent text-accent-foreground"
               )}
             >
               <span>{route.icon}</span>
