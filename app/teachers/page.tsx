@@ -1,7 +1,5 @@
-import TeachersTable from "@/components/teachers/list";
+import TeachersTable from "./components/list";
 
 export default function Page() {
-    return (
-        <TeachersTable />
-    )
+  return <TeachersTable />;
 }

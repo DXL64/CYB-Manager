@@ -1,37 +1,20 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Edit,
-  Eye,
-  Image,
-  Plus,
-} from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Paginate } from "../ui/paginate";
-import { Teacher } from "@/models/teacher";
+
 import { Avatar } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Textarea } from "@/components/ui/textarea";
 import axiosClient from "@/composables/axios.client";
+import { Teacher } from "@/models/teacher";
+import { Edit, Eye, ImageIcon, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Paginate } from "../../../components/ui/paginate";
 
 export default function TeachersTable() {
-  const [teachers, setTeachers] = useState<Teacher[]>([])
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   // const [dateFrom, setDateFrom] = useState("");
   // const [dateTo, setDateTo] = useState("");
@@ -40,9 +23,7 @@ export default function TeachersTable() {
   // const [viewTeacher, setViewTeacher] = useState<Teacher | null>(null);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
-  const filtered = teachers.filter((teacher) =>
-    teacher.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filtered = teachers.filter((teacher) => teacher.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -61,10 +42,10 @@ export default function TeachersTable() {
   };
 
   const handleSubmit = async () => {
-    try { 
+    try {
       if (!editingTeacher) {
         setEditingTeacher({
-          id: "", 
+          id: "",
           name: "",
           email: "",
           phone: "",
@@ -97,19 +78,18 @@ export default function TeachersTable() {
       formData.append("gender", editingTeacher?.gender || "male");
       formData.append("achievements", editingTeacher?.achievements || "");
 
-      const res = await axiosClient.post('http://localhost:8000/v1/teachers', formData, {
+      const res = await axiosClient.post("http://localhost:8000/v1/teachers", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', // Set the appropriate header for form-data
+          "Content-Type": "multipart/form-data", // Set the appropriate header for form-data
         },
       });
 
       console.log(res);
       return res;
     } catch (err) {
-      console.error('Error post teacher:', err);
+      console.error("Error post teacher:", err);
     }
-
-  }
+  };
 
   useEffect(() => {
     const fetchTeachers = async () => {
@@ -130,7 +110,8 @@ export default function TeachersTable() {
         <h2 className="text-2xl font-bold">Teacher</h2>
         <Dialog
           open={isNewTeacherModalOpen}
-          onOpenChange={setIsNewTeacherModalOpen}>
+          onOpenChange={setIsNewTeacherModalOpen}
+        >
           <DialogTrigger asChild>
             <Button onClick={() => setEditingTeacher(null)}>
               <Plus className="mr-2 h-4 w-4" />
@@ -139,9 +120,7 @@ export default function TeachersTable() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[625px]">
             <DialogHeader>
-              <DialogTitle>
-                {editingTeacher ? "Chỉnh sửa thông tin" : "Thêm thông tin"}
-              </DialogTitle>
+              <DialogTitle>{editingTeacher ? "Chỉnh sửa thông tin" : "Thêm thông tin"}</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="flex justify-center mb-4">
@@ -152,7 +131,10 @@ export default function TeachersTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="avatar" className="text-right">
+                <Label
+                  htmlFor="avatar"
+                  className="text-right"
+                >
                   Ảnh đại diện
                 </Label>
                 <Input
@@ -164,7 +146,10 @@ export default function TeachersTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="fullName" className="text-right">
+                <Label
+                  htmlFor="fullName"
+                  className="text-right"
+                >
                   Họ và tên
                 </Label>
                 <Input
@@ -175,13 +160,24 @@ export default function TeachersTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="gender" className="text-right">
+                <Label
+                  htmlFor="gender"
+                  className="text-right"
+                >
                   Giới tính
                 </Label>
 
                 <div className="flex items-center gap-3">
-                  <Input id="male" type="radio" name="gender" className="w-4" />
-                  <Label htmlFor="male" className="text-right">
+                  <Input
+                    id="male"
+                    type="radio"
+                    name="gender"
+                    className="w-4"
+                  />
+                  <Label
+                    htmlFor="male"
+                    className="text-right"
+                  >
                     Nam
                   </Label>
                 </div>
@@ -193,13 +189,19 @@ export default function TeachersTable() {
                     name="gender"
                     className="w-4"
                   />
-                  <Label htmlFor="female" className="text-right">
+                  <Label
+                    htmlFor="female"
+                    className="text-right"
+                  >
                     Nữ
                   </Label>
                 </div>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="dob" className="text-right">
+                <Label
+                  htmlFor="dob"
+                  className="text-right"
+                >
                   Ngày sinh
                 </Label>
                 <Input
@@ -211,7 +213,10 @@ export default function TeachersTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="email" className="text-right">
+                <Label
+                  htmlFor="email"
+                  className="text-right"
+                >
                   Email
                 </Label>
                 <Input
@@ -222,7 +227,10 @@ export default function TeachersTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="phone" className="text-right">
+                <Label
+                  htmlFor="phone"
+                  className="text-right"
+                >
                   Số điện thoại
                 </Label>
                 <Input
@@ -233,7 +241,10 @@ export default function TeachersTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="position" className="text-right">
+                <Label
+                  htmlFor="position"
+                  className="text-right"
+                >
                   Chức vụ
                 </Label>
                 <Input
@@ -244,7 +255,10 @@ export default function TeachersTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="major" className="text-right">
+                <Label
+                  htmlFor="major"
+                  className="text-right"
+                >
                   Môn chuyên
                 </Label>
                 <select
@@ -253,7 +267,8 @@ export default function TeachersTable() {
                   value={editingTeacher?.major}
                   className={
                     "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                  }>
+                  }
+                >
                   <option value="math">Toán</option>
                   <option value="information">Tin học</option>
                   <option value="literature">Văn</option>
@@ -271,7 +286,10 @@ export default function TeachersTable() {
                 </select>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="workSince" className="text-right">
+                <Label
+                  htmlFor="workSince"
+                  className="text-right"
+                >
                   Bắt đầu làm việc
                 </Label>
                 <Input
@@ -283,7 +301,10 @@ export default function TeachersTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="workUntil" className="text-right">
+                <Label
+                  htmlFor="workUntil"
+                  className="text-right"
+                >
                   Kết thúc làm việc
                 </Label>
                 <Input
@@ -295,7 +316,10 @@ export default function TeachersTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="achievements" className="text-right">
+                <Label
+                  htmlFor="achievements"
+                  className="text-right"
+                >
                   Thành tích
                 </Label>
                 <Textarea
@@ -307,7 +331,13 @@ export default function TeachersTable() {
                 />
               </div>
             </div>
-            <Button type="button" onClick={handleSubmit}> Lưu thay đổi </Button>
+            <Button
+              type="button"
+              onClick={handleSubmit}
+            >
+              {" "}
+              Lưu thay đổi{" "}
+            </Button>
           </DialogContent>
         </Dialog>
       </div>
@@ -338,7 +368,7 @@ export default function TeachersTable() {
           {filtered.map((teacher) => (
             <TableRow key={teacher.id}>
               <TableCell>
-                <Image className="h-8 w-8 rounded-full" />
+                <ImageIcon className="h-8 w-8 rounded-full" />
               </TableCell>
               <TableCell>{teacher?.name}</TableCell>
               <TableCell>{teacher?.dob}</TableCell>
@@ -350,13 +380,17 @@ export default function TeachersTable() {
               <TableCell>{teacher?.workUntil}</TableCell>
               <TableCell>
                 <div className="flex items-center space-x-2">
-                  <Button variant="ghost" size="icon">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                  >
                     <Eye className="h-4 w-4" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleEditTeacher(teacher)}>
+                    onClick={() => handleEditTeacher(teacher)}
+                  >
                     <Edit className="h-4 w-4" />
                   </Button>
                 </div>

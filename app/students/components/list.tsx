@@ -1,41 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Switch } from "@/components/ui/switch";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Edit,
-  EyeIcon,
-  Image,
-  MoreHorizontal,
-  Plus,
-  View,
-  Watch,
-  WatchIcon,
-} from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Paginate } from "../ui/paginate";
-import { Student } from "@/models/student";
 import { Avatar } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Textarea } from "@/components/ui/textarea";
+import { Student } from "@/models/student";
+import { Edit, EyeIcon, Plus } from "lucide-react";
+import { useState } from "react";
+import { Paginate } from "../../../components/ui/paginate";
+import Image from "next/image";
 
 const students: Student[] = [
   {
@@ -102,8 +78,8 @@ const students: Student[] = [
 
 export default function StudentsTable() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
+  // const [dateFrom, setDateFrom] = useState("");
+  // const [dateTo, setDateTo] = useState("");
   const [isNewUserModalOpen, setIsNewUserModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<Student | null>(null);
   const [viewUser, setViewUser] = useState<Student | null>(null);
@@ -140,7 +116,10 @@ export default function StudentsTable() {
     <>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Học sinh</h2>
-        <Dialog open={isNewUserModalOpen} onOpenChange={setIsNewUserModalOpen}>
+        <Dialog
+          open={isNewUserModalOpen}
+          onOpenChange={setIsNewUserModalOpen}
+        >
           <DialogTrigger asChild>
             <Button onClick={() => setEditingUser(null)}>
               <Plus className="mr-2 h-4 w-4" />
@@ -149,9 +128,7 @@ export default function StudentsTable() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[625px]">
             <DialogHeader>
-              <DialogTitle>
-                {editingUser ? "Chỉnh sửa thông tin" : "Thêm thông tin"}
-              </DialogTitle>
+              <DialogTitle>{editingUser ? "Chỉnh sửa thông tin" : "Thêm thông tin"}</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="flex justify-center mb-4">
@@ -162,7 +139,10 @@ export default function StudentsTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="avatar" className="text-right">
+                <Label
+                  htmlFor="avatar"
+                  className="text-right"
+                >
                   Ảnh đại diện
                 </Label>
                 <Input
@@ -174,7 +154,10 @@ export default function StudentsTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="fullName" className="text-right">
+                <Label
+                  htmlFor="fullName"
+                  className="text-right"
+                >
                   Họ và tên
                 </Label>
                 <Input
@@ -185,7 +168,10 @@ export default function StudentsTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="email" className="text-right">
+                <Label
+                  htmlFor="email"
+                  className="text-right"
+                >
                   Email
                 </Label>
                 <Input
@@ -196,7 +182,10 @@ export default function StudentsTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="phone" className="text-right">
+                <Label
+                  htmlFor="phone"
+                  className="text-right"
+                >
                   Số điện thoại
                 </Label>
                 <Input
@@ -207,7 +196,10 @@ export default function StudentsTable() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="major" className="text-right">
+                <Label
+                  htmlFor="major"
+                  className="text-right"
+                >
                   Môn chuyên
                 </Label>
                 <select
@@ -216,7 +208,8 @@ export default function StudentsTable() {
                   value={editingUser?.major}
                   className={
                     "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                  }>
+                  }
+                >
                   <option value="math">Toán</option>
                   <option value="information">Toán Tin</option>
                   <option value="literature">Văn</option>
@@ -231,7 +224,10 @@ export default function StudentsTable() {
                 </select>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="schoolYear" className="text-right">
+                <Label
+                  htmlFor="schoolYear"
+                  className="text-right"
+                >
                   Niên khoá
                 </Label>
                 <div className="flex rounded-md overflow-hidden w-fit border">
@@ -246,19 +242,37 @@ export default function StudentsTable() {
                 </div>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="dob" className="text-right">
+                <Label
+                  htmlFor="dob"
+                  className="text-right"
+                >
                   Ngày sinh
                 </Label>
-                <Input id="dob" type="date" className="col-span-2 w-fit" />
+                <Input
+                  id="dob"
+                  type="date"
+                  className="col-span-2 w-fit"
+                />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="gender" className="text-right">
+                <Label
+                  htmlFor="gender"
+                  className="text-right"
+                >
                   Giới tính
                 </Label>
 
                 <div className="flex items-center gap-3">
-                  <Input id="male" type="radio" name="gender" className="w-4" />
-                  <Label htmlFor="male" className="text-right">
+                  <Input
+                    id="male"
+                    type="radio"
+                    name="gender"
+                    className="w-4"
+                  />
+                  <Label
+                    htmlFor="male"
+                    className="text-right"
+                  >
                     Nam
                   </Label>
                 </div>
@@ -270,13 +284,19 @@ export default function StudentsTable() {
                     name="gender"
                     className="w-4"
                   />
-                  <Label htmlFor="female" className="text-right">
+                  <Label
+                    htmlFor="female"
+                    className="text-right"
+                  >
                     Nữ
                   </Label>
                 </div>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="achievements" className="text-right">
+                <Label
+                  htmlFor="achievements"
+                  className="text-right"
+                >
                   Thành tích
                 </Label>
                 <Textarea
@@ -317,11 +337,17 @@ export default function StudentsTable() {
           {filteredUsers.map((user) => (
             <TableRow key={user.id}>
               <TableCell>
-                <img
-                  src={user.imgSrc}
-                  alt="img"
-                  className="h-10 w-10 rounded-full"
-                />
+                {user?.imgSrc ? (
+                  <Image
+                    src={user?.imgSrc ?? ""}
+                    alt="img"
+                    className="size-10 rounded-full"
+                    width={64}
+                    height={64}
+                  />
+                ) : (
+                  <span className="size-10 rounded-full bg-zinc-200" />
+                )}
               </TableCell>
               <TableCell>{user?.name}</TableCell>
               <TableCell>{user?.email}</TableCell>
@@ -334,13 +360,15 @@ export default function StudentsTable() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleViewUser(user)}>
+                    onClick={() => handleViewUser(user)}
+                  >
                     <EyeIcon className="h-4 w-4" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleEditUser(user)}>
+                    onClick={() => handleEditUser(user)}
+                  >
                     <Edit className="h-4 w-4" />
                   </Button>
                 </div>

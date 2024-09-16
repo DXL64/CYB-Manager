@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 import "./globals.css";
-import { Button } from "@/components/ui/button";
-import { BarChart2, Database, PersonStanding, Settings } from "lucide-react";
-import Link from "next/link";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,69 +25,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const routes = [
-    {
-      name: "Trang chủ",
-      href: "/  ",
-    },
-    {
-      name: "Chỉnh sửa thông tin",
-      href: "/teachers",
-    },
-    {
-      name: "Hướng dẫn",
-      href: "/docs",
-    },
-  ];
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <nav className="flex px-8 py-1 border justify-between items-center">
-          <a href="/">
-            <img src="assets/logo-cyb.jpg" alt="logo" className="h-12 w-12" />
-          </a>
-          <div className="flex gap-x-10">
-            {routes.map((route, index) => {
-              return (
-                <a
-                  href={route.href}
-                  className="hover:bg-accent hover:text-accent-foreground px-3 py-2 rounded"
-                  key={index}>
-                  {route.name}
-                </a>
-              );
-            })}
-          </div>
-        </nav>
-
-        <div className="flex h-screen bg-gray-100">
-          <aside className="w-64 bg-white p-6 hidden md:block">
-            <nav className="space-y-2">
-              <Button variant="ghost" className="w-full justify-start">
-                <BarChart2 className="mr-2 h-4 w-4" />
-                Overview
-              </Button>
-              <Link href={"/teachers"}>
-                <Button variant="ghost" className="w-full justify-start">
-                  <Database className="mr-2 h-4 w-4" />
-                  Teacher
-                </Button>
-              </Link>
-              <Link href="/students">
-                <Button variant="ghost" className="w-full justify-start">
-                  <PersonStanding className="mr-2 h-4 w-4" />
-                  Student
-                </Button>
-              </Link>
-              <Link href="#">
-                <Button variant="ghost" className="w-full justify-start">
-                  <Settings className="mr-2 h-4 w-4" />
-                  Settings
-                </Button>
-              </Link>
-            </nav>
-          </aside>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh`}>
+        <Navbar />
+        <div className="flex bg-gray-100 pt-16">
+          <Sidebar />
           <main className="flex-1 p-6">
             <div className="bg-white rounded-lg shadow p-6">{children}</div>
           </main>

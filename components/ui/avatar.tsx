@@ -1,5 +1,5 @@
-import React from "react";
 import { User } from "lucide-react";
+import Image from "next/image";
 
 interface AvatarProps {
   src?: string;
@@ -8,12 +8,7 @@ interface AvatarProps {
   className?: string;
 }
 
-export function Avatar({
-  src,
-  alt = "",
-  size = "md",
-  className = "",
-}: AvatarProps) {
+export function Avatar({ src, alt = "", size = "md", className = "" }: AvatarProps) {
   const sizeClasses = {
     sm: "w-8 h-8",
     md: "w-12 h-12",
@@ -21,10 +16,15 @@ export function Avatar({
   };
 
   return (
-    <div
-      className={`relative rounded-full overflow-hidden bg-gray-200 ${sizeClasses[size]} ${className}`}>
+    <div className={`relative rounded-full overflow-hidden bg-gray-200 ${sizeClasses[size]} ${className}`}>
       {src ? (
-        <img src={src} alt={alt} className="w-full h-full object-cover" />
+        <Image
+          src={src}
+          alt={alt}
+          className="w-full h-full object-cover"
+          width={64}
+          height={64}
+        />
       ) : (
         <div className="w-full h-full flex items-center justify-center">
           <User
