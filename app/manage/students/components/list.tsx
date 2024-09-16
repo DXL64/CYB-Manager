@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Student } from "@/models/student";
 import { Edit, EyeIcon, Plus } from "lucide-react";
 import { useState } from "react";
-import { Paginate } from "../../../components/ui/paginate";
+import { Paginate } from "../../../../components/ui/paginate";
 import Image from "next/image";
 
 const students: Student[] = [
@@ -19,7 +19,7 @@ const students: Student[] = [
     name: "Jssa Jas",
     email: "@email.com",
     phone: "+84123456789",
-    imgSrc: "assets/logo-cyb.jpg",
+    imgSrc: "/assets/logo-cyb.jpg",
     schoolYear: "k28",
     major: "Ly",
     dob: "2021-06-06",
@@ -31,7 +31,7 @@ const students: Student[] = [
     name: "Pauline Jas",
     email: "@email.com",
     phone: "+84123456789",
-    imgSrc: "D:/",
+    imgSrc: "",
     schoolYear: "k28",
     major: "Ly",
     dob: "26 Jan 2021",
@@ -43,7 +43,7 @@ const students: Student[] = [
     name: "Thedric Romans",
     email: "@email.com",
     phone: "+84123456789",
-    imgSrc: "D:/",
+    imgSrc: "",
     schoolYear: "k28",
     major: "Ly",
     dob: "12 Jan 2019",
@@ -55,7 +55,7 @@ const students: Student[] = [
     name: "Haily Carthew",
     email: "@email.com",
     phone: "+84123456789",
-    imgSrc: "D:/",
+    imgSrc: "",
     schoolYear: "k28",
     major: "Ly",
     dob: "27 Jan 2018",
@@ -67,7 +67,7 @@ const students: Student[] = [
     name: "Dorothea Joicey",
     email: "@email.com",
     phone: "+84123456789",
-    imgSrc: "D:/",
+    imgSrc: "",
     schoolYear: "k28",
     major: "Ly",
     dob: "12 Dec 2017",

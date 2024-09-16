@@ -11,7 +11,7 @@ import axiosClient from "@/composables/axios.client";
 import { Teacher } from "@/models/teacher";
 import { Edit, Eye, ImageIcon, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Paginate } from "../../../components/ui/paginate";
+import { Paginate } from "../../../../components/ui/paginate";
 
 export default function TeachersTable() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);

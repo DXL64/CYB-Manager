@@ -1,44 +1,52 @@
+"use client";
+
 import { BarChart2, Database, PersonStanding, Settings } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 
+const navItem = [
+  {
+    name: "Overview",
+    href: "",
+    icon: <BarChart2 className="size-4" />,
+  },
+  {
+    name: "Teacher",
+    href: "/teachers",
+    icon: <Database className="size-4" />,
+  },
+  {
+    name: "Student",
+    href: "/students",
+    icon: <PersonStanding className="size-4" />,
+  },
+  {
+    name: "Settings",
+    href: "/settings",
+    icon: <Settings className="size-4" />,
+  },
+];
+
 const Sidebar = () => {
+  const path = usePathname();
+
   return (
-    <aside className="w-64 bg-white p-6 hidden md:block space-y-2">
-      <Button
-        variant="ghost"
-        className="w-full justify-start"
-      >
-        <BarChart2 className="mr-2 h-4 w-4" />
-        Overview
-      </Button>
-      <Link href={"/teachers"}>
-        <Button
-          variant="ghost"
-          className="w-full justify-start"
+    <aside className="w-64 bg-white p-4 hidden md:flex flex-col gap-2 h-full sticky rounded-lg">
+      {navItem.map((item, index) => (
+        <Link
+          key={index}
+          href={"/manage" + item.href}
         >
-          <Database className="mr-2 h-4 w-4" />
-          Teacher
-        </Button>
-      </Link>
-      <Link href="/students">
-        <Button
-          variant="ghost"
-          className="w-full justify-start"
-        >
-          <PersonStanding className="mr-2 h-4 w-4" />
-          Student
-        </Button>
-      </Link>
-      <Link href="#">
-        <Button
-          variant="ghost"
-          className="w-full justify-start"
-        >
-          <Settings className="mr-2 h-4 w-4" />
-          Settings
-        </Button>
-      </Link>
+          <Button
+            variant={item.href === path.slice(7) ? "secondary" : "ghost"}
+            className="w-full justify-start"
+          >
+            <span className="mr-2">{item.icon}</span>
+            {item.name}
+          </Button>
+        </Link>
+      ))}
     </aside>
   );
 };
