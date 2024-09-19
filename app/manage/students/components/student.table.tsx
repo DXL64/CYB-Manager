@@ -2,7 +2,7 @@
 'use client'
 import StudentList from "./student.list";
 import { useEffect, useState } from "react";
-import { Student } from "@/models/student";
+import { Student } from "@/models/student.model";
 
 const StudentsTable = () => {
   const [students, setStudents] = useState<Student[]>([]);
@@ -15,7 +15,7 @@ const StudentsTable = () => {
         name: "Jssa Jas",
         email: "@email.com",
         phone: "+84123456789",
-        imgSrc: "/assets/logo-cyb.jpg",
+        imgSrc: "http://127.0.0.1:9000/images/student/6ac52a8bb3de326c21361218a9c31d9e.jpg",
         schoolYear: "k28",
         major: "Ly",
         dob: "2021-06-06",

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { EyeIcon, Edit, Plus } from "lucide-react";
 import Image from "next/image";
-import { Student } from "@/models/student";
+import { Student } from "@/models/student.model";
 import { useState } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import StudentForm from "./student.form";

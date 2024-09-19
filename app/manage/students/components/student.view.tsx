@@ -2,7 +2,7 @@
 import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
-import { Student } from "@/models/student";
+import { Student } from "@/models/student.model";
 
 interface StudentViewProps {
   student: Student | null;

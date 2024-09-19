@@ -4,10 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar } from "@/components/ui/avatar";
-import { useState } from "react";
-import { Student } from "@/models/student";
+import { useEffect, useState } from "react";
+import { defaultValue, Student } from "@/models/student.model";
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-
+import axiosClient from "@/composables/axios.client";
 interface StudentFormProps {
   student: Student | null;
   onClose: () => void;
@@ -15,7 +15,17 @@ interface StudentFormProps {
 
 export default function StudentForm({ student, onClose }: StudentFormProps) {
   const [uploadedImage, setUploadedImage] = useState<string | null>(student?.imgSrc || "");
-  const [editingModel, setEditing] = useState<Student | null>(student || null);
+  const [model, setModel] = useState<Student | null>(student || null);
+  const [isEdit, setIsEdit] = useState<boolean>(true);
+  const [img, setImg] = useState<File | undefined>(undefined);
+
+  useEffect(() => {
+    if (!student) {
+      setIsEdit(false)
+      setModel(defaultValue)
+    } 
+    setModel(student)
+  }, [setModel, student])
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -25,15 +35,53 @@ export default function StudentForm({ student, onClose }: StudentFormProps) {
         setUploadedImage(reader.result as string);
       };
       reader.readAsDataURL(file);
+      setImg(file)
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    if (editingModel) {
-      setEditing({
-        ...editingModel,
+    if (model) {
+      setModel({
+        ...model,
         [e.target.id]: e.target.value,
       });
+    }
+  };
+
+  const uploadImageToMinio = async (file: File) => {
+    try {
+      const formData: FormData = new FormData()
+      formData.append('file', file);
+      formData.append('prefix', 'student')
+      await axiosClient.post('http://localhost:8000/v1/minio/upload', formData).then((res) => { 
+        console.log(res.data)
+      })
+    } catch (error) {
+      console.error("Error uploading to Minio:", error);
+      return null;
+    }
+  };
+
+  const handleSave = async () => {
+    console.log(model)
+    // let imgSrc = model?.imgSrc || "";
+
+    // Upload image to Minio if a new image has been selected
+    if (img) {
+      await uploadImageToMinio(img);
+    }
+
+    // const updatedModel = { ...model, imgSrc };
+
+    try {
+      if (isEdit) {
+        // await axiosClient.put(`localhost:8000/students/${updatedModel.id}`, updatedModel);
+      } else {
+        // await axiosClient.post('localhost:9000/students', updatedModel);
+      }
+      onClose(); // Close the dialog after save
+    } catch (error) {
+      // console.error("Error saving student:", error);
     }
   };
 
@@ -41,11 +89,11 @@ export default function StudentForm({ student, onClose }: StudentFormProps) {
     <>
       <DialogContent className="sm:max-w-[625px]">
         <DialogHeader>
-          <DialogTitle>{editingModel ? "Chỉnh sửa thông tin" : "Thêm thông tin"}</DialogTitle>
+          <DialogTitle>{model ? "Chỉnh sửa thông tin" : "Thêm thông tin"}</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="flex justify-center mb-4">
-            <Avatar src={uploadedImage || editingModel?.imgSrc} alt={editingModel?.name || "Student avatar"} size="lg" />
+            <Avatar src={uploadedImage || model?.imgSrc} alt={model?.name || "Student avatar"} size="lg" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="avatar" className="text-right">Ảnh đại diện</Label>
@@ -53,21 +101,21 @@ export default function StudentForm({ student, onClose }: StudentFormProps) {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">Họ và tên</Label>
-            <Input id="name" value={editingModel?.name || ""} onChange={handleInputChange} className="col-span-3" />
+            <Input id="name" value={model?.name || ""} onChange={handleInputChange} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="email" className="text-right">Email</Label>
-            <Input id="email" value={editingModel?.email || ""} onChange={handleInputChange} className="col-span-3" />
+            <Input id="email" value={model?.email || ""} onChange={handleInputChange} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="phone" className="text-right">Số điện thoại</Label>
-            <Input id="phone" value={editingModel?.phone || ""} onChange={handleInputChange} className="col-span-3" />
+            <Input id="phone" value={model?.phone || ""} onChange={handleInputChange} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="major" className="text-right">Môn chuyên</Label>
             <select
               id="major"
-              value={editingModel?.major || ""}
+              value={model?.major || ""}
               onChange={handleInputChange}
               className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
             >
@@ -86,20 +134,20 @@ export default function StudentForm({ student, onClose }: StudentFormProps) {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="dob" className="text-right">Ngày sinh</Label>
-            <Input id="dob" type="date" value={editingModel?.dob || ""} onChange={handleInputChange} className="col-span-3" />
+            <Input id="dob" type="date" value={model?.dob || ""} onChange={handleInputChange} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="schoolYear" className="text-right">Niên khoá</Label>
-            <Input id="schoolYear" value={editingModel?.schoolYear || ""} onChange={handleInputChange} className="col-span-3" />
+            <Input id="schoolYear" value={model?.schoolYear || ""} onChange={handleInputChange} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="description" className="text-right">Thành tích</Label>
-            <Textarea id="description" value={editingModel?.achievements || ""} onChange={handleInputChange} className="col-span-3" />
+            <Textarea id="description" value={model?.achievements || ""} onChange={handleInputChange} className="col-span-3" />
           </div>
         </div>
         <DialogFooter>
           <Button type="button" onClick={onClose}>Hủy</Button>
-          <Button type="submit" form="student-form">Lưu</Button>
+          <Button type="submit" onClick={handleSave} form="student-form">Lưu</Button>
         </DialogFooter>
       </DialogContent>
     </>

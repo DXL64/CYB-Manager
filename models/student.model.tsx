@@ -13,3 +13,19 @@ export type Student = {
   active: boolean;
   achievements?: string;
 };
+
+export const defaultValue: Student = {
+  id: 0,
+  name: '',
+  email: '',
+  phone: '',
+  imgSrc: '',
+  schoolYear: '',
+  major: '',
+  dob: '',
+  studySince: '',
+  studyUntil: '',
+  gender: 'male',
+  active: false,
+  achievements: '',
+}
