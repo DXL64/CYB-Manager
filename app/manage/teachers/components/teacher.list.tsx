@@ -1,52 +1,52 @@
 // components/StudentList.tsx
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { EyeIcon, Edit, Plus } from "lucide-react";
+import { EyeIcon, Edit, Plus, Eye, ImageIcon } from "lucide-react";
 import Image from "next/image";
-import { Student } from "@/models/student.model";
 import { useState } from "react";
 import { Dialog } from "@/components/ui/dialog";
-import StudentForm from "./student.form";
-import StudentView from "./student.view";
+import TeacherForm from "./teacher.form";
+import TeacherView from "./teacher.view";
 import { Input } from "@/components/ui/input";
 import config from "@/config/config";
+import { Teacher } from "@/models/teacher.model";
 
-interface StudentListProps {
-  students: Student[];
+interface TeacherListProps {
+  teachers: Teacher[];
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   fetch: () => void;
 }
 
-export default function StudentList({ students, searchTerm, setSearchTerm, fetch }: StudentListProps) {
+export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch }: TeacherListProps) {
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [editingModel, setEditing] = useState<Student | null>(null);
-  const [viewModel, setView] = useState<Student | null>(null);
+  const [editingModel, setEditing] = useState<Teacher | null>(null);
+  const [viewModel, setView] = useState<Teacher | null>(null);
 
-  const filteredStudents = students.filter(student =>
-    student.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filtered = teachers.filter(teacher =>
+    teacher.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleEditStudent = (student: Student) => {
-    setEditing(student);
+  const handleEdit = (teacher: Teacher) => {
+    setEditing(teacher);
     setIsNewModalOpen(true);
   };
 
-  const handleViewStudent = (student: Student) => {
-    setView(student);
+  const handleView = (teacher: Teacher) => {
+    setView(teacher);
     setIsViewModalOpen(true);
   };
 
   return (
     <>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Học sinh</h2>
+        <h2 className="text-2xl font-bold">Giáo viên</h2>
         <Dialog open={isNewModalOpen} onOpenChange={setIsNewModalOpen}>
-          <StudentForm student={editingModel} onClose={() => setIsNewModalOpen(false)} fetch={fetch} />
+          <TeacherForm teacher={editingModel} onClose={() => setIsNewModalOpen(false)} fetch={fetch} />
         </Dialog>
         <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-          <StudentView student={viewModel} />
+          <TeacherView teacher={viewModel} />
         </Dialog>
         <Button onClick={() => { setEditing(null); setIsNewModalOpen(true); }}>
           <Plus className="mr-2 h-4 w-4" />
@@ -66,42 +66,36 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
           <TableRow>
             <TableHead>Ảnh đại diện</TableHead>
             <TableHead>Họ và tên</TableHead>
-            <TableHead>Email</TableHead>
             <TableHead>Ngày sinh</TableHead>
+            <TableHead>Email</TableHead>
             <TableHead>Số điện thoại</TableHead>
-            <TableHead>Niên khoá</TableHead>
+            <TableHead>Chức vụ</TableHead>
             <TableHead>Môn chuyên</TableHead>
+            <TableHead>Bắt đầu làm việc</TableHead>
+            <TableHead>Kết thúc làm việc</TableHead>
             <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredStudents.map((student) => (
-            <TableRow key={student.id}>
+          {filtered.map((teacher) => (
+            <TableRow key={teacher.id}>
               <TableCell>
-                {student.imgSrc ? (
-                  <Image
-                    src={`http://${config.minio.end_point}:9000/images/${student.imgSrc}`}
-                    alt="img"
-                    className="size-10 rounded-full"
-                    width={64}
-                    height={64}
-                  />
-                ) : (
-                  <span className="size-10 rounded-full bg-zinc-200" />
-                )}
+                <ImageIcon className="h-8 w-8 rounded-full" />
               </TableCell>
-              <TableCell>{student.name}</TableCell>
-              <TableCell>{student.email}</TableCell>
-              <TableCell>{student.dob}</TableCell>
-              <TableCell>{student.phone}</TableCell>
-              <TableCell>{student.schoolYear}</TableCell>
-              <TableCell>{student.major}</TableCell>
+              <TableCell>{teacher?.name}</TableCell>
+              <TableCell>{teacher?.dob}</TableCell>
+              <TableCell>{teacher?.email}</TableCell>
+              <TableCell>{teacher?.phone}</TableCell>
+              <TableCell>{teacher?.position}</TableCell>
+              <TableCell>{teacher?.major}</TableCell>
+              <TableCell>{teacher?.workSince}</TableCell>
+              <TableCell>{teacher?.workUntil}</TableCell>
               <TableCell>
                 <div className="flex items-center space-x-2">
-                  <Button variant="ghost" size="icon" onClick={() => handleViewStudent(student)}>
+                  <Button variant="ghost" size="icon" onClick={() => handleView(teacher)}>
                     <EyeIcon className="h-4 w-4" />
                   </Button>
-                  <Button variant="ghost" size="icon" onClick={() => handleEditStudent(student)}>
+                  <Button variant="ghost" size="icon" onClick={() => handleEdit(teacher)}>
                     <Edit className="h-4 w-4" />
                   </Button>
                 </div>

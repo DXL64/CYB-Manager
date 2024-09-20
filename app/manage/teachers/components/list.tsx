@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 import axiosClient from "@/composables/axios.client";
-import { Teacher } from "@/models/teacher";
+import { Teacher } from "@/models/teacher.model";
 import { Edit, Eye, ImageIcon, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Paginate } from "../../../../components/ui/paginate";
@@ -216,9 +216,7 @@ export default function TeachersTable() {
                 <Label
                   htmlFor="email"
                   className="text-right"
-                >
-                  Email
-                </Label>
+                >Email</Label>
                 <Input
                   id="email"
                   className="col-span-3"
@@ -230,9 +228,7 @@ export default function TeachersTable() {
                 <Label
                   htmlFor="phone"
                   className="text-right"
-                >
-                  Số điện thoại
-                </Label>
+                >Số điện thoại</Label>
                 <Input
                   id="phone"
                   defaultValue={editingTeacher?.phone || ""}
@@ -244,9 +240,7 @@ export default function TeachersTable() {
                 <Label
                   htmlFor="position"
                   className="text-right"
-                >
-                  Chức vụ
-                </Label>
+                >Chức vụ</Label>
                 <Input
                   id="position"
                   defaultValue={editingTeacher?.position || ""}
@@ -258,9 +252,7 @@ export default function TeachersTable() {
                 <Label
                   htmlFor="major"
                   className="text-right"
-                >
-                  Môn chuyên
-                </Label>
+                >Môn chuyên</Label>
                 <select
                   id="major"
                   defaultValue={editingTeacher?.major || ""}
@@ -289,9 +281,7 @@ export default function TeachersTable() {
                 <Label
                   htmlFor="workSince"
                   className="text-right"
-                >
-                  Bắt đầu làm việc
-                </Label>
+                >Bắt đầu làm việc</Label>
                 <Input
                   id="workSince"
                   type="date"
@@ -304,9 +294,7 @@ export default function TeachersTable() {
                 <Label
                   htmlFor="workUntil"
                   className="text-right"
-                >
-                  Kết thúc làm việc
-                </Label>
+                >Kết thúc làm việc</Label>
                 <Input
                   id="workUntil"
                   type="date"
@@ -319,9 +307,7 @@ export default function TeachersTable() {
                 <Label
                   htmlFor="achievements"
                   className="text-right"
-                >
-                  Thành tích
-                </Label>
+                >Thành tích</Label>
                 <Textarea
                   id="achievements"
                   rows={4}
@@ -334,10 +320,7 @@ export default function TeachersTable() {
             <Button
               type="button"
               onClick={handleSubmit}
-            >
-              {" "}
-              Lưu thay đổi{" "}
-            </Button>
+            >{" "}Lưu thay đổi{" "}</Button>
           </DialogContent>
         </Dialog>
       </div>
