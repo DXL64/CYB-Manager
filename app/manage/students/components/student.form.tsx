@@ -23,8 +23,10 @@ export default function StudentForm({ student, onClose }: StudentFormProps) {
     if (!student) {
       setIsEdit(false)
       setModel(defaultValue)
-    } 
-    setModel(student)
+      console.log(model)
+    } else {
+      setModel(student)
+    }
   }, [setModel, student])
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,30 +49,25 @@ export default function StudentForm({ student, onClose }: StudentFormProps) {
       });
     }
   };
-
-  const uploadImageToMinio = async (file: File) => {
-    try {
-      const formData: FormData = new FormData()
-      formData.append('file', file);
-      formData.append('prefix', 'student')
-      await axiosClient.post('http://localhost:8000/v1/minio/upload', formData).then((res) => { 
-        console.log(res.data)
-      })
-    } catch (error) {
-      console.error("Error uploading to Minio:", error);
-      return null;
-    }
-  };
-
+  
   const handleSave = async () => {
     console.log(model)
-    // let imgSrc = model?.imgSrc || "";
-
-    // Upload image to Minio if a new image has been selected
-    if (img) {
-      await uploadImageToMinio(img);
-    }
-
+    const data = new FormData()
+    if (model?.name) data.append('name', model.name);
+    if (model?.email) data.append('email', model.email);
+    if (model?.phone) data.append('phone', model.phone);
+    if (model?.schoolYear) data.append('schoolYear', model.schoolYear);
+    if (model?.major) data.append('major', model.major);
+    if (model?.dob) data.append('dob', model.dob);
+    if (model?.studySince) data.append('studySince', model.studySince);
+    if (model?.studyUntil) data.append('studyUntil', model.studyUntil);
+    if (model?.gender) data.append('gender', model.gender);
+    if (model?.active !== undefined) data.append('active', model.active.toString()); // Nếu là boolean, cần chuyển thành chuỗi
+    if (model?.achievements) data.append('achievements', model.achievements);
+    if (img) data.append('file', img);
+    await axiosClient.post('http://localhost:8000/v1/students', data).then((res) => { 
+        console.log(res.data)
+    })
     // const updatedModel = { ...model, imgSrc };
 
     try {
@@ -87,7 +84,7 @@ export default function StudentForm({ student, onClose }: StudentFormProps) {
 
   return (
     <>
-      <DialogContent className="sm:max-w-[625px]">
+      <DialogContent className="sm:max-w-[625px]" aria-describedby="dialog">
         <DialogHeader>
           <DialogTitle>{model ? "Chỉnh sửa thông tin" : "Thêm thông tin"}</DialogTitle>
         </DialogHeader>
