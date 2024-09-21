@@ -46,7 +46,7 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
           <StudentForm student={editingModel} onClose={() => setIsNewModalOpen(false)} fetch={fetch} />
         </Dialog>
         <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-          <StudentView student={viewModel} />
+          <StudentView student={viewModel} onClose={() => setIsViewModalOpen(false)} />
         </Dialog>
         <Button onClick={() => { setEditing(null); setIsNewModalOpen(true); }}>
           <Plus className="mr-2 h-4 w-4" />

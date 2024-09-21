@@ -46,7 +46,7 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
           <TeacherForm teacher={editingModel} onClose={() => setIsNewModalOpen(false)} fetch={fetch} />
         </Dialog>
         <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-          <TeacherView teacher={viewModel} />
+          <TeacherView teacher={viewModel} onClose={() => setIsViewModalOpen(false)} />
         </Dialog>
         <Button onClick={() => { setEditing(null); setIsNewModalOpen(true); }}>
           <Plus className="mr-2 h-4 w-4" />
@@ -80,7 +80,17 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
           {filtered.map((teacher) => (
             <TableRow key={teacher.id}>
               <TableCell>
-                <ImageIcon className="h-8 w-8 rounded-full" />
+                {
+                  teacher.imgSrc ?
+                    <Image
+                      src={`http://${config.minio.end_point}:9000/images/${teacher.imgSrc}`}
+                      alt="img"
+                      className="size-10 rounded-full"
+                      width={64}
+                      height={64}
+                    /> :
+                    <ImageIcon className="h-8 w-8 rounded-full" />
+                }
               </TableCell>
               <TableCell>{teacher?.name}</TableCell>
               <TableCell>{teacher?.dob}</TableCell>

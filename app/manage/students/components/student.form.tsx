@@ -6,9 +6,8 @@ import { Avatar } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
 import { defaultValue, Student } from "@/models/student.model";
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import axiosClient from "@/composables/axios.client";
-import Image from "next/image";
 import config from "@/config/config";
+import { StudentService } from "@/composables/services";
 
 interface StudentFormProps {
   student: Student | null;
@@ -17,16 +16,16 @@ interface StudentFormProps {
 }
 
 export default function StudentForm({ student, onClose, fetch }: StudentFormProps) {
-  const [uploadedImage, setUploadedImage] = useState<string | null>(student?.imgSrc || "");
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [model, setModel] = useState<Student>(defaultValue);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [img, setImg] = useState<File | undefined>(undefined);
 
   useEffect(() => {
+    console.log(1)
     if (student) {
       setIsEdit(true); // Chế độ chỉnh sửa
       setModel(student); // Nạp dữ liệu từ sinh viên cần chỉnh sửa
-      setUploadedImage(student.imgSrc || "");
     } else {
       setIsEdit(false); // Chế độ thêm mới
       setModel(defaultValue); // Đặt các giá trị mặc định
@@ -41,40 +40,28 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
         setUploadedImage(reader.result as string);
       };
       reader.readAsDataURL(file);
+      setModel({
+        ...model,
+        file: file
+      })
       setImg(file);
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setModel({
-      ...model,
-      [e.target.id]: e.target.value,
-    });
-    console.log(model)
+    const { name, value } = e.target;
+    setModel((prevModel) => ({
+      ...prevModel,
+      [name]: value,
+    }));
   };
 
   const handleSave = async () => {
-    const data = new FormData();
-    if (model?.name) data.append("name", model.name);
-    if (model?.email) data.append("email", model.email);
-    if (model?.phone) data.append("phone", model.phone);
-    if (model?.schoolYear) data.append("schoolYear", model.schoolYear);
-    if (model?.major) data.append("major", model.major);
-    if (model?.dob) data.append("dob", model.dob);
-    if (model?.studySince) data.append("studySince", model.studySince);
-    if (model?.studyUntil) data.append("studyUntil", model.studyUntil);
-    if (model?.gender) data.append("gender", model.gender);
-    if (model?.active !== undefined) data.append("active", model.active.toString()); // Nếu là boolean, cần chuyển thành chuỗi
-    if (model?.achievements) data.append("achievements", model.achievements);
-    if (img) data.append("file", img);
-    console.log(model)
     try {
       if (isEdit) {
-        // Chỉnh sửa sinh viên
-        await axiosClient.put(`http://localhost:8000/v1/students/${model?.id}`, data);
+        await StudentService.Update(model.id, model);
       } else {
-        // Thêm mới sinh viên
-        await axiosClient.post("http://localhost:8000/v1/students", data);
+        await StudentService.Create(model);
       }
       fetch(); // Tải lại dữ liệu
       resetForm(); // Reset form
@@ -85,8 +72,6 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
 
   const resetForm = () => {
     onClose(); // Đóng form sau khi lưu
-    setModel(defaultValue); // Reset giá trị
-    setImg(undefined);
   };
 
   return (
@@ -95,100 +80,104 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
         <DialogHeader>
           <DialogTitle>{isEdit ? "Chỉnh sửa thông tin" : "Thêm sinh viên mới"}</DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="flex justify-center mb-4">
-            {
-              uploadedImage ?
-                <Avatar
-                  src={`http://${config.minio.end_point}:9000/images/${model.imgSrc}`}
-                  alt={model?.name}
-                  className="size-10 rounded-full"
-                  size="lg"
-                /> :
-                <Avatar src={uploadedImage || `${model?.imgSrc}`} alt={model?.name || "Student avatar"} size="lg" />
-            }
+        <div className="grid gap-4 py-4 items-center">
+          <div className="flex justify-center mb-4 col-span-4">
+            <Avatar
+              src={uploadedImage || `http://localhost:9000/images/${model?.imgSrc}`}
+              alt={model?.name || "User avatar"}
+              size="lg"
+            />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="avatar" className="text-right">Ảnh đại diện</Label>
-            <Input id="avatar" type="file" accept="image/*" onChange={handleImageUpload} className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">Họ và tên</Label>
-            <Input id="name" value={model?.name || ""} onChange={handleInputChange} className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="gender" className="text-right"> Giới tính</Label>
-            <div className="flex items-center gap-3">
-              <Input
-                id="male"
-                type="radio"
-                name="gender"
-                className="w-4"
-                value={model.gender}
-                onChange={handleInputChange}
-              />
-              <Label htmlFor="male" className="text-right"> Nam </Label>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Input
-                id="female"
-                type="radio"
-                name="gender"
-                className="w-4"
-                value={model.gender}
-                onChange={handleInputChange}
-              />
-              <Label htmlFor="female" className="text-right"> Nữ </Label>
-            </div>
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="email" className="text-right">Email</Label>
-            <Input id="email" value={model?.email || ""} onChange={handleInputChange} className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="phone" className="text-right">Số điện thoại</Label>
-            <Input id="phone" value={model?.phone || ""} onChange={handleInputChange} className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="major" className="text-right">Môn chuyên</Label>
-            <select
-              id="major"
-              value={model?.major || ""}
+          <Label htmlFor="avatar" className="text-right col-span-1">
+            Ảnh đại diện
+          </Label>
+          <Input id="avatar" type="file" accept="image/*" onChange={handleImageUpload} className="col-span-3" />
+          <Label htmlFor="name" className="text-right col-span-1">
+            Họ và tên
+          </Label>
+          <Input name="name" value={model?.name || ""} onChange={handleInputChange} className="col-span-3" />
+          <Label htmlFor="gender" className="text-right col-span-1">
+            Giới tính
+          </Label>
+          <div className="flex items-center gap-3 col-span-3">
+            <Input
+              id="male"
+              type="radio"
+              name="gender"
+              className="w-4"
+              value="male"
+              checked={model.gender === "male"}
               onChange={handleInputChange}
-              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
-            >
-              <option value="math">Toán</option>
-              <option value="information">Toán Tin</option>
-              <option value="literature">Văn</option>
-              <option value="english">Anh</option>
-              <option value="biology">Sinh học</option>
-              <option value="history">Lịch sử</option>
-              <option value="geography">Địa lý</option>
-              <option value="chinese">Trung</option>
-              <option value="physics">Vật lý</option>
-              <option value="chemistry">Hoá học</option>
-              <option value="unknown">Không biết</option>
-            </select>
+            />
+            <Label htmlFor="male" className="text-right">
+              Nam
+            </Label>
+
+            <Input
+              id="female"
+              type="radio"
+              name="gender"
+              className="w-4"
+              value="female"
+              checked={model.gender === "female"}
+              onChange={handleInputChange}
+            />
+            <Label htmlFor="female" className="text-right">
+              Nữ
+            </Label>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="dob" className="text-right">Ngày sinh</Label>
-            <Input id="dob" type="date" value={model?.dob || ""} onChange={handleInputChange} className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="schoolYear" className="text-right">Niên khoá</Label>
-            <Input id="schoolYear" value={model?.schoolYear || ""} onChange={handleInputChange} className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right">Thành tích</Label>
-            <Textarea id="description" value={model?.achievements} onChange={handleInputChange} className="col-span-3" />
-          </div>
+
+          <Label htmlFor="email" className="text-right col-span-1">
+            Email
+          </Label>
+          <Input name="email" value={model?.email || ""} onChange={handleInputChange} className="col-span-3" />
+          <Label htmlFor="phone" className="text-right col-span-1">
+            Số điện thoại
+          </Label>
+          <Input name="phone" value={model?.phone || ""} onChange={handleInputChange} className="col-span-3" />
+          <Label htmlFor="major" className="text-right col-span-1">
+            Môn chuyên
+          </Label>
+          <select
+            name="major"
+            value={model?.major || ""}
+            onChange={handleInputChange}
+            className="col-span-3 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
+          >
+            <option value="math">Toán</option>
+            <option value="information">Toán Tin</option>
+            <option value="literature">Văn</option>
+            <option value="english">Anh</option>
+            <option value="biology">Sinh học</option>
+            <option value="history">Lịch sử</option>
+            <option value="geography">Địa lý</option>
+            <option value="chinese">Trung</option>
+            <option value="physics">Vật lý</option>
+            <option value="chemistry">Hoá học</option>
+            <option value="unknown">Không biết</option>
+          </select>
+          <Label htmlFor="dob" className="text-right col-span-1">
+            Ngày sinh
+          </Label>
+          <Input name="dob" type="date" value={model?.dob || ""} onChange={handleInputChange} className="col-span-3" />
+          <Label htmlFor="schoolYear" className="text-right col-span-1">
+            Niên khoá
+          </Label>
+          <Input name="schoolYear" value={model?.schoolYear || ""} onChange={handleInputChange} className="col-span-3" />
+          <Label htmlFor="achievements" className="text-right col-span-1">
+            Thành tích
+          </Label>
+          <Textarea name="achievements" value={model?.achievements || ""} onChange={handleInputChange} className="col-span-3" />
         </div>
         <DialogFooter>
-          <Button type="button" onClick={resetForm}>Hủy</Button>
-          <Button type="submit" onClick={handleSave} form="student-form">Lưu</Button>
+          <Button type="button" onClick={resetForm}>
+            Hủy
+          </Button>
+          <Button type="submit" onClick={handleSave}>
+            Lưu
+          </Button>
         </DialogFooter>
-      </DialogContent>
+      </DialogContent >
     </>
   );
 }

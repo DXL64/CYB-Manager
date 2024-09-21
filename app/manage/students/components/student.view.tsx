@@ -6,9 +6,10 @@ import { Student } from "@/models/student.model";
 
 interface StudentViewProps {
   student: Student | null;
+  onClose: () => void
 }
 
-export default function StudentView({ student }: StudentViewProps) {
+export default function StudentView({ student, onClose }: StudentViewProps) {
   return (
     <DialogContent className="sm:max-w-[625px]">
       <DialogHeader>
@@ -16,7 +17,7 @@ export default function StudentView({ student }: StudentViewProps) {
       </DialogHeader>
       <div className="grid gap-4 py-4">
         <div className="flex justify-center mb-4">
-          <Avatar src={student?.imgSrc || ""} alt={student?.name || "Student avatar"} size="lg" />
+          <Avatar src={`http://localhost:9000/images/${student?.imgSrc}` || ""} alt={student?.name || "Student avatar"} size="lg" />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Họ và tên:</div>
@@ -48,7 +49,7 @@ export default function StudentView({ student }: StudentViewProps) {
         </div>
       </div>
       <DialogFooter>
-        <Button type="button" onClick={() => { /* Close the modal */ }}>Đóng</Button>
+        <Button type="button" onClick={onClose}>Đóng</Button>
       </DialogFooter>
     </DialogContent>
   );

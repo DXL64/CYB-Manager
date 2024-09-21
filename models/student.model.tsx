@@ -1,5 +1,5 @@
 export type Student = {
-  id: number;
+  id: string;
   name: string;
   email?: string;
   phone?: string;
@@ -12,10 +12,11 @@ export type Student = {
   gender: "male" | "female";
   active: boolean;
   achievements?: string;
+  file?: File
 };
 
 export const defaultValue: Student = {
-  id: 0,
+  id: '',
   name: '',
   email: '',
   phone: '',
@@ -28,4 +29,5 @@ export const defaultValue: Student = {
   gender: 'male',
   active: false,
   achievements: '',
+  file: undefined
 }

@@ -9,6 +9,7 @@ import axiosClient from "@/composables/axios.client";
 import Image from "next/image";
 import config from "@/config/config";
 import { defaultValue, Teacher } from "@/models/teacher.model";
+import { TeacherService } from "@/composables/services";
 
 interface TeacherFormProps {
   teacher: Teacher | null;
@@ -50,32 +51,16 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
       ...model,
       [e.target.id]: e.target.value,
     });
-    console.log(model)
   };
 
   const handleSave = async () => {
-    const data = new FormData();
-    data.append("id", model?.id || "");
-    data.append("name", model?.name || "");
-    data.append("email", model?.email || "");
-    data.append("phone", model?.phone || "");
-    data.append("imgSrc", model?.imgSrc || "");
-    data.append("position", model?.position || "");
-    data.append("major", model?.major || "");
-    data.append("dob", model?.dob || "");
-    data.append("workSince", model?.workSince || "");
-    data.append("workUntil", model?.workUntil || "");
-    data.append("gender", model?.gender || "male");
-    data.append("achievements", model?.achievements || "");
-    if (img) data.append("file", img);
-
     try {
       if (isEdit) {
-        // Chỉnh sửa sinh viên
-        await axiosClient.put(`http://localhost:8000/v1/teachers/${model?.id}`, data);
+        console.log(model)
+        TeacherService.Update(model?.id, model)
       } else {
         // Thêm mới sinh viên
-        await axiosClient.post("http://localhost:8000/v1/teachers", data);
+        // await axiosClient.post("http://localhost:8000/v1/teachers", data);
       }
       fetch(); // Tải lại dữ liệu
       resetForm(); // Reset form
@@ -97,21 +82,17 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           <DialogTitle>{isEdit ? "Chỉnh sửa thông tin" : "Thêm sinh viên mới"}</DialogTitle>
         </DialogHeader>
         <div className="grid grid-cols-4 gap-4 py-4 items-center">
-          <div className="col-span-4 flex justify-center mb-4">
+          <div className="flex justify-center mb-4 col-span-4">
             <Avatar
               src={uploadedImage || model?.imgSrc}
               alt={model?.name || "User avatar"}
               size="lg"
             />
           </div>
-          <Label htmlFor="avatar" className="text-right col-span-1"> Ảnh đại diện</Label>
-          <Input
-            id="avatar"
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="col-span-3"
-          />
+          <Label htmlFor="avatar" className="text-right col-span-1">
+            Ảnh đại diện
+          </Label>
+          <Input id="avatar" type="file" accept="image/*" onChange={handleImageUpload} className="col-span-3" />
           <Label htmlFor="fullName" className="text-right col-span-1">
             Họ và tên
           </Label>
