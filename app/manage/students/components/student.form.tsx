@@ -6,7 +6,6 @@ import { Avatar } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
 import { defaultValue, Student } from "@/models/student.model";
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import config from "@/config/config";
 import { StudentService } from "@/composables/services";
 
 interface StudentFormProps {
@@ -19,7 +18,6 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [model, setModel] = useState<Student>(defaultValue);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [img, setImg] = useState<File | undefined>(undefined);
 
   useEffect(() => {
     console.log(1)
@@ -44,7 +42,6 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
         ...model,
         file: file
       })
-      setImg(file);
     }
   };
 
@@ -63,15 +60,16 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
       } else {
         await StudentService.Create(model);
       }
-      fetch(); // Tải lại dữ liệu
-      resetForm(); // Reset form
+      fetch();
+      resetForm();
     } catch (error) {
       console.error("Error saving student:", error);
     }
   };
 
   const resetForm = () => {
-    onClose(); // Đóng form sau khi lưu
+    onClose();
+    setUploadedImage(null);
   };
 
   return (

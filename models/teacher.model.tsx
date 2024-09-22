@@ -11,6 +11,7 @@ export type Teacher = {
   workUntil?: string;
   gender: "male" | "female";
   achievements?: string;
+  file?: File
 };
 
 
@@ -27,4 +28,5 @@ export const defaultValue: Teacher = {
   workUntil: undefined,
   gender: "male",
   achievements: undefined,
+  file: undefined
 };

@@ -5,9 +5,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import axiosClient from "@/composables/axios.client";
-import Image from "next/image";
-import config from "@/config/config";
 import { defaultValue, Teacher } from "@/models/teacher.model";
 import { TeacherService } from "@/composables/services";
 
@@ -21,7 +18,6 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
   const [uploadedImage, setUploadedImage] = useState<string | null>(teacher?.imgSrc || "");
   const [model, setModel] = useState<Teacher>(defaultValue);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [img, setImg] = useState<File | undefined>(undefined);
 
   useEffect(() => {
     if (teacher) {
@@ -42,7 +38,10 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
         setUploadedImage(reader.result as string);
       };
       reader.readAsDataURL(file);
-      setImg(file);
+      setModel({
+        ...model,
+        file: file
+      })
     }
   };
 
@@ -55,12 +54,11 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
 
   const handleSave = async () => {
     try {
+      console.log(model)
       if (isEdit) {
-        console.log(model)
-        TeacherService.Update(model?.id, model)
+        await TeacherService.Update(model?.id, model)
       } else {
-        // Thêm mới sinh viên
-        // await axiosClient.post("http://localhost:8000/v1/teachers", data);
+        await TeacherService.Create(model)
       }
       fetch(); // Tải lại dữ liệu
       resetForm(); // Reset form
@@ -71,8 +69,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
 
   const resetForm = () => {
     onClose(); // Đóng form sau khi lưu
-    setModel(defaultValue); // Reset giá trị
-    setImg(undefined);
+    setUploadedImage(null)
   };
 
   return (
@@ -104,19 +101,26 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
               type="radio"
               name="gender"
               className="w-4"
-              value={model.gender}
+              value="male"
+              checked={model.gender === "male"}
               onChange={handleInputChange}
             />
-            <Label htmlFor="male" className="text-right"> Nam </Label>
+            <Label htmlFor="male" className="text-right">
+              Nam
+            </Label>
+
             <Input
               id="female"
               type="radio"
               name="gender"
               className="w-4"
-              value={model.gender}
+              value="female"
+              checked={model.gender === "female"}
               onChange={handleInputChange}
             />
-            <Label htmlFor="female" className="text-right"> Nữ </Label>
+            <Label htmlFor="female" className="text-right">
+              Nữ
+            </Label>
           </div>
           <Label htmlFor="dob" className="text-right col-span-1" >
             Ngày sinh
