@@ -27,7 +27,7 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
       setIsEdit(false); // Chế độ thêm mới
       setModel(defaultValue); // Đặt các giá trị mặc định
     }
-    setUploadedImage(null)
+    setUploadedImage(null);
   }, [student]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,8 +40,8 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
       reader.readAsDataURL(file);
       setModel({
         ...model,
-        file: file
-      })
+        file: file,
+      });
     }
   };
 
@@ -69,7 +69,10 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
 
   return (
     <>
-      <DialogContent className="sm:max-w-[625px]" aria-describedby="dialog">
+      <DialogContent
+        className="sm:max-w-[625px]"
+        aria-describedby="dialog"
+      >
         <DialogHeader>
           <DialogTitle>{isEdit ? "Chỉnh sửa thông tin" : "Thêm sinh viên mới"}</DialogTitle>
         </DialogHeader>
@@ -81,15 +84,35 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
               size="lg"
             />
           </div>
-          <Label htmlFor="avatar" className="text-right col-span-1">
+          <Label
+            htmlFor="avatar"
+            className="text-right col-span-1"
+          >
             Ảnh đại diện
           </Label>
-          <Input id="avatar" type="file" accept="image/*" onChange={handleImageUpload} className="col-span-3" />
-          <Label htmlFor="name" className="text-right col-span-1">
+          <Input
+            id="avatar"
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="col-span-3"
+          />
+          <Label
+            htmlFor="name"
+            className="text-right col-span-1"
+          >
             Họ và tên
           </Label>
-          <Input name="name" value={model?.name || ""} onChange={handleInputChange} className="col-span-3" />
-          <Label htmlFor="gender" className="text-right col-span-1">
+          <Input
+            name="name"
+            value={model?.name || ""}
+            onChange={handleInputChange}
+            className="col-span-3"
+          />
+          <Label
+            htmlFor="gender"
+            className="text-right col-span-1"
+          >
             Giới tính
           </Label>
           <div className="flex items-center gap-3 col-span-3">
@@ -102,7 +125,10 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
               checked={model.gender === "male"}
               onChange={handleInputChange}
             />
-            <Label htmlFor="male" className="text-right">
+            <Label
+              htmlFor="male"
+              className="text-right"
+            >
               Nam
             </Label>
 
@@ -115,20 +141,42 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
               checked={model.gender === "female"}
               onChange={handleInputChange}
             />
-            <Label htmlFor="female" className="text-right">
+            <Label
+              htmlFor="female"
+              className="text-right"
+            >
               Nữ
             </Label>
           </div>
 
-          <Label htmlFor="email" className="text-right col-span-1">
+          <Label
+            htmlFor="email"
+            className="text-right col-span-1"
+          >
             Email
           </Label>
-          <Input name="email" value={model?.email || ""} onChange={handleInputChange} className="col-span-3" />
-          <Label htmlFor="phone" className="text-right col-span-1">
+          <Input
+            name="email"
+            value={model?.email || ""}
+            onChange={handleInputChange}
+            className="col-span-3"
+          />
+          <Label
+            htmlFor="phone"
+            className="text-right col-span-1"
+          >
             Số điện thoại
           </Label>
-          <Input name="phone" value={model?.phone || ""} onChange={handleInputChange} className="col-span-3" />
-          <Label htmlFor="major" className="text-right col-span-1">
+          <Input
+            name="phone"
+            value={model?.phone || ""}
+            onChange={handleInputChange}
+            className="col-span-3"
+          />
+          <Label
+            htmlFor="major"
+            className="text-right col-span-1"
+          >
             Môn chuyên
           </Label>
           <select
@@ -149,28 +197,59 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
             <option value="chemistry">Hoá học</option>
             <option value="unknown">Không biết</option>
           </select>
-          <Label htmlFor="dob" className="text-right col-span-1">
+          <Label
+            htmlFor="dob"
+            className="text-right col-span-1"
+          >
             Ngày sinh
           </Label>
-          <Input name="dob" type="date" value={model?.dob || ""} onChange={handleInputChange} className="col-span-3" />
-          <Label htmlFor="schoolYear" className="text-right col-span-1">
+          <Input
+            name="dob"
+            type="date"
+            value={model?.dob || ""}
+            onChange={handleInputChange}
+            className="col-span-3"
+          />
+          <Label
+            htmlFor="schoolYear"
+            className="text-right col-span-1"
+          >
             Niên khoá
           </Label>
-          <Input name="schoolYear" value={model?.schoolYear || ""} onChange={handleInputChange} className="col-span-3" />
-          <Label htmlFor="achievements" className="text-right col-span-1">
+          <Input
+            name="schoolYear"
+            value={model?.schoolYear || ""}
+            onChange={handleInputChange}
+            className="col-span-3"
+          />
+          <Label
+            htmlFor="achievements"
+            className="text-right col-span-1"
+          >
             Thành tích
           </Label>
-          <Textarea name="achievements" value={model?.achievements || ""} onChange={handleInputChange} className="col-span-3" />
+          <Textarea
+            name="achievements"
+            value={model?.achievements || ""}
+            onChange={handleInputChange}
+            className="col-span-3"
+          />
         </div>
         <DialogFooter>
-          <Button type="button" onClick={onClose}>
+          <Button
+            type="button"
+            onClick={onClose}
+          >
             Hủy
           </Button>
-          <Button type="submit" onClick={handleSave}>
+          <Button
+            type="submit"
+            onClick={handleSave}
+          >
             Lưu
           </Button>
         </DialogFooter>
-      </DialogContent >
+      </DialogContent>
     </>
   );
 }

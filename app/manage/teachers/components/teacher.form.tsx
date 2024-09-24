@@ -27,7 +27,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
       setIsEdit(false); // Chế độ thêm mới
       setModel(defaultValue); // Đặt các giá trị mặc định
     }
-    setUploadedImage(null)
+    setUploadedImage(null);
   }, [teacher]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,8 +40,8 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
       reader.readAsDataURL(file);
       setModel({
         ...model,
-        file: file
-      })
+        file: file,
+      });
     }
   };
 
@@ -54,14 +54,14 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
 
   const handleSave = async () => {
     try {
-      console.log(model)
+      console.log(model);
       if (isEdit) {
-        await TeacherService.Update(model?.id, model)
+        await TeacherService.Update(model?.id, model);
       } else {
-        await TeacherService.Create(model)
+        await TeacherService.Create(model);
       }
-      fetch(); // Tải lại dữ liệu
-      onClose(); // Reset form
+      fetch();
+      onClose();
     } catch (error) {
       console.error("Error saving teacher:", error);
     }
@@ -69,7 +69,10 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
 
   return (
     <>
-      <DialogContent className="sm:max-w-[625px]" aria-describedby="dialog">
+      <DialogContent
+        className="sm:max-w-[625px]"
+        aria-describedby="dialog"
+      >
         <DialogHeader>
           <DialogTitle>{isEdit ? "Chỉnh sửa thông tin" : "Thêm sinh viên mới"}</DialogTitle>
         </DialogHeader>
@@ -81,15 +84,38 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
               size="lg"
             />
           </div>
-          <Label htmlFor="avatar" className="text-right col-span-1">
+          <Label
+            htmlFor="avatar"
+            className="text-right col-span-1"
+          >
             Ảnh đại diện
           </Label>
-          <Input id="avatar" type="file" accept="image/*" onChange={handleImageUpload} className="col-span-3" />
-          <Label htmlFor="fullName" className="text-right col-span-1">
+          <Input
+            id="avatar"
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="col-span-3"
+          />
+          <Label
+            htmlFor="fullName"
+            className="text-right col-span-1"
+          >
             Họ và tên
           </Label>
-          <Input id="name" value={model?.name || ""} onChange={handleInputChange} className="col-span-3" />
-          <Label htmlFor="gender" className="text-right col-span-1"> Giới tính</Label>
+          <Input
+            id="name"
+            value={model?.name || ""}
+            onChange={handleInputChange}
+            className="col-span-3"
+          />
+          <Label
+            htmlFor="gender"
+            className="text-right col-span-1"
+          >
+            {" "}
+            Giới tính
+          </Label>
           <div className="flex items-center gap-3 col-span-3">
             <Input
               id="male"
@@ -100,7 +126,10 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
               checked={model.gender === "male"}
               onChange={handleInputChange}
             />
-            <Label htmlFor="male" className="text-right">
+            <Label
+              htmlFor="male"
+              className="text-right"
+            >
               Nam
             </Label>
 
@@ -113,11 +142,17 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
               checked={model.gender === "female"}
               onChange={handleInputChange}
             />
-            <Label htmlFor="female" className="text-right">
+            <Label
+              htmlFor="female"
+              className="text-right"
+            >
               Nữ
             </Label>
           </div>
-          <Label htmlFor="dob" className="text-right col-span-1" >
+          <Label
+            htmlFor="dob"
+            className="text-right col-span-1"
+          >
             Ngày sinh
           </Label>
           <Input
@@ -127,28 +162,48 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             onChange={handleInputChange}
             value={model?.dob}
           />
-          <Label htmlFor="email" className="text-right col-span-1">Email</Label>
+          <Label
+            htmlFor="email"
+            className="text-right col-span-1"
+          >
+            Email
+          </Label>
           <Input
             id="email"
             className="col-span-3"
             value={model?.email}
             onChange={handleInputChange}
           />
-          <Label htmlFor="phone" className="text-right col-span-1">Số điện thoại</Label>
+          <Label
+            htmlFor="phone"
+            className="text-right col-span-1"
+          >
+            Số điện thoại
+          </Label>
           <Input
             id="phone"
             value={model?.phone}
             onChange={handleInputChange}
             className="col-span-3"
           />
-          <Label htmlFor="position" className="text-right col-span-1" >Chức vụ</Label>
+          <Label
+            htmlFor="position"
+            className="text-right col-span-1"
+          >
+            Chức vụ
+          </Label>
           <Input
             id="position"
             value={model?.position}
             onChange={handleInputChange}
             className="col-span-3"
           />
-          <Label htmlFor="major" className="text-right col-span-1" >Môn chuyên</Label>
+          <Label
+            htmlFor="major"
+            className="text-right col-span-1"
+          >
+            Môn chuyên
+          </Label>
           <select
             id="major"
             defaultValue={model?.major || ""}
@@ -173,7 +228,12 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             <option value="unknown">GDCD</option>
             <option value="unknown">Công nghệ</option>
           </select>
-          <Label htmlFor="workSince" className="text-right col-span-1">Bắt đầu làm việc</Label>
+          <Label
+            htmlFor="workSince"
+            className="text-right col-span-1"
+          >
+            Bắt đầu làm việc
+          </Label>
           <Input
             id="workSince"
             type="date"
@@ -181,7 +241,12 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             onChange={handleInputChange}
             value={model?.workSince}
           />
-          <Label htmlFor="workUntil" className="text-right col-span-1" >Kết thúc làm việc</Label>
+          <Label
+            htmlFor="workUntil"
+            className="text-right col-span-1"
+          >
+            Kết thúc làm việc
+          </Label>
           <Input
             id="workUntil"
             type="date"
@@ -192,7 +257,9 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           <Label
             htmlFor="achievements"
             className="text-right col-span-1"
-          >Thành tích</Label>
+          >
+            Thành tích
+          </Label>
           <Textarea
             id="achievements"
             rows={4}
@@ -202,8 +269,19 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           />
         </div>
         <DialogFooter>
-          <Button type="button" onClick={onClose}>Hủy</Button>
-          <Button type="submit" onClick={handleSave} form="student-form">Lưu</Button>
+          <Button
+            type="button"
+            onClick={onClose}
+          >
+            Hủy
+          </Button>
+          <Button
+            type="submit"
+            onClick={handleSave}
+            form="student-form"
+          >
+            Lưu
+          </Button>
         </DialogFooter>
       </DialogContent>
     </>

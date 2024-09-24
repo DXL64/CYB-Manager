@@ -6,7 +6,7 @@ import { Teacher } from "@/models/teacher.model";
 
 interface TeacherViewProps {
   teacher: Teacher | null;
-  onClose: () => void
+  onClose: () => void;
 }
 
 export default function TeacherView({ teacher, onClose }: TeacherViewProps) {
@@ -17,7 +17,11 @@ export default function TeacherView({ teacher, onClose }: TeacherViewProps) {
       </DialogHeader>
       <div className="grid gap-4 py-4">
         <div className="flex justify-center mb-4">
-          <Avatar src={teacher?.imgSrc || ""} alt={teacher?.name || "Student avatar"} size="lg" />
+          <Avatar
+            src={`http://localhost:9000/images/${teacher?.imgSrc}` || ""}
+            alt={teacher?.name || "Student avatar"}
+            size="lg"
+          />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Họ và tên:</div>
@@ -61,7 +65,12 @@ export default function TeacherView({ teacher, onClose }: TeacherViewProps) {
         </div>
       </div>
       <DialogFooter>
-        <Button type="button" onClick={onClose}>Đóng</Button>
+        <Button
+          type="button"
+          onClick={onClose}
+        >
+          Đóng
+        </Button>
       </DialogFooter>
     </DialogContent>
   );
