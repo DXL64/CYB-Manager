@@ -223,10 +223,10 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             <option value="chinese">Trung</option>
             <option value="physics">Vật lý</option>
             <option value="chemistry">Hoá học</option>
-            <option value="unknown">Công nghệ</option>
-            <option value="unknown">Thể dục</option>
-            <option value="unknown">GDCD</option>
-            <option value="unknown">Công nghệ</option>
+            <option value="technology">Công nghệ</option>
+            <option value="exercise">Thể dục</option>
+            <option value="gdcd">GDCD</option>
+            <option value="technology">Công nghệ</option>
           </select>
           <Label
             htmlFor="workSince"

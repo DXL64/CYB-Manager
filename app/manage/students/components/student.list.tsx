@@ -11,6 +11,20 @@ import StudentView from "./student.view";
 import { Input } from "@/components/ui/input";
 import config from "@/config/config";
 
+const majorMap:Record<string, string> = {
+  math: "Toán",
+  information: "Toán Tin",
+  literature: "Văn",
+  english: "Anh",
+  biology: "Sinh học",
+  history: "Lịch sử",
+  geography: "Địa lý",
+  chinese: "Trung",
+  physics: "Vật lý",
+  chemistry: "Hoá học",
+  unknown: "Chất lượng cao"
+};
+
 interface StudentListProps {
   students: Student[];
   searchTerm: string;
@@ -95,7 +109,7 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
               <TableCell>{student.dob}</TableCell>
               <TableCell>{student.phone}</TableCell>
               <TableCell>{student.schoolYear}</TableCell>
-              <TableCell>{student.major}</TableCell>
+              <TableCell>{student.major ? majorMap[student.major] || student.major : "N/A"}</TableCell>
               <TableCell>
                 <div className="flex items-center space-x-2">
                   <Button variant="ghost" size="icon" onClick={() => handleViewStudent(student)}>

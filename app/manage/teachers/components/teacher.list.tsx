@@ -11,6 +11,22 @@ import { Input } from "@/components/ui/input";
 import config from "@/config/config";
 import { Teacher } from "@/models/teacher.model";
 
+const majorMap: Record<string, string> = {
+  math: "Toán",
+  information: "Tin học",
+  literature: "Văn",
+  english: "Anh",
+  biology: "Sinh học",
+  history: "Lịch sử",
+  geography: "Địa lý",
+  chinese: "Trung",
+  physics: "Vật lý",
+  chemistry: "Hoá học",
+  technology: "Công nghệ",
+  excercise: "Thể dục",
+  gdcd: "GDCD"
+};
+
 interface TeacherListProps {
   teachers: Teacher[];
   searchTerm: string;
@@ -97,7 +113,7 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
               <TableCell>{teacher?.email}</TableCell>
               <TableCell>{teacher?.phone}</TableCell>
               <TableCell>{teacher?.position}</TableCell>
-              <TableCell>{teacher?.major}</TableCell>
+              <TableCell>{teacher.major ? majorMap[teacher.major] || teacher.major : "N/A"}</TableCell>
               <TableCell>{teacher?.workSince}</TableCell>
               <TableCell>{teacher?.workUntil}</TableCell>
               <TableCell>
