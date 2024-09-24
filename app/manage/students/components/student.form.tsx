@@ -20,7 +20,6 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(1)
     if (student) {
       setIsEdit(true); // Chế độ chỉnh sửa
       setModel(student); // Nạp dữ liệu từ sinh viên cần chỉnh sửa
@@ -28,6 +27,7 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
       setIsEdit(false); // Chế độ thêm mới
       setModel(defaultValue); // Đặt các giá trị mặc định
     }
+    setUploadedImage(null)
   }, [student]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,15 +61,10 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
         await StudentService.Create(model);
       }
       fetch();
-      resetForm();
+      onClose();
     } catch (error) {
       console.error("Error saving student:", error);
     }
-  };
-
-  const resetForm = () => {
-    onClose();
-    setUploadedImage(null);
   };
 
   return (
@@ -168,7 +163,7 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
           <Textarea name="achievements" value={model?.achievements || ""} onChange={handleInputChange} className="col-span-3" />
         </div>
         <DialogFooter>
-          <Button type="button" onClick={resetForm}>
+          <Button type="button" onClick={onClose}>
             Hủy
           </Button>
           <Button type="submit" onClick={handleSave}>

@@ -23,11 +23,11 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
     if (teacher) {
       setIsEdit(true); // Chế độ chỉnh sửa
       setModel(teacher); // Nạp dữ liệu từ sinh viên cần chỉnh sửa
-      setUploadedImage(teacher.imgSrc || "");
     } else {
       setIsEdit(false); // Chế độ thêm mới
       setModel(defaultValue); // Đặt các giá trị mặc định
     }
+    setUploadedImage(null)
   }, [teacher]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,15 +61,10 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
         await TeacherService.Create(model)
       }
       fetch(); // Tải lại dữ liệu
-      resetForm(); // Reset form
+      onClose(); // Reset form
     } catch (error) {
       console.error("Error saving teacher:", error);
     }
-  };
-
-  const resetForm = () => {
-    onClose(); // Đóng form sau khi lưu
-    setUploadedImage(null)
   };
 
   return (
@@ -81,7 +76,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
         <div className="grid grid-cols-4 gap-4 py-4 items-center">
           <div className="flex justify-center mb-4 col-span-4">
             <Avatar
-              src={uploadedImage || model?.imgSrc}
+              src={uploadedImage || `http://localhost:9000/images/${model?.imgSrc}`}
               alt={model?.name || "User avatar"}
               size="lg"
             />
@@ -207,7 +202,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           />
         </div>
         <DialogFooter>
-          <Button type="button" onClick={resetForm}>Hủy</Button>
+          <Button type="button" onClick={onClose}>Hủy</Button>
           <Button type="submit" onClick={handleSave} form="student-form">Lưu</Button>
         </DialogFooter>
       </DialogContent>
