@@ -2,7 +2,6 @@
 'use client'
 import TeacherList from "./teacher.list";
 import { useEffect, useState } from "react";
-import axiosClient from "@/composables/axios.client";
 import { Teacher } from "@/models/teacher.model";
 import { TeacherService } from "@/composables/services";
 
