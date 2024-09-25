@@ -18,6 +18,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
   const [uploadedImage, setUploadedImage] = useState<string | null>(teacher?.imgSrc || "");
   const [model, setModel] = useState<Teacher>(defaultValue);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     if (teacher) {
@@ -28,6 +29,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
       setModel(defaultValue); // Đặt các giá trị mặc định
     }
     setUploadedImage(null);
+    setErrors({});
   }, [teacher]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,17 +53,39 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
       ...prevModel,
       [name]: value,
     }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
-  const validateForm = () => {
-    if (!model.name || !model.email || !model.phone) {
-      alert("Vui lòng điền đầy đủ các trường bắt buộc.");
-      return false;
+  const validateForm = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!model.name.trim()) newErrors.name = "Họ và tên không được để trống";
+    if (!model.email?.trim()) newErrors.email = "Email không được để trống";
+    if (!model.phone?.trim()) newErrors.phone = "Số điện thoại không được để trống";
+    if (!model.position?.trim()) newErrors.position = "Chức vụ không được để trống";
+    if (!model.major?.trim()) newErrors.major = "Môn chuyên không được để trống";
+    if (!model.dob?.trim()) newErrors.dob = "Ngày sinh không được để trống";
+    if (!model.workSince?.trim()) newErrors.workSince = "Ngày bắt đầu làm việc không được để trống";
+
+    // Add more validation rules as needed
+    if (model.email && !/\S+@\S+\.\S+/.test(model.email)) {
+      newErrors.email = "Email không hợp lệ";
     }
-    return true;
+    if (model.phone && !/^\d{10,11}$/.test(model.phone)) {
+      newErrors.phone = "Số điện thoại không hợp lệ (cần 10-11 số)";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSave = async () => {
+    if (!validateForm()) {
+      console.log("Form validation failed");
+      return;
+    }
     try {
       console.log(model);
       if (isEdit) {
@@ -113,13 +137,16 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           >
             Họ và tên <span className="text-red-500">*</span>
           </Label>
-          <Input
-            id="name"
-            name="name"
-            value={model?.name || ""}
-            onChange={handleInputChange}
-            className="col-span-3"
-          />
+          <div className="col-span-3">
+            <Input
+              id="name"
+              name="name"
+              value={model.name || ""}
+              onChange={handleInputChange}
+              className={errors.name ? "border-red-500" : ""}
+            />
+            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+          </div>
 
           <Label
             htmlFor="gender"
@@ -166,14 +193,17 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           >
             Ngày sinh
           </Label>
+          <div className="col-span-3">
           <Input
             id="dob"
             type="date"
             name="dob"
-            className="col-span-3"
+            className={errors.dob ? "border-red-500" : ""}
             onChange={handleInputChange}
             value={model?.dob}
           />
+          {errors.dob && <p className="text-red-500 text-sm mt-1">{errors.dob}</p>}
+          </div>
 
           <Label
             htmlFor="email"
@@ -181,13 +211,16 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           >
             Email <span className="text-red-500">*</span>
           </Label>
-          <Input
-            id="email"
-            name="email"
-            value={model?.email}
-            onChange={handleInputChange}
-            className="col-span-3"
-          />
+          <div className="col-span-3">
+            <Input
+              id="email"
+              name="email"
+              value={model.email || ""}
+              onChange={handleInputChange}
+              className={errors.email ? "border-red-500" : ""}
+            />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+          </div>
 
           <Label
             htmlFor="phone"
@@ -195,13 +228,16 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           >
             Số điện thoại <span className="text-red-500">*</span>
           </Label>
-          <Input
-            id="phone"
-            name="phone"
-            value={model?.phone}
-            onChange={handleInputChange}
-            className="col-span-3"
-          />
+          <div className="col-span-3">
+            <Input
+              id="phone"
+              name="phone"
+              value={model.phone || ""}
+              onChange={handleInputChange}
+              className={errors.phone ? "border-red-500" : ""}
+            />
+            {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+          </div>
 
           <Label
             htmlFor="position"
@@ -209,13 +245,16 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           >
             Chức vụ
           </Label>
+          <div className="col-span-3">
           <Input
             id="position"
             name="position"
             value={model?.position}
             onChange={handleInputChange}
-            className="col-span-3"
+            className={errors.position ? "border-red-500" : ""}
           />
+          {errors.position && <p className="text-red-500 text-sm mt-1">{errors.position}</p>}
+          </div>
 
           <Label
             htmlFor="major"
@@ -226,7 +265,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           <select
             id="major"
             name="major"
-            defaultValue={model?.major || ""}
+            defaultValue={model?.major || "math"}
             value={model?.major}
             onChange={handleInputChange}
             className="col-span-3 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
@@ -252,14 +291,17 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           >
             Bắt đầu làm việc
           </Label>
+          <div className="col-span-3">
           <Input
             id="workSince"
             type="date"
             name="workSince"
-            className="col-span-3"
+            className={errors.workSince ? "border-red-500" : ""}
             onChange={handleInputChange}
             value={model?.workSince}
           />
+          {errors.workSince && <p className="text-red-500 text-sm mt-1">{errors.workSince}</p>}
+          </div>
 
           <Label
             htmlFor="workUntil"

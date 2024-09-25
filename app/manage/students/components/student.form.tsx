@@ -18,6 +18,7 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [model, setModel] = useState<Student>(defaultValue);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     if (student) {
@@ -28,6 +29,7 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
       setModel(defaultValue); // Đặt các giá trị mặc định
     }
     setUploadedImage(null);
+    setErrors({});
   }, [student]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,9 +53,41 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
       ...prevModel,
       [name]: value,
     }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!model.name.trim()) newErrors.name = "Họ và tên không được để trống";
+    if (!model.email?.trim()) newErrors.email = "Email không được để trống";
+    if (!model.phone?.trim()) newErrors.phone = "Số điện thoại không được để trống";
+    if (!model.schoolYear?.trim()) newErrors.schoolYear = "Niên khóa không được để trống";
+    if (!model.major?.trim()) newErrors.major = "Môn chuyên không được để trống";
+    if (!model.dob?.trim()) newErrors.dob = "Ngày sinh không được để trống";
+
+    // Add more validation rules as needed
+    if (model.email && !/\S+@\S+\.\S+/.test(model.email)) {
+      newErrors.email = "Email không hợp lệ";
+    }
+    if (model.phone && !/^\d{10,11}$/.test(model.phone)) {
+      newErrors.phone = "Số điện thoại không hợp lệ (cần 10-11 số)";
+    }
+    if (model.schoolYear && (!/^\d{1,3}$/.test(model.schoolYear) || Number(model.schoolYear) < 0 || Number(model.schoolYear) > 100)) {
+      newErrors.schoolYear = "Năm học không hợp lệ, phải là số tương ứng với khóa (Ví dụ: 28)";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSave = async () => {
+    if (!validateForm()) {
+      console.log("Form validation failed");
+      return;
+    }
     try {
       if (isEdit) {
         await StudentService.Update(model.id, model);
@@ -103,12 +137,17 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
           >
             Họ và tên
           </Label>
-          <Input
-            name="name"
-            value={model?.name || ""}
-            onChange={handleInputChange}
-            className="col-span-3"
-          />
+          <div className="col-span-3">
+            <Input
+              id="name"
+              name="name"
+              value={model.name || ""}
+              onChange={handleInputChange}
+              className={errors.name ? "border-red-500" : ""}
+            />
+            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+          </div>
+
           <Label
             htmlFor="gender"
             className="text-right col-span-1"
@@ -155,24 +194,32 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
           >
             Email
           </Label>
-          <Input
-            name="email"
-            value={model?.email || ""}
-            onChange={handleInputChange}
-            className="col-span-3"
-          />
+          <div className="col-span-3">
+            <Input
+              id="email"
+              name="email"
+              value={model.email || ""}
+              onChange={handleInputChange}
+              className={errors.email ? "border-red-500" : ""}
+            />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+          </div>
           <Label
             htmlFor="phone"
             className="text-right col-span-1"
           >
             Số điện thoại
           </Label>
-          <Input
-            name="phone"
-            value={model?.phone || ""}
-            onChange={handleInputChange}
-            className="col-span-3"
-          />
+          <div className="col-span-3">
+            <Input
+              id="phone"
+              name="phone"
+              value={model.phone || ""}
+              onChange={handleInputChange}
+              className={errors.phone ? "border-red-500" : ""}
+            />
+            {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+          </div>
           <Label
             htmlFor="major"
             className="text-right col-span-1"
@@ -203,25 +250,32 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
           >
             Ngày sinh
           </Label>
+          <div className="col-span-3">
           <Input
-            name="dob"
+            id="dob"
             type="date"
-            value={model?.dob || ""}
+            name="dob"
+            className={errors.dob ? "border-red-500" : ""}
             onChange={handleInputChange}
-            className="col-span-3"
+            value={model?.dob}
           />
+          {errors.dob && <p className="text-red-500 text-sm mt-1">{errors.dob}</p>}
+          </div>
           <Label
             htmlFor="schoolYear"
             className="text-right col-span-1"
           >
             Niên khoá
           </Label>
+          <div className="col-span-3">
           <Input
             name="schoolYear"
             value={model?.schoolYear || ""}
             onChange={handleInputChange}
             className="col-span-3"
           />
+          {errors.schoolYear && <p className="text-red-500 text-sm mt-1">{errors.schoolYear}</p>}
+          </div>
           <Label
             htmlFor="achievements"
             className="text-right col-span-1"
