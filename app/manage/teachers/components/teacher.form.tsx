@@ -83,7 +83,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
         aria-describedby="dialog"
       >
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Chỉnh sửa thông tin" : "Thêm sinh viên mới"}</DialogTitle>
+          <DialogTitle>{isEdit ? "Chỉnh sửa thông tin" : "Thêm giáo viên mới"}</DialogTitle>
         </DialogHeader>
         <div className="grid grid-cols-4 gap-4 py-4 items-center">
           <div className="flex justify-center mb-4 col-span-4">

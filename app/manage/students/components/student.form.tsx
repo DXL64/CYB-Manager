@@ -74,7 +74,7 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
         aria-describedby="dialog"
       >
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Chỉnh sửa thông tin" : "Thêm sinh viên mới"}</DialogTitle>
+          <DialogTitle>{isEdit ? "Chỉnh sửa thông tin" : "Thêm học sinh mới"}</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4 items-center">
           <div className="flex justify-center mb-4 col-span-4">

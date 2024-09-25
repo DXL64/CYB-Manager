@@ -7,23 +7,23 @@ import { Button } from "./ui/button";
 
 const navItem = [
   {
-    name: "Overview",
+    name: "Tổng quan",
     href: "",
     icon: <BarChart2 className="size-4" />,
   },
   {
-    name: "Teacher",
+    name: "Giáo viên",
     href: "/teachers",
     icon: <Database className="size-4" />,
   },
   {
-    name: "Student",
+    name: "Học sinh",
     href: "/students",
     icon: <PersonStanding className="size-4" />,
   },
   {
-    name: "Settings",
-    href: "/settings",
+    name: "Cài đặt",
+    href: "",
     icon: <Settings className="size-4" />,
   },
 ];
