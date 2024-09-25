@@ -25,6 +25,11 @@ const majorMap:Record<string, string> = {
   unknown: "Chất lượng cao"
 };
 
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB'); // Formats as DD/MM/YYYY
+}
+
 interface StudentListProps {
   students: Student[];
   searchTerm: string;
@@ -106,7 +111,7 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
               </TableCell>
               <TableCell>{student.name}</TableCell>
               <TableCell>{student.email}</TableCell>
-              <TableCell>{student.dob}</TableCell>
+              <TableCell>{student?.dob ? formatDate(student.dob) : "N/A"}</TableCell>
               <TableCell>{student.phone}</TableCell>
               <TableCell>{student.schoolYear}</TableCell>
               <TableCell>{student.major ? majorMap[student.major] || student.major : "N/A"}</TableCell>

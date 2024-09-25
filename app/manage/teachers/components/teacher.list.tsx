@@ -1,7 +1,7 @@
 // components/StudentList.tsx
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { EyeIcon, Edit, Plus, Eye, ImageIcon } from "lucide-react";
+import { EyeIcon, Edit, Plus, ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { Dialog } from "@/components/ui/dialog";
@@ -26,6 +26,11 @@ const majorMap: Record<string, string> = {
   excercise: "Thể dục",
   gdcd: "GDCD"
 };
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB'); // Formats as DD/MM/YYYY
+}
 
 interface TeacherListProps {
   teachers: Teacher[];
@@ -109,13 +114,13 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
                 }
               </TableCell>
               <TableCell>{teacher?.name}</TableCell>
-              <TableCell>{teacher?.dob}</TableCell>
+              <TableCell>{teacher?.dob ? formatDate(teacher.dob) : "N/A"}</TableCell>
               <TableCell>{teacher?.email}</TableCell>
               <TableCell>{teacher?.phone}</TableCell>
               <TableCell>{teacher?.position}</TableCell>
               <TableCell>{teacher.major ? majorMap[teacher.major] || teacher.major : "N/A"}</TableCell>
-              <TableCell>{teacher?.workSince}</TableCell>
-              <TableCell>{teacher?.workUntil}</TableCell>
+              <TableCell>{teacher?.workSince ? formatDate(teacher.workSince) : "N/A"}</TableCell>
+              <TableCell>{teacher?.workUntil ? formatDate(teacher.workUntil) : "Đến nay"}</TableCell>
               <TableCell>
                 <div className="flex items-center space-x-2">
                   <Button variant="ghost" size="icon" onClick={() => handleView(teacher)}>
