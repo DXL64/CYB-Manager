@@ -16,18 +16,18 @@ export type Student = {
 };
 
 export const defaultValue: Student = {
-  id: '',
-  name: '',
-  email: '',
-  phone: '',
-  imgSrc: '',
-  schoolYear: '',
-  major: '',
-  dob: '',
-  studySince: '',
-  studyUntil: '',
-  gender: 'male',
+  id: "",
+  name: "",
+  email: "",
+  phone: "",
+  imgSrc: "",
+  schoolYear: "",
+  major: "math",
+  dob: "",
+  studySince: "",
+  studyUntil: "",
+  gender: "male",
   active: false,
-  achievements: '',
+  achievements: "",
   file: undefined
 }
