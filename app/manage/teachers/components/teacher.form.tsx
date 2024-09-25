@@ -46,10 +46,19 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setModel({
-      ...model,
-      [e.target.id]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setModel((prevModel) => ({
+      ...prevModel,
+      [name]: value,
+    }));
+  };
+
+  const validateForm = () => {
+    if (!model.name || !model.email || !model.phone) {
+      alert("Vui lòng điền đầy đủ các trường bắt buộc.");
+      return false;
+    }
+    return true;
   };
 
   const handleSave = async () => {
@@ -97,23 +106,25 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             onChange={handleImageUpload}
             className="col-span-3"
           />
+
           <Label
-            htmlFor="fullName"
+            htmlFor="name"
             className="text-right col-span-1"
           >
-            Họ và tên
+            Họ và tên <span className="text-red-500">*</span>
           </Label>
           <Input
             id="name"
+            name="name"
             value={model?.name || ""}
             onChange={handleInputChange}
             className="col-span-3"
           />
+
           <Label
             htmlFor="gender"
             className="text-right col-span-1"
           >
-            {" "}
             Giới tính
           </Label>
           <div className="flex items-center gap-3 col-span-3">
@@ -132,7 +143,6 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             >
               Nam
             </Label>
-
             <Input
               id="female"
               type="radio"
@@ -149,6 +159,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
               Nữ
             </Label>
           </div>
+
           <Label
             htmlFor="dob"
             className="text-right col-span-1"
@@ -158,34 +169,40 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           <Input
             id="dob"
             type="date"
+            name="dob"
             className="col-span-3"
             onChange={handleInputChange}
             value={model?.dob}
           />
+
           <Label
             htmlFor="email"
             className="text-right col-span-1"
           >
-            Email
+            Email <span className="text-red-500">*</span>
           </Label>
           <Input
             id="email"
-            className="col-span-3"
+            name="email"
             value={model?.email}
             onChange={handleInputChange}
+            className="col-span-3"
           />
+
           <Label
             htmlFor="phone"
             className="text-right col-span-1"
           >
-            Số điện thoại
+            Số điện thoại <span className="text-red-500">*</span>
           </Label>
           <Input
             id="phone"
+            name="phone"
             value={model?.phone}
             onChange={handleInputChange}
             className="col-span-3"
           />
+
           <Label
             htmlFor="position"
             className="text-right col-span-1"
@@ -194,10 +211,12 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           </Label>
           <Input
             id="position"
+            name="position"
             value={model?.position}
             onChange={handleInputChange}
             className="col-span-3"
           />
+
           <Label
             htmlFor="major"
             className="text-right col-span-1"
@@ -206,12 +225,11 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           </Label>
           <select
             id="major"
+            name="major"
             defaultValue={model?.major || ""}
             value={model?.major}
             onChange={handleInputChange}
-            className={
-              "col-span-3 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-            }
+            className="col-span-3 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           >
             <option value="math">Toán</option>
             <option value="information">Tin học</option>
@@ -223,11 +241,11 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             <option value="chinese">Trung</option>
             <option value="physics">Vật lý</option>
             <option value="chemistry">Hoá học</option>
-            <option value="unknown">Công nghệ</option>
-            <option value="unknown">Thể dục</option>
-            <option value="unknown">GDCD</option>
-            <option value="unknown">Công nghệ</option>
+            <option value="technology">Công nghệ</option>
+            <option value="physical">Thể dục</option>
+            <option value="gdcd">GDCD</option>
           </select>
+
           <Label
             htmlFor="workSince"
             className="text-right col-span-1"
@@ -237,10 +255,12 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           <Input
             id="workSince"
             type="date"
+            name="workSince"
             className="col-span-3"
             onChange={handleInputChange}
             value={model?.workSince}
           />
+
           <Label
             htmlFor="workUntil"
             className="text-right col-span-1"
@@ -250,10 +270,12 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           <Input
             id="workUntil"
             type="date"
+            name="workUntil"
             className="col-span-3"
             value={model?.workUntil}
             onChange={handleInputChange}
           />
+
           <Label
             htmlFor="achievements"
             className="text-right col-span-1"
@@ -262,6 +284,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           </Label>
           <Textarea
             id="achievements"
+            name="achievements"
             rows={4}
             onChange={handleInputChange}
             value={model?.achievements}
@@ -278,7 +301,6 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           <Button
             type="submit"
             onClick={handleSave}
-            form="student-form"
           >
             Lưu
           </Button>
