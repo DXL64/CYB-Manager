@@ -4,9 +4,23 @@ import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { Student } from "@/models/student.model";
 
+const majorMap: Record<string, string> = {
+  math: "Toán",
+  information: "Toán Tin",
+  literature: "Văn",
+  english: "Anh",
+  biology: "Sinh học",
+  history: "Lịch sử",
+  geography: "Địa lý",
+  chinese: "Trung",
+  physics: "Vật lý",
+  chemistry: "Hoá học",
+  unknown: "Chất lượng cao",
+};
+
 interface StudentViewProps {
   student: Student | null;
-  onClose: () => void
+  onClose: () => void;
 }
 
 export default function StudentView({ student, onClose }: StudentViewProps) {
@@ -17,7 +31,11 @@ export default function StudentView({ student, onClose }: StudentViewProps) {
       </DialogHeader>
       <div className="grid gap-4 py-4">
         <div className="flex justify-center mb-4">
-          <Avatar src={`http://localhost:9000/images/${student?.imgSrc}` || ""} alt={student?.name || "Student avatar"} size="lg" />
+          <Avatar
+            src={`http://localhost:9000/images/${student?.imgSrc}` || ""}
+            alt={student?.name || "Student avatar"}
+            size="lg"
+          />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Họ và tên:</div>
@@ -41,7 +59,7 @@ export default function StudentView({ student, onClose }: StudentViewProps) {
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Môn chuyên:</div>
-          <div className="col-span-3">{student?.major}</div>
+          <div className="col-span-3">{student?.major ? majorMap[student.major] || student.major : "N/A"}</div>
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Thành tích:</div>
@@ -49,7 +67,12 @@ export default function StudentView({ student, onClose }: StudentViewProps) {
         </div>
       </div>
       <DialogFooter>
-        <Button type="button" onClick={onClose}>Đóng</Button>
+        <Button
+          type="button"
+          onClick={onClose}
+        >
+          Đóng
+        </Button>
       </DialogFooter>
     </DialogContent>
   );

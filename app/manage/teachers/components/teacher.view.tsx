@@ -4,6 +4,22 @@ import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { Teacher } from "@/models/teacher.model";
 
+const majorMap: Record<string, string> = {
+  math: "Toán",
+  information: "Tin học",
+  literature: "Văn",
+  english: "Anh",
+  biology: "Sinh học",
+  history: "Lịch sử",
+  geography: "Địa lý",
+  chinese: "Trung",
+  physics: "Vật lý",
+  chemistry: "Hoá học",
+  technology: "Công nghệ",
+  excercise: "Thể dục",
+  gdcd: "GDCD"
+};
+
 interface TeacherViewProps {
   teacher: Teacher | null;
   onClose: () => void;
@@ -49,7 +65,7 @@ export default function TeacherView({ teacher, onClose }: TeacherViewProps) {
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Môn chuyên:</div>
-          <div className="col-span-3">{teacher?.major}</div>
+          <div className="col-span-3">{teacher?.major ? majorMap[teacher.major] || teacher.major : "N/A"}</div>
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Bắt đầu làm việc:</div>

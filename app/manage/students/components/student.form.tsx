@@ -195,7 +195,7 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
             <option value="chinese">Trung</option>
             <option value="physics">Vật lý</option>
             <option value="chemistry">Hoá học</option>
-            <option value="unknown">Không biết</option>
+            <option value="unknown">Chất lượng cao</option>
           </select>
           <Label
             htmlFor="dob"
