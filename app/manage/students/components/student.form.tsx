@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { defaultValue, Student } from "@/models/student.model";
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { StudentService } from "@/composables/services";
+import config from "@/config/config";
 
 interface StudentFormProps {
   student: Student | null;
@@ -54,7 +55,7 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
       [name]: value,
     }));
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -113,7 +114,7 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
         <div className="grid gap-4 py-4 items-center">
           <div className="flex justify-center mb-4 col-span-4">
             <Avatar
-              src={uploadedImage || `http://localhost:9000/images/${model?.imgSrc}`}
+              src={uploadedImage || `${config.minio.end_point}/images/${model?.imgSrc}`}
               alt={model?.name || "User avatar"}
               size="lg"
             />
@@ -251,15 +252,15 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
             Ngày sinh
           </Label>
           <div className="col-span-3">
-          <Input
-            id="dob"
-            type="date"
-            name="dob"
-            className={errors.dob ? "border-red-500" : ""}
-            onChange={handleInputChange}
-            value={model?.dob}
-          />
-          {errors.dob && <p className="text-red-500 text-sm mt-1">{errors.dob}</p>}
+            <Input
+              id="dob"
+              type="date"
+              name="dob"
+              className={errors.dob ? "border-red-500" : ""}
+              onChange={handleInputChange}
+              value={model?.dob}
+            />
+            {errors.dob && <p className="text-red-500 text-sm mt-1">{errors.dob}</p>}
           </div>
           <Label
             htmlFor="schoolYear"
@@ -268,13 +269,13 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
             Niên khoá
           </Label>
           <div className="col-span-3">
-          <Input
-            name="schoolYear"
-            value={model?.schoolYear || ""}
-            onChange={handleInputChange}
-            className="col-span-3"
-          />
-          {errors.schoolYear && <p className="text-red-500 text-sm mt-1">{errors.schoolYear}</p>}
+            <Input
+              name="schoolYear"
+              value={model?.schoolYear || ""}
+              onChange={handleInputChange}
+              className="col-span-3"
+            />
+            {errors.schoolYear && <p className="text-red-500 text-sm mt-1">{errors.schoolYear}</p>}
           </div>
           <Label
             htmlFor="achievements"

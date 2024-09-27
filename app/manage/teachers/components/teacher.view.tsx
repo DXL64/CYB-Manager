@@ -3,6 +3,7 @@ import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/compon
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { Teacher } from "@/models/teacher.model";
+import config from "@/config/config";
 
 const majorMap: Record<string, string> = {
   math: "Toán",
@@ -17,7 +18,7 @@ const majorMap: Record<string, string> = {
   chemistry: "Hoá học",
   technology: "Công nghệ",
   excercise: "Thể dục",
-  gdcd: "GDCD"
+  gdcd: "GDCD",
 };
 
 interface TeacherViewProps {
@@ -34,7 +35,7 @@ export default function TeacherView({ teacher, onClose }: TeacherViewProps) {
       <div className="grid gap-4 py-4">
         <div className="flex justify-center mb-4">
           <Avatar
-            src={`http://localhost:9000/images/${teacher?.imgSrc}` || ""}
+            src={`${config.minio.end_point}/images/${teacher?.imgSrc}` || ""}
             alt={teacher?.name || "Student avatar"}
             size="lg"
           />

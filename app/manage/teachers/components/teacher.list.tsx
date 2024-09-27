@@ -24,12 +24,12 @@ const majorMap: Record<string, string> = {
   chemistry: "Hoá học",
   technology: "Công nghệ",
   excercise: "Thể dục",
-  gdcd: "GDCD"
+  gdcd: "GDCD",
 };
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
-  return date.toLocaleDateString('en-GB'); // Formats as DD/MM/YYYY
+  return date.toLocaleDateString("en-GB"); // Formats as DD/MM/YYYY
 }
 
 interface TeacherListProps {
@@ -45,9 +45,7 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
   const [editingModel, setEditing] = useState<Teacher | null>(null);
   const [viewModel, setView] = useState<Teacher | null>(null);
 
-  const filtered = teachers.filter(teacher =>
-    teacher.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filtered = teachers.filter((teacher) => teacher.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const handleEdit = (teacher: Teacher) => {
     setEditing(teacher);
@@ -63,13 +61,31 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
     <>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Giáo viên</h2>
-        <Dialog open={isNewModalOpen} onOpenChange={setIsNewModalOpen}>
-          <TeacherForm teacher={editingModel} onClose={() => setIsNewModalOpen(false)} fetch={fetch} />
+        <Dialog
+          open={isNewModalOpen}
+          onOpenChange={setIsNewModalOpen}
+        >
+          <TeacherForm
+            teacher={editingModel}
+            onClose={() => setIsNewModalOpen(false)}
+            fetch={fetch}
+          />
         </Dialog>
-        <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-          <TeacherView teacher={viewModel} onClose={() => setIsViewModalOpen(false)} />
+        <Dialog
+          open={isViewModalOpen}
+          onOpenChange={setIsViewModalOpen}
+        >
+          <TeacherView
+            teacher={viewModel}
+            onClose={() => setIsViewModalOpen(false)}
+          />
         </Dialog>
-        <Button onClick={() => { setEditing(null); setIsNewModalOpen(true); }}>
+        <Button
+          onClick={() => {
+            setEditing(null);
+            setIsNewModalOpen(true);
+          }}
+        >
           <Plus className="mr-2 h-4 w-4" />
           Thêm thông tin
         </Button>
@@ -101,17 +117,17 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
           {filtered.map((teacher) => (
             <TableRow key={teacher.id}>
               <TableCell>
-                {
-                  teacher.imgSrc ?
-                    <Image
-                      src={`http://${config.minio.end_point}:9000/images/${teacher.imgSrc}`}
-                      alt="img"
-                      className="size-10 rounded-full"
-                      width={64}
-                      height={64}
-                    /> :
-                    <ImageIcon className="h-8 w-8 rounded-full" />
-                }
+                {teacher.imgSrc ? (
+                  <Image
+                    src={`${config.minio.end_point}/images/${teacher.imgSrc}`}
+                    alt="img"
+                    className="size-10 rounded-full"
+                    width={64}
+                    height={64}
+                  />
+                ) : (
+                  <ImageIcon className="h-8 w-8 rounded-full" />
+                )}
               </TableCell>
               <TableCell>{teacher?.name}</TableCell>
               <TableCell>{teacher?.dob ? formatDate(teacher.dob) : "N/A"}</TableCell>
@@ -123,10 +139,18 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
               <TableCell>{teacher?.workUntil ? formatDate(teacher.workUntil) : "Đến nay"}</TableCell>
               <TableCell>
                 <div className="flex items-center space-x-2">
-                  <Button variant="ghost" size="icon" onClick={() => handleView(teacher)}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleView(teacher)}
+                  >
                     <EyeIcon className="h-4 w-4" />
                   </Button>
-                  <Button variant="ghost" size="icon" onClick={() => handleEdit(teacher)}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleEdit(teacher)}
+                  >
                     <Edit className="h-4 w-4" />
                   </Button>
                 </div>

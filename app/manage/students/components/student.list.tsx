@@ -11,7 +11,7 @@ import StudentView from "./student.view";
 import { Input } from "@/components/ui/input";
 import config from "@/config/config";
 
-const majorMap:Record<string, string> = {
+const majorMap: Record<string, string> = {
   math: "Toán",
   information: "Toán Tin",
   literature: "Văn",
@@ -22,12 +22,12 @@ const majorMap:Record<string, string> = {
   chinese: "Trung",
   physics: "Vật lý",
   chemistry: "Hoá học",
-  unknown: "Chất lượng cao"
+  unknown: "Chất lượng cao",
 };
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
-  return date.toLocaleDateString('en-GB'); // Formats as DD/MM/YYYY
+  return date.toLocaleDateString("en-GB"); // Formats as DD/MM/YYYY
 }
 
 interface StudentListProps {
@@ -43,9 +43,7 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
   const [editingModel, setEditing] = useState<Student | null>(null);
   const [viewModel, setView] = useState<Student | null>(null);
 
-  const filteredStudents = students.filter(student =>
-    student.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredStudents = students.filter((student) => student.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const handleEditStudent = (student: Student) => {
     setEditing(student);
@@ -61,13 +59,31 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
     <>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Học sinh</h2>
-        <Dialog open={isNewModalOpen} onOpenChange={setIsNewModalOpen}>
-          <StudentForm student={editingModel} onClose={() => setIsNewModalOpen(false)} fetch={fetch} />
+        <Dialog
+          open={isNewModalOpen}
+          onOpenChange={setIsNewModalOpen}
+        >
+          <StudentForm
+            student={editingModel}
+            onClose={() => setIsNewModalOpen(false)}
+            fetch={fetch}
+          />
         </Dialog>
-        <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-          <StudentView student={viewModel} onClose={() => setIsViewModalOpen(false)} />
+        <Dialog
+          open={isViewModalOpen}
+          onOpenChange={setIsViewModalOpen}
+        >
+          <StudentView
+            student={viewModel}
+            onClose={() => setIsViewModalOpen(false)}
+          />
         </Dialog>
-        <Button onClick={() => { setEditing(null); setIsNewModalOpen(true); }}>
+        <Button
+          onClick={() => {
+            setEditing(null);
+            setIsNewModalOpen(true);
+          }}
+        >
           <Plus className="mr-2 h-4 w-4" />
           Thêm thông tin
         </Button>
@@ -99,7 +115,7 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
               <TableCell>
                 {student.imgSrc ? (
                   <Image
-                    src={`http://${config.minio.end_point}:9000/images/${student.imgSrc}`}
+                    src={`${config.minio.end_point}/images/${student.imgSrc}`}
                     alt="img"
                     className="size-10 rounded-full"
                     width={64}
@@ -117,10 +133,18 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
               <TableCell>{student.major ? majorMap[student.major] || student.major : "N/A"}</TableCell>
               <TableCell>
                 <div className="flex items-center space-x-2">
-                  <Button variant="ghost" size="icon" onClick={() => handleViewStudent(student)}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleViewStudent(student)}
+                  >
                     <EyeIcon className="h-4 w-4" />
                   </Button>
-                  <Button variant="ghost" size="icon" onClick={() => handleEditStudent(student)}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleEditStudent(student)}
+                  >
                     <Edit className="h-4 w-4" />
                   </Button>
                 </div>

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { defaultValue, Teacher } from "@/models/teacher.model";
 import { TeacherService } from "@/composables/services";
+import config from "@/config/config";
 
 interface TeacherFormProps {
   teacher: Teacher | null;
@@ -54,7 +55,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
       [name]: value,
     }));
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -112,7 +113,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
         <div className="grid grid-cols-4 gap-4 py-4 items-center">
           <div className="flex justify-center mb-4 col-span-4">
             <Avatar
-              src={uploadedImage || `http://localhost:9000/images/${model?.imgSrc}`}
+              src={uploadedImage || `${config.minio.end_point}/images/${model?.imgSrc}`}
               alt={model?.name || "User avatar"}
               size="lg"
             />
@@ -194,15 +195,15 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             Ngày sinh
           </Label>
           <div className="col-span-3">
-          <Input
-            id="dob"
-            type="date"
-            name="dob"
-            className={errors.dob ? "border-red-500" : ""}
-            onChange={handleInputChange}
-            value={model?.dob}
-          />
-          {errors.dob && <p className="text-red-500 text-sm mt-1">{errors.dob}</p>}
+            <Input
+              id="dob"
+              type="date"
+              name="dob"
+              className={errors.dob ? "border-red-500" : ""}
+              onChange={handleInputChange}
+              value={model?.dob}
+            />
+            {errors.dob && <p className="text-red-500 text-sm mt-1">{errors.dob}</p>}
           </div>
 
           <Label
@@ -246,14 +247,14 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             Chức vụ
           </Label>
           <div className="col-span-3">
-          <Input
-            id="position"
-            name="position"
-            value={model?.position}
-            onChange={handleInputChange}
-            className={errors.position ? "border-red-500" : ""}
-          />
-          {errors.position && <p className="text-red-500 text-sm mt-1">{errors.position}</p>}
+            <Input
+              id="position"
+              name="position"
+              value={model?.position}
+              onChange={handleInputChange}
+              className={errors.position ? "border-red-500" : ""}
+            />
+            {errors.position && <p className="text-red-500 text-sm mt-1">{errors.position}</p>}
           </div>
 
           <Label
@@ -292,15 +293,15 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             Bắt đầu làm việc
           </Label>
           <div className="col-span-3">
-          <Input
-            id="workSince"
-            type="date"
-            name="workSince"
-            className={errors.workSince ? "border-red-500" : ""}
-            onChange={handleInputChange}
-            value={model?.workSince}
-          />
-          {errors.workSince && <p className="text-red-500 text-sm mt-1">{errors.workSince}</p>}
+            <Input
+              id="workSince"
+              type="date"
+              name="workSince"
+              className={errors.workSince ? "border-red-500" : ""}
+              onChange={handleInputChange}
+              value={model?.workSince}
+            />
+            {errors.workSince && <p className="text-red-500 text-sm mt-1">{errors.workSince}</p>}
           </div>
 
           <Label
