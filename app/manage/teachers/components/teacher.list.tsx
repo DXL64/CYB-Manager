@@ -119,7 +119,7 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
               <TableCell>
                 {teacher.imgSrc ? (
                   <Image
-                    src={`${config.minio.end_point}/images/${teacher.imgSrc}`}
+                    src={`${config.minio.end_point}/${config.minio.bucket_name}/${teacher.imgSrc}`}
                     alt="img"
                     className="size-10 rounded-full"
                     width={64}

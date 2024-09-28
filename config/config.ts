@@ -7,14 +7,11 @@ console.log(process.env)
 // Define the type for the config object
 interface MinioConfig {
   end_point: string;
-  port: number;
-  useSSL: boolean;
   bucket_name: string;
 }
 
 interface BackendConfig {
   end_point: string;
-  port: string;
 }
 
 interface Config {
@@ -25,14 +22,11 @@ interface Config {
 // Convert environment variables and set default values with proper types
 const config: Config = {
   minio: {
-    end_point: process.env.NEXT_PUBLIC_MINIO_ENDPOINT ?? "localhost",
-    port: Number(process.env.MINIO_PORT) ?? 9000,
-    useSSL: process.env.MINIO_USE_SSL === 'true' ? true : false,
-    bucket_name: process.env.MINIO_BUCKET_NAME ?? "",
+    end_point: process.env.NEXT_PUBLIC_MINIO_ENDPOINT ?? "http://localhost:9000",
+    bucket_name: process.env.NEXT_PUBLIC_MINIO_BUCKET_NAME ?? "images",
   },
   backend: {
-    end_point: process.env.BACKEND_API_ENDPOINT ?? `localhost`,
-    port: process.env.BACKEND_API_PORT ?? `8000`
+    end_point: process.env.NEXT_PUBLIC_BACKEND_API_ENDPOINT ?? `http://localhost:8000`,
   }
 }
 

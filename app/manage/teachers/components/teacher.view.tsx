@@ -35,7 +35,7 @@ export default function TeacherView({ teacher, onClose }: TeacherViewProps) {
       <div className="grid gap-4 py-4">
         <div className="flex justify-center mb-4">
           <Avatar
-            src={`${config.minio.end_point}/images/${teacher?.imgSrc}` || ""}
+            src={`${config.minio.end_point}/${config.minio.bucket_name}/${teacher?.imgSrc}`}
             alt={teacher?.name || "Student avatar"}
             size="lg"
           />

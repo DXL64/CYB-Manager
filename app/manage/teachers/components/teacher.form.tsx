@@ -113,7 +113,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
         <div className="grid grid-cols-4 gap-4 py-4 items-center">
           <div className="flex justify-center mb-4 col-span-4">
             <Avatar
-              src={uploadedImage || `${config.minio.end_point}/images/${model?.imgSrc}`}
+              src={uploadedImage || `${config.minio.end_point}/${config.minio.bucket_name}/${model?.imgSrc}`}
               alt={model?.name || "User avatar"}
               size="lg"
             />

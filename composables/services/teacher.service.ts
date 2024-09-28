@@ -4,12 +4,16 @@ import axiosClient from "../axios.client";
 import { stringify } from "querystring";
 import config from "@/config/config";
 
-const baseUrl = `http://${config.backend.end_point}:${config.backend.port}/v1`
+const baseUrl = `${config.backend.end_point}/v1`
 
 const TeacherService: IBaseService<Teacher> = {
     List: async (query?: {}): Promise<ResponseModel<Teacher>> => {
-        const queryString = stringify(query);
-        const result = await axiosClient.get(`${baseUrl}/teachers?${queryString}`);
+        let path = `${baseUrl}/teachers`
+        if (query) {
+            const queryString = stringify(query);
+            path = `${baseUrl}/teachers?${queryString}`
+        }
+        const result = await axiosClient.get(path);
         return result.data;
     },
     Get: async (id: string): Promise<Teacher> => {
