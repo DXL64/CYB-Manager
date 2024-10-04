@@ -20,9 +20,9 @@ const TeachersTable = () => {
   }, [setTeachers])
 
   return (
-    <div>
+    <>
       <TeacherList teachers={teachers} searchTerm={searchTerm} setSearchTerm={setSearchTerm} fetch={fetch} />
-    </div>
+    </>
   );
 };
 
