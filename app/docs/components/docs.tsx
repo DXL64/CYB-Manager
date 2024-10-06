@@ -39,7 +39,7 @@ export default function GuidePage() {
               </ul>
               <p style={{fontWeight: 'bold'}}>Giáo viên: Tương tự</p>
               <p style={{border: '1px solid black', padding: '15px', backgroundColor: 'rgba(128, 128, 128, 0.5)', borderRadius: '8px'}}>
-                <strong>Lưu ý:</strong> Giáo viện hiện nay vẫn còn tiếp tục làm việc để trống trường "Kết thúc làm việc".
+                <strong>Lưu ý:</strong> Giáo viện hiện nay vẫn còn tiếp tục làm việc để trống trường Kết thúc làm việc.
               </p>
               <p>3. Sau khi điền đầy đủ thông tin, nhấn nút <strong>Lưu</strong> để thêm  mới vào hệ thống.</p>
             </CardContent>
@@ -57,7 +57,7 @@ export default function GuidePage() {
               <p>2. Nhấn vào biểu tượng chỉnh sửa <Button variant="ghost" size="icon"><Pencil className="h-4 w-4" /></Button> bên cạnh thông tin dữ liệu.</p>
               <p>3. Một biểu mẫu chỉnh sửa sẽ xuất hiện với thông tin hiện tại của dữ liệu.</p>
               <p>4. Cập nhật các thông tin cần thiết.</p>
-              <p>5. Nhấn "Lưu" để cập nhật thông tin dữ liệu trong hệ thống.</p>
+              <p>5. Nhấn Lưu để cập nhật thông tin dữ liệu trong hệ thống.</p>
             </CardContent>
           </Card>
         </TabsContent>
@@ -97,7 +97,7 @@ export default function GuidePage() {
               <p>1. Tìm dữ liệu cần xóa trong danh sách.</p>
               <p>2. Nhấn vào biểu tượng xóa <Button variant="ghost" size="icon"><Trash2 className="h-4 w-4" /></Button> bên cạnh thông tin dữ liệu.</p>
               <p>3. Một hộp thoại xác nhận sẽ xuất hiện để đảm bảo bạn không xóa nhầm.</p>
-              <p>4. Nếu chắc chắn muốn xóa, nhấn "Xác nhận" trong hộp thoại.</p>
+              <p>4. Nếu chắc chắn muốn xóa, nhấn Xác nhận trong hộp thoại.</p>
               <p>5. Thông tin dữ liệu sẽ được xóa khỏi hệ thống.</p>
               <p className="font-semibold text-red-500">Lưu ý: Hành động này không thể hoàn tác. Hãy chắc chắn trước khi xóa thông tin dữ liệu.</p>
             </CardContent>

@@ -9,7 +9,7 @@ import { Dialog } from "@/components/ui/dialog";
 import StudentForm from "./student.form";
 import StudentView from "./student.view";
 import { Input } from "@/components/ui/input";
-import config from "@/config/config";
+// import config from "@/config/config";
 
 const majorMap: Record<string, string> = {
   math: "Toán",
@@ -115,7 +115,8 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
               <TableCell>
                 {student.imgSrc ? (
                   <Image
-                    src={`${config.minio.end_point}/images/${student.imgSrc}`}
+                    // src={`${config.minio.end_point}/images/${student.imgSrc}`}
+                    src={`https://minio.loyos.app/images/${student?.imgSrc}`}
                     alt="img"
                     className="size-10 rounded-full"
                     width={64}

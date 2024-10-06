@@ -3,7 +3,7 @@ import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/compon
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { Teacher } from "@/models/teacher.model";
-import config from "@/config/config";
+// import config from "@/config/config";
 
 const majorMap: Record<string, string> = {
   math: "Toán",
@@ -35,7 +35,8 @@ export default function TeacherView({ teacher, onClose }: TeacherViewProps) {
       <div className="grid gap-4 py-4">
         <div className="flex justify-center mb-4">
           <Avatar
-            src={`${config.minio.end_point}/images/${teacher?.imgSrc}` || ""}
+            // src={`${config.minio.end_point}/images/${teacher?.imgSrc}` || ""}
+            src={`https://minio.loyos.app/images/${teacher?.imgSrc}`}
             alt={teacher?.name || "Student avatar"}
             size="lg"
           />

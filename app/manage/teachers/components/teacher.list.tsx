@@ -8,7 +8,7 @@ import { Dialog } from "@/components/ui/dialog";
 import TeacherForm from "./teacher.form";
 import TeacherView from "./teacher.view";
 import { Input } from "@/components/ui/input";
-import config from "@/config/config";
+// import config from "@/config/config";
 import { Teacher } from "@/models/teacher.model";
 
 const majorMap: Record<string, string> = {
@@ -119,7 +119,8 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
               <TableCell>
                 {teacher.imgSrc ? (
                   <Image
-                    src={`${config.minio.end_point}/images/${teacher.imgSrc}`}
+                    // src={`${config.minio.end_point}/images/${teacher?.imgSrc}`}
+                    src={`https://minio.loyos.app/images/${teacher?.imgSrc}`}
                     alt="img"
                     className="size-10 rounded-full"
                     width={64}
