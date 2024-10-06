@@ -103,10 +103,6 @@ const CreatePostDialog = () => {
             // ref={reactQuillRef}
             // className="min-h-64"
             theme="snow"
-            style={{
-              minHeight: "16rem",
-              height: "auto",
-            }}
             placeholder="Start writing..."
             modules={{
               toolbar: {
