@@ -4,14 +4,16 @@ import { stringify } from "querystring";
 import { Student } from "@/models/student.model";
 import config from "@/config/config";
 
-const baseUrl = `http://${config.backend.end_point}:${config.backend.port}/v1`
-
+const baseUrl = `${config.backend.end_point}/v1`
 
 const StudentService: IBaseService<Student> = {
     List: async (query?: {}): Promise<ResponseModel<Student>> => {
-        const queryString = stringify(query);
-        // const result = await axiosClient.get(`https/students?${queryString}`);
-        const result = await axiosClient.get(`https://cyb.loyos.app/api/v1/students?${queryString}`);
+        let path = `${baseUrl}/students`
+        if (query) {
+            const queryString = stringify(query);
+            path = `${baseUrl}/students?${queryString}`
+        }
+        const result = await axiosClient.get(path);
         return result.data;
     },
     Get: async (id: string): Promise<Student> => {

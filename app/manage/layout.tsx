@@ -9,7 +9,7 @@ export default function ManageLayout({
   return (
     <div className="flex gap-6 h-full relative">
       <Sidebar />
-      <div className="bg-white rounded-lg flex-1 p-6">{children}</div>
+      <div className="bg-white rounded-lg flex flex-col p-6 w-full">{children}</div>
     </div>
   );
 }

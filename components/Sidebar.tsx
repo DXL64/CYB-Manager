@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart2, Database, PersonStanding, Settings } from "lucide-react";
+import { BarChart2, BrickWall, Database, PersonStanding, Settings } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
@@ -26,6 +26,11 @@ const navItem = [
     href: "",
     icon: <Settings className="size-4" />,
   },
+  {
+    name: "Tường",
+    href: "/wallpapers",
+    icon: <BrickWall className="size-4" />,
+  }
 ];
 
 const Sidebar = () => {

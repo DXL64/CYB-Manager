@@ -96,64 +96,65 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
           className="max-w-sm"
         />
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Ảnh đại diện</TableHead>
-            <TableHead>Họ và tên</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Ngày sinh</TableHead>
-            <TableHead>Số điện thoại</TableHead>
-            <TableHead>Niên khoá</TableHead>
-            <TableHead>Môn chuyên</TableHead>
-            <TableHead>Hành động</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredStudents.map((student) => (
-            <TableRow key={student.id}>
-              <TableCell>
-                {student.imgSrc ? (
-                  <Image
-                    // src={`${config.minio.end_point}/images/${student.imgSrc}`}
-                    src={`https://minio.loyos.app/images/${student?.imgSrc}`}
-                    alt="img"
-                    className="size-10 rounded-full"
-                    width={64}
-                    height={64}
-                  />
-                ) : (
-                  <span className="size-10 rounded-full bg-zinc-200" />
-                )}
-              </TableCell>
-              <TableCell>{student.name}</TableCell>
-              <TableCell>{student.email}</TableCell>
-              <TableCell>{student?.dob ? formatDate(student.dob) : "N/A"}</TableCell>
-              <TableCell>{student.phone}</TableCell>
-              <TableCell>{student.schoolYear}</TableCell>
-              <TableCell>{student.major ? majorMap[student.major] || student.major : "N/A"}</TableCell>
-              <TableCell>
-                <div className="flex items-center space-x-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleViewStudent(student)}
-                  >
-                    <EyeIcon className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleEditStudent(student)}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                </div>
-              </TableCell>
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Ảnh đại diện</TableHead>
+              <TableHead>Họ và tên</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Ngày sinh</TableHead>
+              <TableHead>Số điện thoại</TableHead>
+              <TableHead>Niên khoá</TableHead>
+              <TableHead>Môn chuyên</TableHead>
+              <TableHead>Hành động</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {filteredStudents.map((student) => (
+              <TableRow key={student.id}>
+                <TableCell>
+                  {student.imgSrc ? (
+                    <Image
+                      src={`${config.minio.end_point}/${config.minio.bucket_name}/${student.imgSrc}`}
+                      alt="img"
+                      className="size-10 rounded-full"
+                      width={64}
+                      height={64}
+                    />
+                  ) : (
+                    <span className="size-10 rounded-full bg-zinc-200" />
+                  )}
+                </TableCell>
+                <TableCell>{student.name}</TableCell>
+                <TableCell>{student.email}</TableCell>
+                <TableCell>{student?.dob ? formatDate(student.dob) : "N/A"}</TableCell>
+                <TableCell>{student.phone}</TableCell>
+                <TableCell>{student.schoolYear}</TableCell>
+                <TableCell>{student.major ? majorMap[student.major] || student.major : "N/A"}</TableCell>
+                <TableCell>
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleViewStudent(student)}
+                    >
+                      <EyeIcon className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleEditStudent(student)}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </>
   );
 }
