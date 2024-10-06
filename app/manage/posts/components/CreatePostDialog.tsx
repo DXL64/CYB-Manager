@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { Input } from "../../../../components/ui/input";
+import { Label } from "../../../../components/ui/label";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -66,22 +67,26 @@ const CreatePostDialog = () => {
           <DialogDescription>Bài viết sẽ được xuất hiện trên trang web Phòng Truyền thống của trường</DialogDescription>
         </DialogHeader>
         <div className="space-y-3">
-          <Input
-            label="Tiêu đề"
-            name="title"
-            placeholder="Tiêu đề..."
-            value={post?.title}
-            onChange={(e) => setPost((prev) => ({ ...prev, title: e.target.value }))}
-          />
-          <Input
-            label="Ảnh xem trước"
-            id="avatar"
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="col-span-3"
-            placeholder="Ảnh xem trước"
-          />
+          <div>
+            <Label>Tiêu đề</Label>
+            <Input
+              name="title"
+              placeholder="Tiêu đề..."
+              value={post?.title}
+              onChange={(e) => setPost((prev) => ({ ...prev, title: e.target.value }))}
+            />
+          </div>
+          <div>
+            <Label>Ảnh xem trước</Label>
+            <Input
+              id="avatar"
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="col-span-3"
+              placeholder="Ảnh xem trước"
+            />
+          </div>
 
           <Select onValueChange={(e) => setPost((prev) => ({ ...prev, category: e }))}>
             <SelectTrigger className="w-full">
