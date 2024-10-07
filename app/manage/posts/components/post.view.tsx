@@ -2,6 +2,7 @@
 import { Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import CategoryOptions from "@/composables/options/category.option"
 import config from "@/config/config"
 import { Post } from "@/models/post.model"
 
@@ -36,7 +37,16 @@ const PostView = ({ post, onClose}: PostViewProps ) => {
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <div className="text-right font-bold">Hạng mục:</div>
-                        <div className="col-span-3">{post?.category}</div>
+                            {post?.category ? (
+                                // Kiểm tra xem post.category có tồn tại không
+                                CategoryOptions
+                                    .filter(category => category.value === post.category) // Lọc danh mục dựa trên giá trị của post.category
+                                    .map(category => (
+                                    <div key={category.value}>{category.label}</div> // Hiển thị label của danh mục
+                                    ))
+                                ) : (
+                                <div>Không có hạng mục nào</div> // Thông báo nếu không có hạng mục
+                            )}
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <div className="text-right font-bold">Nội dung:</div>
