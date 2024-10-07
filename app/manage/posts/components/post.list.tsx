@@ -3,13 +3,14 @@ import { defaultValue, Post } from '@/models/post.model';
 import { Dialog } from '@radix-ui/react-dialog';
 import PostForm from './post.form';
 import Image from "next/image";
-import { Edit, EyeIcon, Plus } from 'lucide-react';
+import { Edit, EyeIcon, Plus, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import config from '@/config/config';
 import { useState } from 'react';
 import PostView from './post.view';
+import { PostService } from '@/composables/services';
 
 interface PostListProps {
     posts: Post[],
@@ -35,6 +36,12 @@ const PostList = ({ posts, searchTerm, setSearchTerm, fetch}: PostListProps) => 
         setView(post);
         setIsViewModalOpen(true);
     };
+
+    const handleDelete = (id: string) => {
+        PostService.Delete(id).then(() => {
+            fetch()
+        })
+    }
 
     return (
         <>
@@ -123,6 +130,14 @@ const PostList = ({ posts, searchTerm, setSearchTerm, fetch}: PostListProps) => 
                                 >
                                     <Edit className="h-4 w-4" />
                                 </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => handleDelete(post.id)}
+                                >
+                                    <Trash className="h-4 w-4" />
+                                </Button>
+
                             </div>
                             </TableCell>
                         </TableRow>

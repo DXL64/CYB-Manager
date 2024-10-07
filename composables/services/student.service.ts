@@ -35,6 +35,10 @@ const StudentService: IBaseService<Student> = {
     const result = await axiosClient.post(`${baseUrl}/students`, formData);
     return result.data;
   },
+  Delete: async (id: string): Promise<object> => {
+    const result = await axiosClient.delete(`${baseUrl}/students/${id}`)
+    return result
+  }
 };
 
 export default StudentService;

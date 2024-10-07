@@ -34,6 +34,9 @@ const TeacherService: IBaseService<Teacher> = {
     const result = await axiosClient.post(`${baseUrl}/teachers`, formData);
     return result.data;
   },
+  Delete: function (id: string): Promise<object> {
+    throw new Error(`${id}: Function not implemented.`);
+  }
 };
 
 export default TeacherService;

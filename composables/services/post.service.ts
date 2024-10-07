@@ -36,6 +36,10 @@ const PostService: IBaseService<Post> = {
     const result = await axiosClient.post(`${baseUrl}/${prefix}`, formData);
     return result.data;
   },
+  Delete: async (id: string): Promise<object> => {
+    const result = await axiosClient.delete(`${baseUrl}/${prefix}/${id}`)
+    return result
+  }
 };
 
 export default PostService;

@@ -47,5 +47,6 @@ export interface IBaseService<T> {
     List: (query?: {}) => Promise<ResponseModel<T>>,
     Get: (id: string) => Promise<T>,
     Update: (id: string, model: T) => Promise<T>,
-    Create: (model: T) => Promise<T>
+    Create: (model: T) => Promise<T>,
+    Delete: (id: string) => Promise<object>
 }
