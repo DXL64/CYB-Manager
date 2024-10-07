@@ -8,29 +8,26 @@ const baseUrl = `${config.backend.end_point}/v1`
 
 const TeacherService: IBaseService<Teacher> = {
     List: async (query?: {}): Promise<ResponseModel<Teacher>> => {
-        let path = `${baseUrl}/teachers`
+        let path = `${baseUrl}/teachers?limit=1000`
         if (query) {
             const queryString = stringify(query);
-            path = `${baseUrl}/teachers?${queryString}`
+            path = `${baseUrl}/teachers?limit=1000&${queryString}`
         }
         const result = await axiosClient.get(path);
         return result.data;
     },
     Get: async (id: string): Promise<Teacher> => {
-        // const result = await axiosClient.get(`${baseUrl}/teachers/${id}`)
-        const result = await axiosClient.get(`https://cyb.loyos.app/api/v1/teachers/${id}`)
+        const result = await axiosClient.get(`${baseUrl}/teachers/${id}`)
         return result.data
     },
     Update: async (id: string, model: Teacher): Promise<Teacher> => {
-        const formData = ObjectToForm(model)
-        // const result = await axiosClient.put(`${baseUrl}/teachers/${id}`, formData)
-        const result = await axiosClient.put(`https://cyb.loyos.app/api/v1/teachers/${id}`, formData)
+        const formData = ObjectToForm(model)    
+        const result = await axiosClient.put(`${baseUrl}/teachers/${id}`, formData)
         return result.data
     },
     Create: async (model: Teacher): Promise<Teacher> => {
         const formData = ObjectToForm(model)
-        // const result = await axiosClient.post(`${baseUrl}/teachers`, formData)
-        const result = await axiosClient.post(`https://cyb.loyos.app/api/v1/teachers`, formData)
+        const result = await axiosClient.post(`${baseUrl}/teachers`, formData)
         return result.data
     }
 }

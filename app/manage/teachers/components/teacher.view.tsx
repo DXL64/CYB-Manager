@@ -3,7 +3,7 @@ import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/compon
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { Teacher } from "@/models/teacher.model";
-// import config from "@/config/config";
+import config from "@/config/config";
 
 const majorMap: Record<string, string> = {
   math: "Toán",
@@ -19,6 +19,7 @@ const majorMap: Record<string, string> = {
   technology: "Công nghệ",
   excercise: "Thể dục",
   gdcd: "GDCD",
+  other: "Khác"
 };
 
 interface TeacherViewProps {
@@ -66,7 +67,7 @@ export default function TeacherView({ teacher, onClose }: TeacherViewProps) {
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Môn chuyên:</div>
-          <div className="col-span-3">{teacher?.major ? majorMap[teacher.major] || teacher.major : "N/A"}</div>
+          <div className="col-span-3">{teacher?.major ? majorMap[teacher.major] || teacher.major : ""}</div>
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Bắt đầu làm việc:</div>

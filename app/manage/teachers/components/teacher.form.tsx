@@ -63,11 +63,11 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
     const newErrors: { [key: string]: string } = {};
 
     if (!model.name.trim()) newErrors.name = "Họ và tên không được để trống";
-    if (!model.email?.trim()) newErrors.email = "Email không được để trống";
-    if (!model.phone?.trim()) newErrors.phone = "Số điện thoại không được để trống";
+    // if (!model.email?.trim()) newErrors.email = "Email không được để trống";
+    // if (!model.phone?.trim()) newErrors.phone = "Số điện thoại không được để trống";
     if (!model.position?.trim()) newErrors.position = "Chức vụ không được để trống";
     if (!model.major?.trim()) newErrors.major = "Môn chuyên không được để trống";
-    if (!model.dob?.trim()) newErrors.dob = "Ngày sinh không được để trống";
+    if (!model.dob?.trim()) newErrors.dob = "Năm sinh không được để trống";
     if (!model.workSince?.trim()) newErrors.workSince = "Ngày bắt đầu làm việc không được để trống";
 
     // Add more validation rules as needed
@@ -192,12 +192,11 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             htmlFor="dob"
             className="text-right col-span-1"
           >
-            Ngày sinh
+            Năm sinh
           </Label>
           <div className="col-span-3">
             <Input
               id="dob"
-              type="date"
               name="dob"
               className={errors.dob ? "border-red-500" : ""}
               onChange={handleInputChange}
@@ -282,8 +281,9 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             <option value="physics">Vật lý</option>
             <option value="chemistry">Hoá học</option>
             <option value="technology">Công nghệ</option>
-            <option value="physical">Thể dục</option>
+            <option value="excercise">Thể dục</option>
             <option value="gdcd">GDCD</option>
+            <option value="other">Khác</option>
           </select>
 
           <Label
@@ -295,7 +295,6 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           <div className="col-span-3">
             <Input
               id="workSince"
-              type="date"
               name="workSince"
               className={errors.workSince ? "border-red-500" : ""}
               onChange={handleInputChange}
@@ -312,7 +311,6 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           </Label>
           <Input
             id="workUntil"
-            type="date"
             name="workUntil"
             className="col-span-3"
             value={model?.workUntil}

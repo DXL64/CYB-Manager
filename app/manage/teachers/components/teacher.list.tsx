@@ -1,14 +1,13 @@
-// components/StudentList.tsx
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { EyeIcon, Edit, Plus, ImageIcon } from "lucide-react";
+import { EyeIcon, Edit, Plus, ImageIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import TeacherForm from "./teacher.form";
 import TeacherView from "./teacher.view";
 import { Input } from "@/components/ui/input";
-// import config from "@/config/config";
+import config from "@/config/config";
 import { Teacher } from "@/models/teacher.model";
 
 const majorMap: Record<string, string> = {
@@ -25,12 +24,8 @@ const majorMap: Record<string, string> = {
   technology: "Công nghệ",
   excercise: "Thể dục",
   gdcd: "GDCD",
+  other: "Khác"
 };
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-GB"); // Formats as DD/MM/YYYY
-}
 
 interface TeacherListProps {
   teachers: Teacher[];
@@ -44,8 +39,18 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [editingModel, setEditing] = useState<Teacher | null>(null);
   const [viewModel, setView] = useState<Teacher | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 1000; // You can adjust this value as needed
 
-  const filtered = teachers.filter((teacher) => teacher.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filtered = useMemo(() => {
+    return teachers.filter((teacher) => teacher.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  }, [teachers, searchTerm]);
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const paginatedTeachers = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filtered.slice(startIndex, startIndex + itemsPerPage);
+  }, [filtered, currentPage]);
 
   const handleEdit = (teacher: Teacher) => {
     setEditing(teacher);
@@ -55,6 +60,14 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
   const handleView = (teacher: Teacher) => {
     setView(teacher);
     setIsViewModalOpen(true);
+  };
+
+  const goToNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
+
+  const goToPreviousPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
 
   return (
@@ -77,7 +90,10 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
         <Input
           placeholder="Tìm kiếm theo tên"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {
+            setSearchTerm(e.target.value)
+            setCurrentPage(1)
+          }}
           className="max-w-sm"
         />
       </div>
@@ -99,7 +115,7 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filtered.map((teacher) => (
+            {paginatedTeachers.map((teacher) => (
               <TableRow key={teacher.id}>
                 <TableCell>
                   {teacher.imgSrc ? (
@@ -115,13 +131,13 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
                   )}
                 </TableCell>
                 <TableCell>{teacher?.name}</TableCell>
-                <TableCell>{teacher?.dob ? formatDate(teacher.dob) : "N/A"}</TableCell>
+                <TableCell>{teacher?.dob ? teacher.dob : ""}</TableCell>
                 <TableCell>{teacher?.email}</TableCell>
                 <TableCell>{teacher?.phone}</TableCell>
                 <TableCell>{teacher?.position}</TableCell>
-                <TableCell>{teacher.major ? majorMap[teacher.major] || teacher.major : "N/A"}</TableCell>
-                <TableCell>{teacher?.workSince ? formatDate(teacher.workSince) : "N/A"}</TableCell>
-                <TableCell>{teacher?.workUntil ? formatDate(teacher.workUntil) : "Đến nay"}</TableCell>
+                <TableCell>{teacher.major ? majorMap[teacher.major] || teacher.major : ""}</TableCell>
+                <TableCell>{teacher?.workSince ? teacher.workSince : ""}</TableCell>
+                <TableCell>{teacher?.workUntil ? teacher.workUntil : "Đến nay"}</TableCell>
                 <TableCell>
                   <div className="flex items-center space-x-2">
                     <Button variant="ghost" size="icon" onClick={() => handleView(teacher)}>
@@ -136,6 +152,35 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
             ))}
           </TableBody>
         </Table>
+      </div>
+      
+      <div className="mt-4 flex items-center justify-between">
+        <div className="text-sm text-gray-500">
+          Hiển thị {paginatedTeachers.length} trong tổng số {filtered.length} giáo viên
+        </div>
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={goToPreviousPage}
+            disabled={currentPage === 1}
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Trang trước
+          </Button>
+          <span className="text-sm font-medium">
+            Trang {currentPage} / {totalPages}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={goToNextPage}
+            disabled={currentPage === totalPages}
+          >
+            Trang sau
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </>
   );
