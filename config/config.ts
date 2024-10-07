@@ -3,8 +3,6 @@ import path from 'path'
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
-console.log(process.env)
-// Define the type for the config object
 interface MinioConfig {
   end_point: string;
   bucket_name: string;

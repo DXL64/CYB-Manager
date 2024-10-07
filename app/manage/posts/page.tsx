@@ -1,11 +1,10 @@
-import CreatePostDialog from "./components/CreatePostDialog";
+// import CreatePostDialog from "./components/CreatePostDialog";
+import PostTable from "./components/post.table";
 
 const PostPage = () => {
   return (
     <div>
-      <div>
-        <CreatePostDialog />
-      </div>
+        <PostTable />
     </div>
   );
 };
