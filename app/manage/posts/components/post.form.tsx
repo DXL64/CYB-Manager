@@ -13,6 +13,7 @@ import dynamic from "next/dynamic";
 // import config from "@/config/config";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Send } from "lucide-react";
+import CategoryOptions from "@/composables/options/category.option";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -22,17 +23,6 @@ interface PostFormProps {
     onClose: () => void;
     fetch: () => void;
 }
-
-type Category = {
-  label: string;
-  value: string;
-};
-
-const categories: Category[] = [
-  { label: "Khánh tiết", value: "khanh_tiet" },
-  { label: "Lưu bút", value: "luu_but" },
-  { label: "Thành tích", value: "thanh_tich" },
-];
 
 const PostForm = ({post, onClose, fetch }: PostFormProps) => {
     // const [uploadedImage, setUploadedImage] = useState<string | null>(null);
@@ -120,7 +110,7 @@ const PostForm = ({post, onClose, fetch }: PostFormProps) => {
                         <SelectValue placeholder="Hạng mục" />
                         </SelectTrigger>
                         <SelectContent>
-                        {categories.map((category) => (
+                        {CategoryOptions.map((category) => (
                             <SelectItem
                                 key={category.value}
                                 value={category.value}
