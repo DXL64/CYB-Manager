@@ -9,15 +9,11 @@ import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { Input } from "../../../../components/ui/input";
 import { Label } from "../../../../components/ui/label";
+import { PostService } from "@/composables/services";
+import { Post, defaultValue } from "@/models/post.model";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
-type Post = {
-  title?: string;
-  imgSrc?: File;
-  content?: string;
-  category?: string;
-};
 
 type Category = {
   label: string;
@@ -31,21 +27,22 @@ const categories: Category[] = [
 ];
 
 const CreatePostDialog = () => {
-  const [post, setPost] = useState<Post>();
+  const [post, setPost] = useState<Post>(defaultValue);
 
-  console.log("post", post);
+  const handleClick = () => {
+    PostService.Create(post).then(data => {
+      console.log(data)
+    })
+  }
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      //   reader.onloadend = () => {
-      //     setUploadedImage(reader.result as string);
-      //   };
       reader.readAsDataURL(file);
       setPost((prev) => ({
         ...prev,
-        imgSrc: file,
+        file: file,
       }));
     }
   };
@@ -147,7 +144,7 @@ const CreatePostDialog = () => {
           />
         </div>
         <DialogFooter>
-          <Button>
+          <Button onClick={handleClick}>
             <Send
               size={16}
               className="mr-1"
