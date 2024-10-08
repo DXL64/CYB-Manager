@@ -3,10 +3,12 @@ import { Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import CategoryOptions from "@/composables/options/category.option"
+import { base64ToUtf8 } from "@/composables/services/base.service"
 import config from "@/config/config"
-import { Post } from "@/models/post.model"
+import { defaultValue, Post } from "@/models/post.model"
 
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react"
 import "react-quill/dist/quill.snow.css";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -17,30 +19,39 @@ interface PostViewProps {
 }
 
 const PostView = ({ post, onClose}: PostViewProps ) => {
+    const [model, setModel] = useState<Post>(defaultValue)
+    useEffect(() => {
+        const utf8 = base64ToUtf8(post.content)
+        setModel({
+            ...post,
+            content: utf8 
+        })
+    }, [post])
+
     return (
         <>
-            <DialogContent className="sm:max-w-[625px]">
+            <DialogContent className="max-w-screen-lg">
                 <DialogHeader>
                     <DialogTitle>Chi tiết học sinh</DialogTitle>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="flex justify-center mb-4">
                     <Avatar
-                        src={`${config.minio.end_point}/${config.minio.bucket_name}/${post?.imgSrc}` || ""}
-                        alt={post?.title || "Post image avatar"}
+                        src={`${config.minio.end_point}/${config.minio.bucket_name}/${model?.imgSrc}` || ""}
+                        alt={model?.title || "Post image avatar"}
                         size="lg"
                     />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <div className="text-right font-bold">Tiêu đề:</div>
-                        <div className="col-span-3">{post?.title}</div>
+                        <div className="col-span-3">{model?.title}</div>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <div className="text-right font-bold">Hạng mục:</div>
-                            {post?.category ? (
+                            {model?.category ? (
                                 // Kiểm tra xem post.category có tồn tại không
                                 CategoryOptions
-                                    .filter(category => category.value === post.category) // Lọc danh mục dựa trên giá trị của post.category
+                                    .filter(category => category.value === model.category) // Lọc danh mục dựa trên giá trị của post.category
                                     .map(category => (
                                     <div key={category.value}>{category.label}</div> // Hiển thị label của danh mục
                                     ))
@@ -89,7 +100,7 @@ const PostView = ({ post, onClose}: PostViewProps ) => {
                                     //   "code-block",
                                 ]}
                                 readOnly
-                                value={post.content}
+                                value={model.content}
                             />
 
                         </div>
