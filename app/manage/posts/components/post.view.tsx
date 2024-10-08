@@ -3,7 +3,7 @@ import { Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import CategoryOptions from "@/composables/options/category.option"
-import { base64ToUtf8 } from "@/composables/services/base.service"
+// import { base64ToUtf8 } from "@/composables/services/base.service"
 import config from "@/config/config"
 import { defaultValue, Post } from "@/models/post.model"
 
@@ -21,10 +21,10 @@ interface PostViewProps {
 const PostView = ({ post, onClose}: PostViewProps ) => {
     const [model, setModel] = useState<Post>(defaultValue)
     useEffect(() => {
-        const utf8 = base64ToUtf8(post.content)
+        // const utf8 = base64ToUtf8(post.content)
         setModel({
             ...post,
-            content: utf8 
+            // content: utf8 
         })
     }, [post])
 
