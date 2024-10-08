@@ -60,23 +60,24 @@ const PostForm = ({post, onClose, fetch }: PostFormProps) => {
         }
     };
 
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const handleSave = async () => {
-        // if (!validateForm()) {
-        //     console.log("Form validation failed");
-        //     return;
-        // }
+        setIsLoading(true); // Bắt đầu quá trình lưu
         try {
             if (isEdit) {
-                await PostService.Update(model.id, model);
+                PostService.Update(model.id, model).then(() => fetch());
             } else {
-                await PostService.Create(model);
+                PostService.Create(model).then(() => fetch());
             }
-            fetch();
             onClose();
         } catch (error) {
-            console.error("Error saving póst:", error);
+            console.error("Error saving post:", error);
+        } finally {
+            setIsLoading(false); // Kết thúc quá trình lưu
         }
     };
+
 
     return (
         <>
@@ -167,8 +168,8 @@ const PostForm = ({post, onClose, fetch }: PostFormProps) => {
                     <Send
                         size={16}
                         className="mr-1"
-                    />
-                    Đăng bài
+                        />
+                        {isLoading ? "Đang lưu..." : "Đăng bài"}
                 </Button>
                 </DialogFooter>
             </DialogContent>
