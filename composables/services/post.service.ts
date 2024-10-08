@@ -26,17 +26,17 @@ const PostService: IBaseService<Post> = {
     return result.data;
   },
   Update: async (id: string, model: Post): Promise<Post> => {
-    if (model.content) {
-      model.content = utf8ToBase64(model.content); // Mã hóa content với hỗ trợ Unicode
-    }
+    // if (model.content) {
+    //   model.content = utf8ToBase64(model.content); // Mã hóa content với hỗ trợ Unicode
+    // }
     const formData = ObjectToForm(model);
     const result = await axiosClient.put(`${baseUrl}/${prefix}/${id}`, formData);
     return result.data;
   },
   Create: async (model: Post): Promise<Post> => {
-    if (model.content) {
-      model.content = utf8ToBase64(model.content); // Mã hóa content với hỗ trợ Unicode
-    }
+    // if (model.content) {
+    //   model.content = utf8ToBase64(model.content); // Mã hóa content với hỗ trợ Unicode
+    // }
     const formData = ObjectToForm(model);
     const result = await axiosClient.post(`${baseUrl}/${prefix}`, formData);
     return result.data;

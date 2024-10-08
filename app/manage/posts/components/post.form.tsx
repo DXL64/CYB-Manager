@@ -64,11 +64,10 @@ const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
     // }
     try {
       if (isEdit) {
-        await PostService.Update(model.id, model);
+        PostService.Update(model.id, model).then(() => fetch());
       } else {
-        await PostService.Create(model);
+        PostService.Create(model).then(() => fetch());
       }
-      fetch();
       onClose();
     } catch (error) {
       console.error("Error saving póst:", error);
