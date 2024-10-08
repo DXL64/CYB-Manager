@@ -14,6 +14,7 @@ import dynamic from "next/dynamic";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Send } from "lucide-react";
 import CategoryOptions from "@/composables/options/category.option";
+import { base64ToUtf8 } from "@/composables/services/base.service";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -32,7 +33,8 @@ const PostForm = ({post, onClose, fetch }: PostFormProps) => {
     useEffect(() => {
         if (post) {
             setIsEdit(true); // Chế độ chỉnh sửa
-            setModel(post); // Nạp dữ liệu từ sinh viên cần chỉnh sửa
+            const utf8 = base64ToUtf8(post.content)            
+            setModel({...post, content: utf8}); // Nạp dữ liệu từ sinh viên cần chỉnh sửa
         } else {
             setIsEdit(false); // Chế độ thêm mới
             setModel(defaultValue); // Đặt các giá trị mặc định
@@ -72,7 +74,7 @@ const PostForm = ({post, onClose, fetch }: PostFormProps) => {
             fetch();
             onClose();
         } catch (error) {
-            console.error("Error saving student:", error);
+            console.error("Error saving póst:", error);
         }
     };
 
@@ -120,25 +122,24 @@ const PostForm = ({post, onClose, fetch }: PostFormProps) => {
                         ))}
                         </SelectContent>
                     </Select>
-
                     <ReactQuill
                         theme="snow"
                         placeholder="Start writing..."
                         modules={{
-                        toolbar: {
-                            container: [
-                            [{ header: "1" }, { header: "2" }, { font: [] }],
-                            [{ size: [] }],
-                            ["bold", "italic", "underline", "strike", "blockquote"],
-                            [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
-                            ["link", "image"],
-                            //   ["code-block"],
-                            //   ["clean"],
-                            ],
-                        },
-                        clipboard: {
-                            matchVisual: false,
-                        },
+                            toolbar: {
+                                container: [
+                                    [{ header: "1" }, { header: "2" }, { font: [] }],
+                                    [{ size: [] }],
+                                    ["bold", "italic", "underline", "strike", "blockquote"],
+                                    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+                                    [{ 'align': [] }], // Thêm tùy chọn căn lề
+                                    ["link", "image"],
+                                    ["clean"],
+                                ],
+                            },
+                            clipboard: {
+                                matchVisual: true, // Giữ nguyên định dạng khi dán
+                            },
                         }}
                         formats={[
                             "header",
@@ -154,12 +155,12 @@ const PostForm = ({post, onClose, fetch }: PostFormProps) => {
                             "indent",
                             "link",
                             "image",
-                            //   "video",
-                            //   "code-block",
+                            "align", // Bổ sung định dạng căn lề
                         ]}
                         value={model.content}
                         onChange={(e) => setModel((prev) => ({ ...prev, content: e }))}
                     />
+
                 </div>
                 <DialogFooter>
                 <Button onClick={handleSave}>

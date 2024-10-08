@@ -1,4 +1,4 @@
-import { IBaseService, ObjectToForm, ResponseModel } from "./base.service";
+import { IBaseService, ObjectToForm, ResponseModel, utf8ToBase64 } from "./base.service";
 import axiosClient from "../axios.client";
 import { stringify } from "querystring";
 import config from "@/config/config";
@@ -32,6 +32,9 @@ const PostService: IBaseService<Post> = {
     return result.data;
   },
   Create: async (model: Post): Promise<Post> => {
+    if (model.content) {
+      model.content = utf8ToBase64(model.content); // Mã hóa content với hỗ trợ Unicode
+    }
     const formData = ObjectToForm(model);
     const result = await axiosClient.post(`${baseUrl}/${prefix}`, formData);
     return result.data;
