@@ -67,6 +67,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
     // if (!model.phone?.trim()) newErrors.phone = "Số điện thoại không được để trống";
     if (!model.position?.trim()) newErrors.position = "Chức vụ không được để trống";
     if (!model.major?.trim()) newErrors.major = "Môn chuyên không được để trống";
+    if (!model.status?.trim()) newErrors.status = "Trạng thái không được để trống";
     if (!model.dob?.trim()) newErrors.dob = "Năm sinh không được để trống";
     if (!model.workSince?.trim()) newErrors.workSince = "Ngày bắt đầu làm việc không được để trống";
 
@@ -284,6 +285,26 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             <option value="excercise">Thể dục</option>
             <option value="gdcd">GDCD</option>
             <option value="other">Khác</option>
+          </select>
+
+          <Label
+            htmlFor="status"
+            className="text-right col-span-1"
+          >
+            Trạng thái
+          </Label>
+          <select
+            id="status"
+            name="status"
+            defaultValue={model?.status || "working"}
+            value={model?.status}
+            onChange={handleInputChange}
+            className="col-span-3 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <option value="working">Đang công tác</option>
+            <option value="retired">Nghỉ hưu</option>
+            <option value="transfer">Chuyển công tác</option>
+            <option value="passed_away">Đã mất</option>
           </select>
 
           <Label

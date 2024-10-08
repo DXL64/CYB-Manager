@@ -27,6 +27,13 @@ const majorMap: Record<string, string> = {
   other: "Khác"
 };
 
+const statusMap: Record<string, string> = {
+  working: "Đang công tác",
+  retired: "Nghỉ hưu",
+  transfer: "Chuyển công tác",
+  passed_away: "Đã mất",
+};
+
 interface TeacherListProps {
   teachers: Teacher[];
   searchTerm: string;
@@ -109,6 +116,7 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
               <TableHead>Số điện thoại</TableHead>
               <TableHead>Chức vụ</TableHead>
               <TableHead>Môn chuyên</TableHead>
+              <TableHead>Trạng thái</TableHead>
               <TableHead>Bắt đầu làm việc</TableHead>
               <TableHead>Kết thúc làm việc</TableHead>
               <TableHead>Hành động</TableHead>
@@ -136,6 +144,7 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
                 <TableCell>{teacher?.phone}</TableCell>
                 <TableCell>{teacher?.position}</TableCell>
                 <TableCell>{teacher.major ? majorMap[teacher.major] || teacher.major : ""}</TableCell>
+                <TableCell>{teacher.status ? statusMap[teacher.status] || teacher.status : ""}</TableCell>
                 <TableCell>{teacher?.workSince ? teacher.workSince : ""}</TableCell>
                 <TableCell>{teacher?.workUntil ? teacher.workUntil : "Đến nay"}</TableCell>
                 <TableCell>
