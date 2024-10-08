@@ -63,11 +63,12 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
     const newErrors: { [key: string]: string } = {};
 
     if (!model.name.trim()) newErrors.name = "Họ và tên không được để trống";
-    if (!model.email?.trim()) newErrors.email = "Email không được để trống";
-    if (!model.phone?.trim()) newErrors.phone = "Số điện thoại không được để trống";
+    // if (!model.email?.trim()) newErrors.email = "Email không được để trống";
+    // if (!model.phone?.trim()) newErrors.phone = "Số điện thoại không được để trống";
     if (!model.position?.trim()) newErrors.position = "Chức vụ không được để trống";
     if (!model.major?.trim()) newErrors.major = "Môn chuyên không được để trống";
-    if (!model.dob?.trim()) newErrors.dob = "Ngày sinh không được để trống";
+    if (!model.status?.trim()) newErrors.status = "Trạng thái không được để trống";
+    if (!model.dob?.trim()) newErrors.dob = "Năm sinh không được để trống";
     if (!model.workSince?.trim()) newErrors.workSince = "Ngày bắt đầu làm việc không được để trống";
 
     // Add more validation rules as needed
@@ -192,12 +193,11 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             htmlFor="dob"
             className="text-right col-span-1"
           >
-            Ngày sinh
+            Năm sinh
           </Label>
           <div className="col-span-3">
             <Input
               id="dob"
-              type="date"
               name="dob"
               className={errors.dob ? "border-red-500" : ""}
               onChange={handleInputChange}
@@ -282,8 +282,29 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             <option value="physics">Vật lý</option>
             <option value="chemistry">Hoá học</option>
             <option value="technology">Công nghệ</option>
-            <option value="physical">Thể dục</option>
+            <option value="excercise">Thể dục</option>
             <option value="gdcd">GDCD</option>
+            <option value="other">Khác</option>
+          </select>
+
+          <Label
+            htmlFor="status"
+            className="text-right col-span-1"
+          >
+            Trạng thái
+          </Label>
+          <select
+            id="status"
+            name="status"
+            defaultValue={model?.status || "working"}
+            value={model?.status}
+            onChange={handleInputChange}
+            className="col-span-3 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <option value="working">Đang công tác</option>
+            <option value="retired">Nghỉ hưu</option>
+            <option value="transfer">Chuyển công tác</option>
+            <option value="passed_away">Đã mất</option>
           </select>
 
           <Label
@@ -295,7 +316,6 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           <div className="col-span-3">
             <Input
               id="workSince"
-              type="date"
               name="workSince"
               className={errors.workSince ? "border-red-500" : ""}
               onChange={handleInputChange}
@@ -312,7 +332,6 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
           </Label>
           <Input
             id="workUntil"
-            type="date"
             name="workUntil"
             className="col-span-3"
             value={model?.workUntil}

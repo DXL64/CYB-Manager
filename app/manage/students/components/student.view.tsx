@@ -17,6 +17,7 @@ const majorMap: Record<string, string> = {
   physics: "Vật lý",
   chemistry: "Hoá học",
   unknown: "Chất lượng cao",
+  other: "Khác"
 };
 
 interface StudentViewProps {
@@ -60,7 +61,7 @@ export default function StudentView({ student, onClose }: StudentViewProps) {
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Môn chuyên:</div>
-          <div className="col-span-3">{student?.major ? majorMap[student.major] || student.major : "N/A"}</div>
+          <div className="col-span-3">{student?.major ? majorMap[student.major] || student.major : ""}</div>
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Thành tích:</div>

@@ -19,6 +19,14 @@ const majorMap: Record<string, string> = {
   technology: "Công nghệ",
   excercise: "Thể dục",
   gdcd: "GDCD",
+  other: "Khác"
+};
+
+const statusMap: Record<string, string> = {
+  working: "Đang công tác",
+  retired: "Nghỉ hưu",
+  transfer: "Chuyển công tác",
+  passed_away: "Đã mất",
 };
 
 interface TeacherViewProps {
@@ -66,7 +74,11 @@ export default function TeacherView({ teacher, onClose }: TeacherViewProps) {
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Môn chuyên:</div>
-          <div className="col-span-3">{teacher?.major ? majorMap[teacher.major] || teacher.major : "N/A"}</div>
+          <div className="col-span-3">{teacher?.major ? majorMap[teacher.major] || teacher.major : ""}</div>
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
+          <div className="text-right font-bold">Trạng thái:</div>
+          <div className="col-span-3">{teacher?.status ? statusMap[teacher.status] || teacher.status : ""}</div>
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Bắt đầu làm việc:</div>

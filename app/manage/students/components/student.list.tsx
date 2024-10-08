@@ -1,7 +1,6 @@
-// components/StudentList.tsx
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { EyeIcon, Edit, Plus } from "lucide-react";
+import { EyeIcon, Edit, Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { Student } from "@/models/student.model";
 import { useState } from "react";
@@ -23,12 +22,8 @@ const majorMap: Record<string, string> = {
   physics: "Vật lý",
   chemistry: "Hoá học",
   unknown: "Chất lượng cao",
+  other: "Khác"
 };
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-GB"); // Formats as DD/MM/YYYY
-}
 
 interface StudentListProps {
   students: Student[];
@@ -42,8 +37,16 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [editingModel, setEditing] = useState<Student | null>(null);
   const [viewModel, setView] = useState<Student | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 1000;
 
   const filteredStudents = students.filter((student) => student.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+
+  const paginatedStudents = filteredStudents.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const handleEditStudent = (student: Student) => {
     setEditing(student);
@@ -53,6 +56,10 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
   const handleViewStudent = (student: Student) => {
     setView(student);
     setIsViewModalOpen(true);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
   };
 
   return (
@@ -111,7 +118,7 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredStudents.map((student) => (
+            {paginatedStudents.map((student) => (
               <TableRow key={student.id}>
                 <TableCell>
                   {student.imgSrc ? (
@@ -128,10 +135,10 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
                 </TableCell>
                 <TableCell>{student.name}</TableCell>
                 <TableCell>{student.email}</TableCell>
-                <TableCell>{student?.dob ? formatDate(student.dob) : "N/A"}</TableCell>
+                <TableCell>{student?.dob ? student.dob : ""}</TableCell>
                 <TableCell>{student.phone}</TableCell>
                 <TableCell>{student.schoolYear}</TableCell>
-                <TableCell>{student.major ? majorMap[student.major] || student.major : "N/A"}</TableCell>
+                <TableCell>{student.major ? majorMap[student.major] || student.major : ""}</TableCell>
                 <TableCell>
                   <div className="flex items-center space-x-2">
                     <Button
@@ -154,6 +161,34 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
             ))}
           </TableBody>
         </Table>
+      </div>
+      <div className="mt-4 flex items-center justify-between">
+        <div className="text-sm text-gray-500">
+          Hiển thị {(currentPage - 1) * itemsPerPage + 1} đến {Math.min(currentPage * itemsPerPage, filteredStudents.length)} trong tổng số {filteredStudents.length} học sinh
+        </div>
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Trước
+          </Button>
+          <span className="text-sm font-medium">
+            Trang {currentPage} / {totalPages}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Sau
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </>
   );

@@ -63,11 +63,11 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
     const newErrors: { [key: string]: string } = {};
 
     if (!model.name.trim()) newErrors.name = "Họ và tên không được để trống";
-    if (!model.email?.trim()) newErrors.email = "Email không được để trống";
-    if (!model.phone?.trim()) newErrors.phone = "Số điện thoại không được để trống";
+    // if (!model.email?.trim()) newErrors.email = "Email không được để trống";
+    // if (!model.phone?.trim()) newErrors.phone = "Số điện thoại không được để trống";
     if (!model.schoolYear?.trim()) newErrors.schoolYear = "Niên khóa không được để trống";
     if (!model.major?.trim()) newErrors.major = "Môn chuyên không được để trống";
-    if (!model.dob?.trim()) newErrors.dob = "Ngày sinh không được để trống";
+    // if (!model.dob?.trim()) newErrors.dob = "Ngày sinh không được để trống";
 
     // Add more validation rules as needed
     if (model.email && !/\S+@\S+\.\S+/.test(model.email)) {
@@ -76,9 +76,9 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
     if (model.phone && !/^\d{10,11}$/.test(model.phone)) {
       newErrors.phone = "Số điện thoại không hợp lệ (cần 10-11 số)";
     }
-    if (model.schoolYear && (!/^\d{1,3}$/.test(model.schoolYear) || Number(model.schoolYear) < 0 || Number(model.schoolYear) > 100)) {
-      newErrors.schoolYear = "Năm học không hợp lệ, phải là số tương ứng với khóa (Ví dụ: 28)";
-    }
+    // if (model.schoolYear && (!/^\d{1,3}$/.test(model.schoolYear) || Number(model.schoolYear) < 0 || Number(model.schoolYear) > 100)) {
+    //   newErrors.schoolYear = "Năm học không hợp lệ, phải là số tương ứng với khóa (Ví dụ: 28)";
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -244,6 +244,7 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
             <option value="physics">Vật lý</option>
             <option value="chemistry">Hoá học</option>
             <option value="unknown">Chất lượng cao</option>
+            <option value="other">Khác</option>
           </select>
           <Label
             htmlFor="dob"
