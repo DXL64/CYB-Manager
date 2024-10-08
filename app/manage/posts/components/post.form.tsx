@@ -30,12 +30,13 @@ const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
 
   useEffect(() => {
     if (post) {
-      setIsEdit(true); // Chế độ chỉnh sửa
-      const utf8 = base64ToUtf8(post.content);
-      setModel({ ...post, content: utf8 }); // Nạp dữ liệu từ sinh viên cần chỉnh sửa
+        setIsEdit(true);
+    //   const utf8 = base64ToUtf8(post.content);
+    //   setModel({ ...post, content: utf8 });
+        setModel(post)
     } else {
-      setIsEdit(false); // Chế độ thêm mới
-      setModel(defaultValue); // Đặt các giá trị mặc định
+        setIsEdit(false);
+        setModel(defaultValue);
     }
     // Xóa console.log trong useEffect
   }, [post]);
