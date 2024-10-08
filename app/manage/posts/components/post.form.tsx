@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import CategoryOptions from "@/composables/options/category.option";
 import { PostService } from "@/composables/services";
-import { base64ToUtf8 } from "@/composables/services/base.service";
 import { Post, defaultValue } from "@/models/post.model";
 import { Send } from "lucide-react";
 import dynamic from "next/dynamic";

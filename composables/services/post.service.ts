@@ -1,4 +1,4 @@
-import { IBaseService, ObjectToForm, ResponseModel, utf8ToBase64 } from "./base.service";
+import { IBaseService, ObjectToForm, ResponseModel } from "./base.service";
 import axiosClient from "../axios.client";
 import { stringify } from "querystring";
 import config from "@/config/config";
