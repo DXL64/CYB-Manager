@@ -26,6 +26,7 @@ const CategoryOptions: Category[] = [
   { label: "Học sinh giai đoạn 1989 – 1999", value: "hoc_sinh_1989_1999" },
   { label: "Học sinh giai đoạn 2000 – 2015", value: "hoc_sinh_2000_2015" },
   { label: "Học sinh giai đoạn 2016 - 2024", value: "hoc_sinh_2016_2024" },
+  { label: "Hội nhập quốc tế", value: "hoi_nhap_quoc_te" }
 ];
 
 export default CategoryOptions
