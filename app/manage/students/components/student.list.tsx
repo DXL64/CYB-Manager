@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { EyeIcon, Edit, Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { Student } from "@/models/student.model";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import StudentForm from "./student.form";
 import StudentView from "./student.view";
@@ -40,7 +40,12 @@ export default function StudentList({ students, searchTerm, setSearchTerm, fetch
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 1000;
 
-  const filteredStudents = students.filter((student) => student.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  // const filteredStudents = students.filter((student) => student.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredStudents = useMemo(() => {
+    return students
+      .filter((students) => students.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      .sort((a, b) => (Number(a.priority) || 0) - (Number(b.priority) || 0));
+  }, [students, searchTerm]);
   const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
 
   const paginatedStudents = filteredStudents.slice(

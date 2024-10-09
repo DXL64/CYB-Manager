@@ -11,6 +11,7 @@ import config from '@/config/config';
 import { useState } from 'react';
 import PostView from './post.view';
 import { PostService } from '@/composables/services';
+import CategoryOptions from "@/composables/options/category.option";
 
 interface PostListProps {
     posts: Post[],
@@ -114,7 +115,15 @@ const PostList = ({ posts, searchTerm, setSearchTerm, fetch}: PostListProps) => 
                             )}
                             </TableCell>
                             <TableCell>{post.title}</TableCell>
-                            <TableCell>{post.category}</TableCell>
+                            <TableCell>{post?.category ? (
+                                CategoryOptions
+                                    .filter(category => category.value === post.category) // Lọc danh mục dựa trên giá trị của post.category
+                                    .map(category => (
+                                    <div key={category.value}>{category.label}</div> // Hiển thị label của danh mục
+                                    ))
+                                ) : (
+                                <div>Không có hạng mục nào</div> // Thông báo nếu không có hạng mục
+                            )}</TableCell>
                             {/* <TableCell>{post.content}</TableCell> */}
                             <TableCell>
                             <div className="flex items-center space-x-2">

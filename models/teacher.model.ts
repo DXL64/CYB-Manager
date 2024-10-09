@@ -11,6 +11,7 @@ export type Teacher = {
   workUntil?: string;
   gender: "male" | "female";
   status: "working" | "retired" | "transfer" | "passed_away";
+  priority: number;
   achievements?: string;
   file?: File
 };
@@ -29,6 +30,7 @@ export const defaultValue: Teacher = {
   workUntil: "",
   gender: "male",
   status: "working",
+  priority: 100,
   achievements: "",
   file: undefined
 };

@@ -70,6 +70,7 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
     if (!model.status?.trim()) newErrors.status = "Trạng thái không được để trống";
     if (!model.dob?.trim()) newErrors.dob = "Năm sinh không được để trống";
     if (!model.workSince?.trim()) newErrors.workSince = "Ngày bắt đầu làm việc không được để trống";
+    if (!model.priority) newErrors.priority = "Độ ưu tiên không được để trống";
 
     // Add more validation rules as needed
     if (model.email && !/\S+@\S+\.\S+/.test(model.email)) {
@@ -77,6 +78,9 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
     }
     if (model.phone && !/^\d{10,11}$/.test(model.phone)) {
       newErrors.phone = "Số điện thoại không hợp lệ (cần 10-11 số)";
+    }
+    if (Number(model.priority) < 0 || Number(model.priority) > 100) {
+      newErrors.priority = "Độ ưu tiên không hợp lệ, phải là số trong khoảng (0, 100)";
     }
 
     setErrors(newErrors);
@@ -306,6 +310,21 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             <option value="transfer">Chuyển công tác</option>
             <option value="passed_away">Đã mất</option>
           </select>
+          <Label
+            htmlFor="priority"
+            className="text-right col-span-1"
+          >
+            Độ ưu tiên
+          </Label>
+          <div className="col-span-3">
+            <Input
+              name="priority"
+              value={model?.priority || ""}
+              onChange={handleInputChange}
+              className="col-span-3"
+            />
+            {errors.priority && <p className="text-red-500 text-sm mt-1">{errors.priority}</p>}
+          </div>
 
           <Label
             htmlFor="workSince"

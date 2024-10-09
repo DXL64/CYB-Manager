@@ -32,7 +32,7 @@ const PostView = ({ post, onClose}: PostViewProps ) => {
         <>
             <DialogContent className="max-w-screen-lg">
                 <DialogHeader>
-                    <DialogTitle>Chi tiết học sinh</DialogTitle>
+                    <DialogTitle>Chi tiết bài viết</DialogTitle>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="flex justify-center mb-4">
@@ -50,6 +50,10 @@ const PostView = ({ post, onClose}: PostViewProps ) => {
                     <div className="grid grid-cols-4 items-center gap-4">
                         <div className="text-right font-bold">Tiêu đề:</div>
                         <div className="col-span-3">{model?.title}</div>
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <div className="text-right font-bold">Độ ưu tiên:</div>
+                        <div className="col-span-3">{model?.priority}</div>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <div className="text-right font-bold">Hạng mục:</div>

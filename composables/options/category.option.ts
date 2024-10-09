@@ -22,11 +22,11 @@ const CategoryOptions: Category[] = [
   { label: "Giáo dục toàn diện", value: "giao_duc_toan_dien" },
   { label: "Lưu bút học trò", value: "luu_but_hoc_tro" },
   { label: "Bài viết của các thế hệ học sinh", value: "bai_viet_the_he_hoc_sinh" },
+  { label: "Hội nhập quốc tế", value: "hoi_nhap_quoc_te" },
   { label: "Học sinh giai đoạn 1977 – 1988", value: "hoc_sinh_1977_1988" },
   { label: "Học sinh giai đoạn 1989 – 1999", value: "hoc_sinh_1989_1999" },
   { label: "Học sinh giai đoạn 2000 – 2015", value: "hoc_sinh_2000_2015" },
-  { label: "Học sinh giai đoạn 2016 - 2024", value: "hoc_sinh_2016_2024" },
-  { label: "Hội nhập quốc tế", value: "hoi_nhap_quoc_te" }
+  { label: "Học sinh giai đoạn 2016 - 2024", value: "hoc_sinh_2016_2024" }
 ];
 
 export default CategoryOptions
