@@ -43,6 +43,11 @@ const PostView = ({ post, onClose}: PostViewProps ) => {
                     />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
+                        <div className="text-right font-bold">Id:</div>
+                        <div className="col-span-3">{model?.id}</div>
+                    </div>
+
+                    <div className="grid grid-cols-4 items-center gap-4">
                         <div className="text-right font-bold">Tiêu đề:</div>
                         <div className="col-span-3">{model?.title}</div>
                     </div>
