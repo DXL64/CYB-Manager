@@ -1,5 +1,7 @@
+import WallpapersTable from "./components/wallpaper.table";
+
 const WallpaperPage = () => {
-    return <>Wall paper</>
+    return <><WallpapersTable/></>
 }
 
 export default WallpaperPage;
