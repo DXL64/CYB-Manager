@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { EyeIcon, Edit, Plus, ChevronLeft, ChevronRight } from "lucide-react";
+import { EyeIcon, Edit, Plus, ChevronLeft, ChevronRight, Trash } from "lucide-react";
 import Image from "next/image";
 import { Wallpaper } from "@/models/wallpaper.model";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import WallpaperForm from "./wallpaper.form";
 import WallpaperView from "./wallpaper.view";
 import { Input } from "@/components/ui/input";
 import config from "@/config/config";
+import { WallpaperService } from "@/composables/services";
 
 interface WallpaperListProps {
   wallpapers: Wallpaper[];
@@ -32,6 +33,10 @@ export default function WallpaperList({ wallpapers, searchTerm, setSearchTerm, f
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  const handleDeleteWallpaper = (wallpaper: Wallpaper) => {
+    WallpaperService.Delete(wallpaper.id).then(() => fetch())
+  }
 
   const handleEditWallpaper = (wallpaper: Wallpaper) => {
     setEditing(wallpaper);
@@ -130,6 +135,13 @@ export default function WallpaperList({ wallpapers, searchTerm, setSearchTerm, f
                       onClick={() => handleEditWallpaper(wallpaper)}
                     >
                       <Edit className="h-4 w-4" />
+                    </Button>
+                                        <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleDeleteWallpaper(wallpaper)}
+                    >
+                      <Trash className="h-4 w-4" />
                     </Button>
                   </div>
                 </TableCell>
