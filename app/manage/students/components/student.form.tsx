@@ -67,7 +67,7 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
     // if (!model.phone?.trim()) newErrors.phone = "Số điện thoại không được để trống";
     if (!model.schoolYear?.trim()) newErrors.schoolYear = "Niên khóa không được để trống";
     if (!model.major?.trim()) newErrors.major = "Môn chuyên không được để trống";
-    if (!model.priority?.trim()) newErrors.priority = "Độ ưu tiên không được để trống";
+    if (!model.priority) newErrors.priority = "Độ ưu tiên không được để trống";
     // if (!model.dob?.trim()) newErrors.dob = "Ngày sinh không được để trống";
 
     // Add more validation rules as needed
@@ -77,7 +77,7 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
     if (model.phone && !/^\d{10,11}$/.test(model.phone)) {
       newErrors.phone = "Số điện thoại không hợp lệ (cần 10-11 số)";
     }
-    if (model.priority && (!/^\d{1,3}$/.test(model.priority) || Number(model.priority) < 0 || Number(model.priority) > 100)) {
+    if (Number(model.priority) < 0 || Number(model.priority) > 100) {
       newErrors.priority = "Độ ưu tiên không hợp lệ, phải là số trong khoảng (0, 100)";
     }
 
