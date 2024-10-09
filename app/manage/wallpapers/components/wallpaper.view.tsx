@@ -14,7 +14,7 @@ export default function WallpaperView({ wallpaper, onClose }: WallpaperViewProps
   return (
     <DialogContent className="sm:max-w-[625px]">
       <DialogHeader>
-        <DialogTitle>Chi tiết học sinh</DialogTitle>
+        <DialogTitle>Chi tiết tường</DialogTitle>
       </DialogHeader>
       <div className="grid gap-4 py-4">
         <div className="flex justify-center mb-4">

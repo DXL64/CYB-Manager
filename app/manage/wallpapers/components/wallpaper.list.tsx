@@ -55,7 +55,7 @@ export default function WallpaperList({ wallpapers, searchTerm, setSearchTerm, f
   return (
     <>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Học sinh</h2>
+        <h2 className="text-2xl font-bold">Tường</h2>
         <Dialog
           open={isNewModalOpen}
           onOpenChange={setIsNewModalOpen}
@@ -152,7 +152,7 @@ export default function WallpaperList({ wallpapers, searchTerm, setSearchTerm, f
       </div>
       <div className="mt-4 flex items-center justify-between">
         <div className="text-sm text-gray-500">
-          Hiển thị {(currentPage - 1) * itemsPerPage + 1} đến {Math.min(currentPage * itemsPerPage, filteredWallpapers.length)} trong tổng số {filteredWallpapers.length} học sinh
+          Hiển thị {(currentPage - 1) * itemsPerPage + 1} đến {Math.min(currentPage * itemsPerPage, filteredWallpapers.length)} trong tổng số {filteredWallpapers.length} tường
         </div>
         <div className="flex items-center space-x-2">
           <Button
