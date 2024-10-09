@@ -3,9 +3,9 @@ import PostTable from "./components/post.table";
 
 const PostPage = () => {
   return (
-    <div>
-        <PostTable />
-    </div>
+    <>
+        <PostTable/>
+    </>
   );
 };
 
