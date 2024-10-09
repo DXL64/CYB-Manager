@@ -88,6 +88,7 @@ const PostList = ({ posts, searchTerm, setSearchTerm, fetch}: PostListProps) => 
                 <Table>
                 <TableHeader>
                     <TableRow>
+                        <TableHead>STT</TableHead>
                         <TableHead>Ảnh</TableHead>
                         <TableHead>Tiêu đề</TableHead>
                         <TableHead>Hạng mục</TableHead>
@@ -96,8 +97,9 @@ const PostList = ({ posts, searchTerm, setSearchTerm, fetch}: PostListProps) => 
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {filteredPosts.map((post) => (
+                    {filteredPosts.map((post, index) => (
                         <TableRow key={post.id}>
+                            <TableCell>{index}</TableCell>
                             <TableCell>
                             {post.imgSrc ? (
                                 <Image
