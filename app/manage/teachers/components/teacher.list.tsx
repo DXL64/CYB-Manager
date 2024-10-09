@@ -50,7 +50,9 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
   const itemsPerPage = 1000; // You can adjust this value as needed
 
   const filtered = useMemo(() => {
-    return teachers.filter((teacher) => teacher.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    return teachers
+      .filter((teacher) => teacher.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      .sort((a, b) => (Number(a.priority) || 0) - (Number(b.priority) || 0));
   }, [teachers, searchTerm]);
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage);

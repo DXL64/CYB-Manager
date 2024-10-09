@@ -10,6 +10,7 @@ export type Student = {
   studySince?: string;
   studyUntil?: string;
   gender: "male" | "female";
+  priority: string;
   active: boolean;
   achievements?: string;
   file?: File
@@ -27,6 +28,7 @@ export const defaultValue: Student = {
   studySince: "",
   studyUntil: "",
   gender: "male",
+  priority: "100",
   active: false,
   achievements: "",
   file: undefined

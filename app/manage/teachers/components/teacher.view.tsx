@@ -81,6 +81,10 @@ export default function TeacherView({ teacher, onClose }: TeacherViewProps) {
           <div className="col-span-3">{teacher?.status ? statusMap[teacher.status] || teacher.status : ""}</div>
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
+          <div className="text-right font-bold">Độ ưu tiên:</div>
+          <div className="col-span-3">{teacher?.priority}</div>
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Bắt đầu làm việc:</div>
           <div className="col-span-3">{teacher?.workSince}</div>
         </div>

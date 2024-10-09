@@ -64,6 +64,10 @@ export default function StudentView({ student, onClose }: StudentViewProps) {
           <div className="col-span-3">{student?.major ? majorMap[student.major] || student.major : ""}</div>
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
+          <div className="text-right font-bold">Độ ưu tiên:</div>
+          <div className="col-span-3">{student?.priority}</div>
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Thành tích:</div>
           <div className="col-span-3">{student?.achievements}</div>
         </div>

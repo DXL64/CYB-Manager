@@ -67,6 +67,7 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
     // if (!model.phone?.trim()) newErrors.phone = "Số điện thoại không được để trống";
     if (!model.schoolYear?.trim()) newErrors.schoolYear = "Niên khóa không được để trống";
     if (!model.major?.trim()) newErrors.major = "Môn chuyên không được để trống";
+    if (!model.priority?.trim()) newErrors.priority = "Độ ưu tiên không được để trống";
     // if (!model.dob?.trim()) newErrors.dob = "Ngày sinh không được để trống";
 
     // Add more validation rules as needed
@@ -76,9 +77,9 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
     if (model.phone && !/^\d{10,11}$/.test(model.phone)) {
       newErrors.phone = "Số điện thoại không hợp lệ (cần 10-11 số)";
     }
-    // if (model.schoolYear && (!/^\d{1,3}$/.test(model.schoolYear) || Number(model.schoolYear) < 0 || Number(model.schoolYear) > 100)) {
-    //   newErrors.schoolYear = "Năm học không hợp lệ, phải là số tương ứng với khóa (Ví dụ: 28)";
-    // }
+    if (model.priority && (!/^\d{1,3}$/.test(model.priority) || Number(model.priority) < 0 || Number(model.priority) > 100)) {
+      newErrors.priority = "Độ ưu tiên không hợp lệ, phải là số trong khoảng (0, 100)";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -277,6 +278,21 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
               className="col-span-3"
             />
             {errors.schoolYear && <p className="text-red-500 text-sm mt-1">{errors.schoolYear}</p>}
+          </div>
+          <Label
+            htmlFor="priority"
+            className="text-right col-span-1"
+          >
+            Độ ưu tiên
+          </Label>
+          <div className="col-span-3">
+            <Input
+              name="priority"
+              value={model?.priority || ""}
+              onChange={handleInputChange}
+              className="col-span-3"
+            />
+            {errors.priority && <p className="text-red-500 text-sm mt-1">{errors.priority}</p>}
           </div>
           <Label
             htmlFor="achievements"
