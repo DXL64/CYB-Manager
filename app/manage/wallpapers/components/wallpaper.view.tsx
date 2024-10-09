@@ -6,7 +6,7 @@ import { Wallpaper } from "@/models/wallpaper.model";
 import config from "@/config/config";
 
 interface WallpaperViewProps {
-  wallpaper: Wallpaper;
+  wallpaper: Wallpaper | null;
   onClose: () => void;
 }
 
