@@ -26,6 +26,7 @@ const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
   // const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [model, setModel] = useState<Post>(defaultValue);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     if (post) {
@@ -38,12 +39,13 @@ const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
         setModel(defaultValue);
     }
     // Xóa console.log trong useEffect
+    setErrors({});
   }, [post]);
 
   // Ghi log model trong component để kiểm tra giá trị của nó
-  useEffect(() => {
-    console.log(model);
-  }, [model]);
+  // useEffect(() => {
+  //   console.log(model);
+  // }, [model]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -57,11 +59,23 @@ const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    console.log(name, value)
+    setModel((prevModel) => ({
+      ...prevModel,
+      [name]: value,
+    }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
   const handleSave = async () => {
-    // if (!validateForm()) {
-    //     console.log("Form validation failed");
-    //     return;
-    // }
+    if (!validateForm()) {
+        console.log("Form validation failed");
+        return;
+    }
     try {
       if (isEdit) {
         PostService.Update(model.id, model).then(() => fetch());
@@ -70,8 +84,20 @@ const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
       }
       onClose();
     } catch (error) {
-      console.error("Error saving póst:", error);
+      console.error("Error saving post:", error);
     }
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+  
+    if (!model.priority) newErrors.priority = "Độ ưu tiên không được để trống";
+    if (Number(model.priority) < 0 || Number(model.priority) > 100) {
+      newErrors.priority = "Độ ưu tiên không hợp lệ, phải là số trong khoảng (0, 100)";
+    }
+  
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   return (
@@ -109,6 +135,21 @@ const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
                   onChange={(e) => setModel((prev) => ({ ...prev, title: e.target.value }))}
                 />
               </div>
+            <Label
+              htmlFor="priority"
+              className="text-right col-span-1"
+              >
+              Độ ưu tiên
+            </Label>
+            <div className="col-span-3">
+              <Input
+                name="priority"
+                value={model?.priority || ""}
+                onChange={handleInputChange}
+                className="col-span-3"
+                />
+                {errors.priority && <p className="text-red-500 text-sm mt-1">{errors.priority}</p>}
+            </div>
               <div>
                 <Label>Ảnh xem trước</Label>
                 <Input

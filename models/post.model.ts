@@ -3,7 +3,8 @@ export type Post = {
   title: string,
   category: string,
   imgSrc: string,
-  content: string,
+  content: string, 
+  priority: number,
   file?: File,
 };
 
@@ -13,5 +14,6 @@ export const defaultValue: Post = {
   title: '',
   category: '',
   imgSrc: '',
+  priority: 100,
   file: undefined
 }
