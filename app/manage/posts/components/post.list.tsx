@@ -92,8 +92,8 @@ const PostList = ({ posts, searchTerm, setSearchTerm, fetch}: PostListProps) => 
                         <TableHead>STT</TableHead>
                         <TableHead>Ảnh</TableHead>
                         <TableHead>Tiêu đề</TableHead>
+                        <TableHead>ID</TableHead>
                         <TableHead>Hạng mục</TableHead>
-                        {/* <TableHead>Nội dung</TableHead> */}
                         <TableHead>Hành động</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -115,6 +115,7 @@ const PostList = ({ posts, searchTerm, setSearchTerm, fetch}: PostListProps) => 
                             )}
                             </TableCell>
                             <TableCell>{post.title}</TableCell>
+                            <TableCell>{post.id}</TableCell>
                             <TableCell>{post?.category ? (
                                 CategoryOptions
                                     .filter(category => category.value === post.category) // Lọc danh mục dựa trên giá trị của post.category

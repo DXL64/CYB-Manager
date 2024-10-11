@@ -89,7 +89,7 @@ export default function WallpaperForm({ wallpaper, onClose, fetch }: WallpaperFo
         aria-describedby="dialog"
       >
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Chỉnh sửa thông tin" : "Thêm học sinh mới"}</DialogTitle>
+          <DialogTitle>{isEdit ? "Chỉnh sửa thông tin" : "Thêm tường mới"}</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4 items-center">
           <div className="flex justify-center mb-4 col-span-4">
