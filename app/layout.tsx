@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Navbar from "../components/Navbar";
+import { ToastContainer } from "react-toastify"
 import "./globals.css";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,6 +34,7 @@ export default function RootLayout({
         <div className="flex bg-gray-100 pt-16 h-full">
           <main className="flex-1 p-5 h-full">{children}</main>
         </div>
+        <ToastContainer/>
       </body>
     </html>
   );

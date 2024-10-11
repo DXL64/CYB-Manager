@@ -1,4 +1,7 @@
-// import {  } from 'next-base64-encoder'
+import config from "@/config/config";
+import axiosClient from "../axios.client";
+import { ParsedUrlQueryInput, stringify } from "querystring";
+
 export type ResponseModel<T> = {
     results: T[],
     page: number,
@@ -7,33 +10,29 @@ export type ResponseModel<T> = {
     totalResults: number
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ObjectToForm = (model: any) => {
     const formData = new FormData();
 
     Object.keys(model).forEach(key => {
         const value = model[key];
 
-        // Bỏ qua `id` nếu cần thiết
         if (value && key !== 'id') {
 
-            // Kiểm tra nếu giá trị là File hoặc Blob
             if (value instanceof File || value instanceof Blob) {
                 formData.append(key, value);
             }
 
-            // Kiểm tra nếu là Array
             else if (Array.isArray(value)) {
                 value.forEach((item, index) => {
                     formData.append(`${key}[${index}]`, item);
                 });
             }
 
-            // Nếu là Object, có thể stringify hoặc xử lý tùy mục đích
             else if (typeof value === 'object') {
                 formData.append(key, JSON.stringify(value));
             }
 
-            // Các kiểu dữ liệu khác (string, number, boolean)
             else {
                 formData.append(key, value);
             }
@@ -43,8 +42,29 @@ export const ObjectToForm = (model: any) => {
     return formData;
 };
 
+export const utf8ToBase64 = (str: string): string => {
+    const utf8Bytes = new TextEncoder().encode(str);
+    const binaryString = Array.from(utf8Bytes) 
+    .map(byte => String.fromCharCode(byte)) 
+    .join(''); 
+    return btoa(binaryString); 
+}
+
+export const base64ToUtf8 = (base64: string): string => {
+    const decodedString = atob(base64);
+    
+    const byteArray = new Uint8Array(decodedString.length);
+    for (let i = 0; i < decodedString.length; i++) {
+        byteArray[i] = decodedString.charCodeAt(i);
+    }
+    const utf8Decoder = new TextDecoder("utf-8");
+    return utf8Decoder.decode(byteArray);
+}
 
 export interface IBaseService<T> {
+    prefix: string,
+    baseUrl: string,
+    // eslint-disable-next-line @typescript-eslint/ban-types
     List: (query?: {}) => Promise<ResponseModel<T>>,
     Get: (id: string) => Promise<T>,
     Update: (id: string, model: T) => Promise<T>,
@@ -52,24 +72,50 @@ export interface IBaseService<T> {
     Delete: (id: string) => Promise<object>
 }
 
-export const utf8ToBase64 = (str: string): string => {
-    const utf8Bytes = new TextEncoder().encode(str);
-    const binaryString = Array.from(utf8Bytes) // Chuyển Uint8Array thành mảng
-        .map(byte => String.fromCharCode(byte)) // Chuyển mỗi byte thành ký tự
-        .join(''); // Kết hợp các ký tự thành một chuỗi
 
-    return btoa(binaryString); // Chuyển đổi chuỗi binary thành chuỗi base64
-}
+const BaseService = <T>(prefix: string): IBaseService<T> => {
+    const baseUrl = `${config.backend.end_point}/v1`;
 
-export const base64ToUtf8 = (base64: string): string => {
-     const decodedString = atob(base64);
-    
-    // Chuyển đổi chuỗi byte thành một mảng các mã byte
-    const byteArray = new Uint8Array(decodedString.length);
-    for (let i = 0; i < decodedString.length; i++) {
-        byteArray[i] = decodedString.charCodeAt(i);
-    }
-    // Sử dụng TextDecoder để chuyển đổi byte thành chuỗi UTF-8
-    const utf8Decoder = new TextDecoder("utf-8");
-    return utf8Decoder.decode(byteArray);
-}
+    return {
+        baseUrl,
+        prefix,
+
+        List: async (query: ParsedUrlQueryInput | undefined): Promise<ResponseModel<T>> => {
+            let path = `${baseUrl}/${prefix}`;
+            if (query) {
+                const queryString = stringify(query);
+                path = `${baseUrl}/${prefix}?${queryString}`;
+            }
+            const result = await axiosClient.get(path, {
+                params: {
+                    limit: 1000,
+                },
+            });
+            return result.data;
+        },
+
+        Get: async (id: string): Promise<T> => {
+            const result = await axiosClient.get(`${baseUrl}/${prefix}/${id}`);
+            return result.data;
+        },
+
+        Update: async (id: string, model: T): Promise<T> => {
+            const formData = ObjectToForm(model);
+            const result = await axiosClient.put(`${baseUrl}/${prefix}/${id}`, formData);
+            return result.data;
+        },
+
+        Create: async (model: T): Promise<T> => {
+            const formData = ObjectToForm(model);
+            const result = await axiosClient.post(`${baseUrl}/${prefix}`, formData);
+            return result.data;
+        },
+
+        Delete: async (id: string): Promise<object> => {
+            const result = await axiosClient.delete(`${baseUrl}/${prefix}/${id}`);
+            return result;
+        },
+    };
+};
+
+export default BaseService;

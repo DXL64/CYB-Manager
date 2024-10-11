@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { EyeIcon, Edit, Plus, ImageIcon, ChevronLeft, ChevronRight } from "lucide-react";
+import { EyeIcon, Edit, Plus, ImageIcon, ChevronLeft, ChevronRight, Trash } from "lucide-react";
 import Image from "next/image";
 import { useState, useMemo } from "react";
 import { Dialog } from "@/components/ui/dialog";
@@ -9,6 +9,7 @@ import TeacherView from "./teacher.view";
 import { Input } from "@/components/ui/input";
 import config from "@/config/config";
 import { Teacher } from "@/models/teacher.model";
+import { TeacherService } from "@/composables/services";
 
 const majorMap: Record<string, string> = {
   math: "Toán",
@@ -78,6 +79,12 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
   const goToPreviousPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
+
+  const handleDelete = (id: string) => {
+    TeacherService.Delete(id).then(() => {
+        fetch()
+    })
+  }
 
   return (
     <>
@@ -157,6 +164,13 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
                     <Button variant="ghost" size="icon" onClick={() => handleEdit(teacher)}>
                       <Edit className="h-4 w-4" />
                     </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleDelete(teacher.id)}
+                        >
+                          <Trash className="h-4 w-4" />
+                        </Button>
                   </div>
                 </TableCell>
               </TableRow>
