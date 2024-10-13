@@ -1,42 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { EyeIcon, Edit, Plus, ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
-import { Student } from "@/models/student.model";
 import { useState, useMemo } from "react";
 import { Dialog } from "@/components/ui/dialog";
-import StudentForm from "./student.form";
-import StudentView from "./student.view";
+import Form from "./user.form";
+import View from "./user.view";
 import { Input } from "@/components/ui/input";
-import config from "@/config/config";
+import { User } from "@/models/user.model";
 
-const majorMap: Record<string, string> = {
-  math: "Toán",
-  information: "Toán Tin",
-  literature: "Văn",
-  english: "Anh",
-  biology: "Sinh học",
-  history: "Lịch sử",
-  geography: "Địa lý",
-  chinese: "Trung",
-  physics: "Vật lý",
-  chemistry: "Hoá học",
-  unknown: "Chất lượng cao",
-  other: "Khác"
-};
 
-interface StudentListProps {
-  models: Student[];
+interface ListProps {
+  models: User[];
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   fetch: () => void;
 }
 
-export default function StudentList({ models: models, searchTerm, setSearchTerm, fetch }: StudentListProps) {
+export default function List({ models, searchTerm, setSearchTerm, fetch }: ListProps) {
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [editingModel, setEditing] = useState<Student | null>(null);
-  const [viewModel, setView] = useState<Student | null>(null);
+  const [editingModel, setEditing] = useState<User | null>(null);
+  const [viewModel, setView] = useState<User | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 1000;
 
@@ -44,7 +28,7 @@ export default function StudentList({ models: models, searchTerm, setSearchTerm,
   const filteredModels = useMemo(() => {
     return models
       .filter((model) => model.name.toLowerCase().includes(searchTerm.toLowerCase()))
-      .sort((a, b) => (Number(a.priority) || 0) - (Number(b.priority) || 0));
+      // .sort((a, b) => (Number(a.priority) || 0) - (Number(b.priority) || 0));
   }, [models, searchTerm]);
   const totalPages = Math.ceil(filteredModels.length / itemsPerPage);
 
@@ -53,12 +37,12 @@ export default function StudentList({ models: models, searchTerm, setSearchTerm,
     currentPage * itemsPerPage
   );
 
-  const handleEditStudent = (model: Student) => {
+  const handleEditStudent = (model: User) => {
     setEditing(model);
     setIsNewModalOpen(true);
   };
 
-  const handleViewStudent = (model: Student) => {
+  const handleViewStudent = (model: User) => {
     setView(model);
     setIsViewModalOpen(true);
   };
@@ -70,13 +54,13 @@ export default function StudentList({ models: models, searchTerm, setSearchTerm,
   return (
     <>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Học sinh</h2>
+        <h2 className="text-2xl font-bold">User</h2>
         <Dialog
           open={isNewModalOpen}
           onOpenChange={setIsNewModalOpen}
         >
-          <StudentForm
-            student={editingModel}
+          <Form
+            model={editingModel}
             onClose={() => setIsNewModalOpen(false)}
             fetch={fetch}
           />
@@ -85,8 +69,8 @@ export default function StudentList({ models: models, searchTerm, setSearchTerm,
           open={isViewModalOpen}
           onOpenChange={setIsViewModalOpen}
         >
-          <StudentView
-            student={viewModel}
+          <View
+            model={viewModel}
             onClose={() => setIsViewModalOpen(false)}
           />
         </Dialog>
@@ -112,51 +96,37 @@ export default function StudentList({ models: models, searchTerm, setSearchTerm,
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Ảnh đại diện</TableHead>
-              <TableHead>Họ và tên</TableHead>
+              <TableHead>STT</TableHead>
+              <TableHead>Tên</TableHead>
               <TableHead>Email</TableHead>
-              <TableHead>Ngày sinh</TableHead>
-              <TableHead>Số điện thoại</TableHead>
-              <TableHead>Niên khoá</TableHead>
-              <TableHead>Môn chuyên</TableHead>
+              <TableHead>Role</TableHead>
               <TableHead>Hành động</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paginatedModels.map((student) => (
-              <TableRow key={student.id}>
+            {paginatedModels.map((model, index) => (
+              <TableRow key={model.id}>
                 <TableCell>
-                  {student.imgSrc ? (
-                    <Image
-                      src={`${config.minio.end_point}/${config.minio.bucket_name}/${student.imgSrc}`}
-                      alt="img"
-                      className="size-10 rounded-full"
-                      width={64}
-                      height={64}
-                    />
-                  ) : (
-                    <span className="size-10 rounded-full bg-zinc-200" />
-                  )}
+                  {index + 1}
                 </TableCell>
-                <TableCell>{student.name}</TableCell>
-                <TableCell>{student.email}</TableCell>
-                <TableCell>{student?.dob ? student.dob : ""}</TableCell>
-                <TableCell>{student.phone}</TableCell>
-                <TableCell>{student.schoolYear}</TableCell>
-                <TableCell>{student.major ? majorMap[student.major] || student.major : ""}</TableCell>
+                <TableCell>{model.id}</TableCell>
+                <TableCell>{model.name}</TableCell>
+                <TableCell>{model.email}</TableCell>
+                <TableCell>{model.role}</TableCell>
                 <TableCell>
                   <div className="flex items-center space-x-2">
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => handleViewStudent(student)}
+                      onClick={() => handleViewStudent(model)}
                     >
                       <EyeIcon className="h-4 w-4" />
                     </Button>
                     <Button
+                      disabled
                       variant="ghost"
                       size="icon"
-                      onClick={() => handleEditStudent(student)}
+                      onClick={() => handleEditStudent(model)}
                     >
                       <Edit className="h-4 w-4" />
                     </Button>

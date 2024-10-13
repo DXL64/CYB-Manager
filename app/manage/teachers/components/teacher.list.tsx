@@ -10,30 +10,8 @@ import { Input } from "@/components/ui/input";
 import config from "@/config/config";
 import { Teacher } from "@/models/teacher.model";
 import { TeacherService } from "@/composables/services";
-
-const majorMap: Record<string, string> = {
-  math: "Toán",
-  information: "Tin học",
-  literature: "Văn",
-  english: "Anh",
-  biology: "Sinh học",
-  history: "Lịch sử",
-  geography: "Địa lý",
-  chinese: "Trung",
-  physics: "Vật lý",
-  chemistry: "Hoá học",
-  technology: "Công nghệ",
-  excercise: "Thể dục",
-  gdcd: "GDCD",
-  other: "Khác"
-};
-
-const statusMap: Record<string, string> = {
-  working: "Đang công tác",
-  retired: "Nghỉ hưu",
-  transfer: "Chuyển công tác",
-  passed_away: "Đã mất",
-};
+import { MajorMap } from "@/composables/options/major.option";
+import { StatusMap } from "@/composables/options/status.option";
 
 interface TeacherListProps {
   teachers: Teacher[];
@@ -152,8 +130,8 @@ export default function TeacherList({ teachers, searchTerm, setSearchTerm, fetch
                 <TableCell>{teacher?.email}</TableCell>
                 <TableCell>{teacher?.phone}</TableCell>
                 <TableCell>{teacher?.position}</TableCell>
-                <TableCell>{teacher.major ? majorMap[teacher.major] || teacher.major : ""}</TableCell>
-                <TableCell>{teacher.status ? statusMap[teacher.status] || teacher.status : ""}</TableCell>
+                <TableCell>{teacher.major ? MajorMap[teacher.major] || teacher.major : ""}</TableCell>
+                <TableCell>{teacher.status ? StatusMap[teacher.status] || teacher.status : ""}</TableCell>
                 <TableCell>{teacher?.workSince ? teacher.workSince : ""}</TableCell>
                 <TableCell>{teacher?.workUntil ? teacher.workUntil : "Đến nay"}</TableCell>
                 <TableCell>

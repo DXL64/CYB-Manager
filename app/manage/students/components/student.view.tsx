@@ -4,21 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { Student } from "@/models/student.model";
 import config from "@/config/config";
-
-const majorMap: Record<string, string> = {
-  math: "Toán",
-  information: "Toán Tin",
-  literature: "Văn",
-  english: "Anh",
-  biology: "Sinh học",
-  history: "Lịch sử",
-  geography: "Địa lý",
-  chinese: "Trung",
-  physics: "Vật lý",
-  chemistry: "Hoá học",
-  unknown: "Chất lượng cao",
-  other: "Khác"
-};
+import { MajorMap } from "@/composables/options/major.option";
 
 interface StudentViewProps {
   student: Student | null;
@@ -61,7 +47,7 @@ export default function StudentView({ student, onClose }: StudentViewProps) {
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Môn chuyên:</div>
-          <div className="col-span-3">{student?.major ? majorMap[student.major] || student.major : ""}</div>
+          <div className="col-span-3">{student?.major ? MajorMap[student.major] || student.major : ""}</div>
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Độ ưu tiên:</div>
@@ -73,10 +59,7 @@ export default function StudentView({ student, onClose }: StudentViewProps) {
         </div>
       </div>
       <DialogFooter>
-        <Button
-          type="button"
-          onClick={onClose}
-        >
+        <Button type="button" onClick={onClose}>
           Đóng
         </Button>
       </DialogFooter>

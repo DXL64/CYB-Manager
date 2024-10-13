@@ -14,19 +14,17 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 
 interface PostViewProps {
-    post: Post,
+    model: Post,
     onClose: () => void
 }
 
-const PostView = ({ post, onClose}: PostViewProps ) => {
-    const [model, setModel] = useState<Post>(defaultValue)
+const PostView = ({ model, onClose}: PostViewProps ) => {
+    const [viewModel, setModel] = useState<Post>(defaultValue)
     useEffect(() => {
-        // const utf8 = base64ToUtf8(post.content)
         setModel({
-            ...post,
-            // content: utf8 
+            ...model,
         })
-    }, [post])
+    }, [model])
 
     return (
         <>
@@ -37,35 +35,34 @@ const PostView = ({ post, onClose}: PostViewProps ) => {
                 <div className="grid gap-4 py-4">
                     <div className="flex justify-center mb-4">
                     <Avatar
-                        src={`${config.minio.end_point}/${config.minio.bucket_name}/${model?.imgSrc}` || ""}
-                        alt={model?.title || "Post image avatar"}
+                        src={`${config.minio.end_point}/${config.minio.bucket_name}/${viewModel?.imgSrc}` || ""}
+                        alt={viewModel?.title || "Post image avatar"}
                         size="lg"
                     />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <div className="text-right font-bold">Id:</div>
-                        <div className="col-span-3">{model?.id}</div>
+                        <div className="col-span-3">{viewModel?.id}</div>
                     </div>
 
                     <div className="grid grid-cols-4 items-center gap-4">
                         <div className="text-right font-bold">Tiêu đề:</div>
-                        <div className="col-span-3">{model?.title}</div>
+                        <div className="col-span-3">{viewModel?.title}</div>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <div className="text-right font-bold">Độ ưu tiên:</div>
-                        <div className="col-span-3">{model?.priority}</div>
+                        <div className="col-span-3">{viewModel?.priority}</div>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <div className="text-right font-bold">Hạng mục:</div>
-                            {model?.category ? (
-                                // Kiểm tra xem post.category có tồn tại không
+                            {viewModel?.category ? (
                                 CategoryOptions
-                                    .filter(category => category.value === model.category) // Lọc danh mục dựa trên giá trị của post.category
+                                    .filter(category => category.value === viewModel.category) 
                                     .map(category => (
-                                    <div key={category.value}>{category.label}</div> // Hiển thị label của danh mục
+                                    <div key={category.value}>{category.label}</div> 
                                     ))
                                 ) : (
-                                <div>Không có hạng mục nào</div> // Thông báo nếu không có hạng mục
+                                <div>Không có hạng mục nào</div> 
                             )}
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -109,7 +106,7 @@ const PostView = ({ post, onClose}: PostViewProps ) => {
                                     //   "code-block",
                                 ]}
                                 readOnly
-                                value={model.content}
+                                value={viewModel.content}
                             />
 
                         </div>

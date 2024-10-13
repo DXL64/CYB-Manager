@@ -22,7 +22,7 @@ const PostTable = () => {
 
     return (
         <>
-            <PostList posts={posts} searchTerm={searchTerm} setSearchTerm={setSearchTerm} fetch={fetch}></PostList>
+            <PostList models={posts} searchTerm={searchTerm} setSearchTerm={setSearchTerm} fetch={fetch}></PostList>
         </>
     )
 }

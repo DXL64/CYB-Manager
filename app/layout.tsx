@@ -29,10 +29,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh w-lvw overflow-hidden`}>
         <Navbar />
-        <div className="flex bg-gray-100 pt-16 h-full">
-          <main className="flex-1 p-5 h-full">{children}</main>
+        <div className="flex bg-gray-100 pt-16 h-full w-full">
+          <main className="flex-1 p-5 h-full w-lvw">{children}</main>
         </div>
         <ToastContainer/>
       </body>

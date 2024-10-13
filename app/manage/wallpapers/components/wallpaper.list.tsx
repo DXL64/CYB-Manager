@@ -93,19 +93,19 @@ export default function WallpaperList({ wallpapers, searchTerm, setSearchTerm, f
           className="max-w-sm"
         />
       </div>
-      <div className="overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Ảnh đại diện</TableHead>
-              <TableHead>Post id</TableHead>
-              <TableHead>Active</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {paginatedWallpapers.map((wallpaper) => (
-              <TableRow key={wallpaper.id}>
-                <TableCell>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead><p className="text-nowrap">Ảnh đại diện</p></TableHead>
+            <TableHead>Post id</TableHead>
+            <TableHead>Active</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {paginatedWallpapers.map((wallpaper) => (
+            <TableRow key={wallpaper.id}>
+              <TableCell>
+                <div className="">
                   {wallpaper.imgSrc ? (
                     <Image
                       src={`${config.minio.end_point}/${config.minio.bucket_name}/${wallpaper.imgSrc}`}
@@ -117,39 +117,39 @@ export default function WallpaperList({ wallpapers, searchTerm, setSearchTerm, f
                   ) : (
                     <span className="size-10 rounded-full bg-zinc-200" />
                   )}
-                </TableCell>
-                <TableCell>{wallpaper.post_id}</TableCell>
-                <TableCell>{wallpaper.active == 'true' ? 'Hiển thị' : 'Không hiển thị' }</TableCell>
-                <TableCell>
-                  <div className="flex items-center space-x-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleViewWallpaper(wallpaper)}
-                    >
-                      <EyeIcon className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleEditWallpaper(wallpaper)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                                        <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDeleteWallpaper(wallpaper)}
-                    >
-                      <Trash className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+                </div>
+              </TableCell>
+              <TableCell>{wallpaper.post_id}</TableCell>
+              <TableCell><p className="text-nowrap">{wallpaper.active == 'true' ? 'Hiển thị' : 'Không hiển thị' }</p></TableCell>
+              <TableCell>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleViewWallpaper(wallpaper)}
+                  >
+                    <EyeIcon className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleEditWallpaper(wallpaper)}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                                      <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleDeleteWallpaper(wallpaper)}
+                  >
+                    <Trash className="h-4 w-4" />
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
       <div className="mt-4 flex items-center justify-between">
         <div className="text-sm text-gray-500">
           Hiển thị {(currentPage - 1) * itemsPerPage + 1} đến {Math.min(currentPage * itemsPerPage, filteredWallpapers.length)} trong tổng số {filteredWallpapers.length} tường

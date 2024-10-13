@@ -1,11 +1,13 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from 'js-cookie'
 
 const axiosClient = axios.create()
 
 axiosClient.interceptors.request.use((config) => {
-    config.headers.Authorization = 'Test'
+    const authToken = Cookies.get('auth_token')
+    config.headers.Authorization = `Bearer ${authToken}`
     return config
 }, (err) => {
     return Promise.reject(err)

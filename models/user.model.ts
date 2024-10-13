@@ -5,6 +5,13 @@ export type User = {
   role: "user" | "admin" | "superadmin"; 
 };
 
+export const defaultUser: User = {
+  id: "",
+  email: "",
+  name: "",
+  role: "user"
+}
+
 export type Token = {
   token: string;
   expires: string; // Dạng chuỗi ISO date

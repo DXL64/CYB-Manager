@@ -8,6 +8,7 @@ import { defaultValue, Student } from "@/models/student.model";
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { StudentService } from "@/composables/services";
 import config from "@/config/config";
+import MajorOptions from './../../../../composables/options/major.option';
 
 interface StudentFormProps {
   student: Student | null;
@@ -234,18 +235,13 @@ export default function StudentForm({ student, onClose, fetch }: StudentFormProp
             onChange={handleInputChange}
             className="col-span-3 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
           >
-            <option value="math">Toán</option>
-            <option value="information">Toán Tin</option>
-            <option value="literature">Văn</option>
-            <option value="english">Anh</option>
-            <option value="biology">Sinh học</option>
-            <option value="history">Lịch sử</option>
-            <option value="geography">Địa lý</option>
-            <option value="chinese">Trung</option>
-            <option value="physics">Vật lý</option>
-            <option value="chemistry">Hoá học</option>
-            <option value="unknown">Chất lượng cao</option>
-            <option value="other">Khác</option>
+            {
+              MajorOptions.map(major => 
+                <>
+                  <option value={major.value}>{major.label}</option>
+                </>
+              )
+            }
           </select>
           <Label
             htmlFor="dob"

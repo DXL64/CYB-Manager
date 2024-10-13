@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { AlertCircle } from "lucide-react"
 import { AuthService } from "@/composables/services"
+import { useRouter } from "next/navigation"
+import CookieStore from "@/composables/cookies.store"
 // import { toast } from "react-toastify"
 
 export default function SignInForm() {
@@ -15,6 +17,7 @@ export default function SignInForm() {
   const [rememberMe, setRememberMe] = useState(false)
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,21 +31,11 @@ export default function SignInForm() {
     AuthService.SignIn({
       email: email,
       password: password,
+    }).then(res => {
+      console.log(res)
+      CookieStore.setAuth(res.tokens.access.token.toString())
+      router.push('/manage')
     })
-    // const loadingId = toast.loading("Hello")
-    // toast.success("Hello")
-    // toast.info("Hello")
-    // toast.error("Hello")
-    // toast.warning("Hello")
-    // toast.warn("Hello")
-    // toast.dark("Hello")
-    // toast.dismiss("Hello")
-    // toast.update(loadingId, {
-    //   render: "Done",
-    //   type: "success",
-    //   isLoading: false,
-    //   autoClose: 3000,
-    // })
     setLoading(false)
     // Here you would typically handle the sign-in logic
     console.log("Sign in attempted with:", { email, password, rememberMe })

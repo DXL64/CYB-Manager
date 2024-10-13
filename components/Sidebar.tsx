@@ -36,6 +36,11 @@ const navItem = [
     href: "/posts",
     icon: <File className="size-4" />,
   },
+  {
+    name: "User",
+    href: "/users",
+    icon: <File className="size-4" />,
+  },
 ];
 
 const Sidebar = () => {

@@ -1,33 +1,11 @@
-// components/StudentView.tsx
+// components/View.tsx
 import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { Teacher } from "@/models/teacher.model";
 import config from "@/config/config";
-
-const majorMap: Record<string, string> = {
-  math: "Toán",
-  information: "Tin học",
-  literature: "Văn",
-  english: "Anh",
-  biology: "Sinh học",
-  history: "Lịch sử",
-  geography: "Địa lý",
-  chinese: "Trung",
-  physics: "Vật lý",
-  chemistry: "Hoá học",
-  technology: "Công nghệ",
-  excercise: "Thể dục",
-  gdcd: "GDCD",
-  other: "Khác"
-};
-
-const statusMap: Record<string, string> = {
-  working: "Đang công tác",
-  retired: "Nghỉ hưu",
-  transfer: "Chuyển công tác",
-  passed_away: "Đã mất",
-};
+import { StatusMap } from "@/composables/options/status.option";
+import { MajorMap } from "@/composables/options/major.option";
 
 interface TeacherViewProps {
   teacher: Teacher | null;
@@ -74,11 +52,11 @@ export default function TeacherView({ teacher, onClose }: TeacherViewProps) {
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Môn chuyên:</div>
-          <div className="col-span-3">{teacher?.major ? majorMap[teacher.major] || teacher.major : ""}</div>
+          <div className="col-span-3">{teacher?.major ? MajorMap[teacher.major] || teacher.major : ""}</div>
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Trạng thái:</div>
-          <div className="col-span-3">{teacher?.status ? statusMap[teacher.status] || teacher.status : ""}</div>
+          <div className="col-span-3">{teacher?.status ? StatusMap[teacher.status] || teacher.status : ""}</div>
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="text-right font-bold">Độ ưu tiên:</div>

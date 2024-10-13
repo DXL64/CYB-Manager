@@ -9,8 +9,8 @@ const StudentsTable = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const fetch = async () => {
-    await StudentService.List().then(ls => {
+  const fetch = () => {
+    StudentService.List().then(ls => {
       setStudents(ls.results)
     })
   }
@@ -21,7 +21,7 @@ const StudentsTable = () => {
 
   return (
     <>
-      <StudentList students={students} searchTerm={searchTerm} setSearchTerm={setSearchTerm} fetch={fetch} />
+      <StudentList models={students} searchTerm={searchTerm} setSearchTerm={setSearchTerm} fetch={fetch} />
     </>
   );
 };

@@ -14,27 +14,27 @@ import { PostService } from '@/composables/services';
 import CategoryOptions from "@/composables/options/category.option";
 
 interface PostListProps {
-    posts: Post[],
+    models: Post[],
     searchTerm: string;
     setSearchTerm: (term: string) => void;
     fetch: () => void;
 }
 
-const PostList = ({ posts, searchTerm, setSearchTerm, fetch}: PostListProps) => {
+const PostList = ({ models, searchTerm, setSearchTerm, fetch}: PostListProps) => {
     const [isNewModalOpen, setIsNewModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [editingModel, setEditing] = useState<Post | null>(null);
     const [viewModel, setView] = useState<Post>(defaultValue);
 
-    const filteredPosts = posts.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filteredModels = models.filter((model) => model.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
-    const handleEdit = (post: Post) => {
-        setEditing(post);
+    const handleEdit = (model: Post) => {
+        setEditing(model);
         setIsNewModalOpen(true);
     };
 
-    const handleView = (post: Post) => {
-        setView(post);
+    const handleView = (model: Post) => {
+        setView(model);
         setIsViewModalOpen(true);
     };
 
@@ -53,7 +53,7 @@ const PostList = ({ posts, searchTerm, setSearchTerm, fetch}: PostListProps) => 
                     onOpenChange={setIsNewModalOpen}
                 >
                     <PostForm
-                        post={editingModel}
+                        model={editingModel}
                         onClose={() => setIsNewModalOpen(false)}
                         fetch={fetch}
                     />
@@ -63,7 +63,7 @@ const PostList = ({ posts, searchTerm, setSearchTerm, fetch}: PostListProps) => 
                     onOpenChange={setIsViewModalOpen}
                 >
                     <PostView
-                        post={viewModel}
+                        model={viewModel}
                         onClose={() => setIsViewModalOpen(false)}
                     />
                 </Dialog>
@@ -98,13 +98,13 @@ const PostList = ({ posts, searchTerm, setSearchTerm, fetch}: PostListProps) => 
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {filteredPosts.map((post, index) => (
-                        <TableRow key={post.id}>
+                    {filteredModels.map((model, index) => (
+                        <TableRow key={model.id}>
                             <TableCell>{index}</TableCell>
                             <TableCell>
-                            {post.imgSrc ? (
+                            {model.imgSrc ? (
                                 <Image
-                                src={`${config.minio.end_point}/${config.minio.bucket_name}/${post.imgSrc}`}
+                                src={`${config.minio.end_point}/${config.minio.bucket_name}/${model.imgSrc}`}
                                 alt="img"
                                 className="size-10 rounded-full"
                                 width={64}
@@ -114,38 +114,37 @@ const PostList = ({ posts, searchTerm, setSearchTerm, fetch}: PostListProps) => 
                                 <span className="size-10 rounded-full bg-zinc-200" />
                             )}
                             </TableCell>
-                            <TableCell>{post.title}</TableCell>
-                            <TableCell>{post.id}</TableCell>
-                            <TableCell>{post?.category ? (
+                            <TableCell>{model.title}</TableCell>
+                            <TableCell>{model.id}</TableCell>
+                            <TableCell>{model?.category ? (
                                 CategoryOptions
-                                    .filter(category => category.value === post.category) // Lọc danh mục dựa trên giá trị của post.category
+                                    .filter(category => category.value === model.category) 
                                     .map(category => (
-                                    <div key={category.value}>{category.label}</div> // Hiển thị label của danh mục
+                                    <div key={category.value}>{category.label}</div>
                                     ))
                                 ) : (
-                                <div>Không có hạng mục nào</div> // Thông báo nếu không có hạng mục
+                                <div>Không có hạng mục nào</div>
                             )}</TableCell>
-                            {/* <TableCell>{post.content}</TableCell> */}
                             <TableCell>
                             <div className="flex items-center space-x-2">
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    onClick={() => handleView(post)}
+                                    onClick={() => handleView(model)}
                                 >
                                     <EyeIcon className="h-4 w-4" />
                                 </Button>
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    onClick={() => handleEdit(post)}
+                                    onClick={() => handleEdit(model)}
                                 >
                                     <Edit className="h-4 w-4" />
                                 </Button>
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    onClick={() => handleDelete(post.id)}
+                                    onClick={() => handleDelete(model.id)}
                                 >
                                     <Trash className="h-4 w-4" />
                                 </Button>

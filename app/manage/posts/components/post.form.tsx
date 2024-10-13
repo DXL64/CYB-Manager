@@ -17,30 +17,28 @@ import config from "../../../../config/config";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 interface PostFormProps {
-  post: Post | null;
+  model: Post | null;
   onClose: () => void;
   fetch: () => void;
 }
 
-const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
+const PostForm = ({ model, onClose, fetch }: PostFormProps) => {
   // const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const [model, setModel] = useState<Post>(defaultValue);
+  const [editModel, setModel] = useState<Post>(defaultValue);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
-    if (post) {
+    if (model) {
         setIsEdit(true);
-    //   const utf8 = base64ToUtf8(post.content);
-    //   setModel({ ...post, content: utf8 });
-        setModel(post)
+        setModel(model)
     } else {
         setIsEdit(false);
         setModel(defaultValue);
     }
     // Xóa console.log trong useEffect
     setErrors({});
-  }, [post]);
+  }, [model]);
 
   // Ghi log model trong component để kiểm tra giá trị của nó
   // useEffect(() => {
@@ -78,9 +76,9 @@ const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
     }
     try {
       if (isEdit) {
-        PostService.Update(model.id, model).then(() => fetch());
+        PostService.Update(editModel.id, editModel).then(() => fetch());
       } else {
-        PostService.Create(model).then(() => fetch());
+        PostService.Create(editModel).then(() => fetch());
       }
       onClose();
     } catch (error) {
@@ -91,8 +89,8 @@ const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
   const validateForm = (): boolean => {
     const newErrors: { [key: string]: string } = {};
   
-    if (!model.priority) newErrors.priority = "Độ ưu tiên không được để trống";
-    if (Number(model.priority) < 0 || Number(model.priority) > 100) {
+    if (!editModel.priority) newErrors.priority = "Độ ưu tiên không được để trống";
+    if (Number(editModel.priority) < 0 || Number(editModel.priority) > 100) {
       newErrors.priority = "Độ ưu tiên không hợp lệ, phải là số trong khoảng (0, 100)";
     }
   
@@ -114,10 +112,10 @@ const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
                 className="object-cover"
                 alt="thumb-image"
                 src={
-                  model?.imgSrc
-                    ? `${config.minio.end_point}/${config.minio.bucket_name}/${model.imgSrc}`
-                    : model?.file
-                    ? URL.createObjectURL(model?.file)
+                  editModel?.imgSrc
+                    ? `${config.minio.end_point}/${config.minio.bucket_name}/${editModel.imgSrc}`
+                    : editModel?.file
+                    ? URL.createObjectURL(editModel?.file)
                     : ""
                 }
                 width={0}
@@ -131,7 +129,7 @@ const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
                 <Input
                   name="title"
                   placeholder="Tiêu đề..."
-                  value={model.title}
+                  value={editModel.title}
                   onChange={(e) => setModel((prev) => ({ ...prev, title: e.target.value }))}
                 />
               </div>
@@ -144,7 +142,7 @@ const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
             <div className="col-span-3">
               <Input
                 name="priority"
-                value={model?.priority || ""}
+                value={editModel?.priority || ""}
                 onChange={handleInputChange}
                 className="col-span-3"
                 />
@@ -215,7 +213,7 @@ const PostForm = ({ post, onClose, fetch }: PostFormProps) => {
               "image",
               "align", // Bổ sung định dạng căn lề
             ]}
-            value={model.content}
+            value={editModel.content}
             onChange={(e) => setModel((prev) => ({ ...prev, content: e }))}
           />
         </div>

@@ -8,6 +8,8 @@ import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/compon
 import { defaultValue, Teacher } from "@/models/teacher.model";
 import { TeacherService } from "@/composables/services";
 import config from "@/config/config";
+import MajorOptions from "@/composables/options/major.option";
+import StatusOptions from "@/composables/options/status.option";
 
 interface TeacherFormProps {
   teacher: Teacher | null;
@@ -275,20 +277,13 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             onChange={handleInputChange}
             className="col-span-3 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <option value="math">Toán</option>
-            <option value="information">Tin học</option>
-            <option value="literature">Văn</option>
-            <option value="english">Anh</option>
-            <option value="biology">Sinh học</option>
-            <option value="history">Lịch sử</option>
-            <option value="geography">Địa lý</option>
-            <option value="chinese">Trung</option>
-            <option value="physics">Vật lý</option>
-            <option value="chemistry">Hoá học</option>
-            <option value="technology">Công nghệ</option>
-            <option value="excercise">Thể dục</option>
-            <option value="gdcd">GDCD</option>
-            <option value="other">Khác</option>
+            {
+              MajorOptions.map(major => 
+                <>
+                  <option value={major.value}>{major.label}</option>
+                </>
+              )
+            }
           </select>
 
           <Label
@@ -305,10 +300,13 @@ export default function TeacherForm({ teacher, onClose, fetch }: TeacherFormProp
             onChange={handleInputChange}
             className="col-span-3 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <option value="working">Đang công tác</option>
-            <option value="retired">Nghỉ hưu</option>
-            <option value="transfer">Chuyển công tác</option>
-            <option value="passed_away">Đã mất</option>
+            {
+              StatusOptions.map((status,index) => 
+                <>
+                  <option key={index} value={status.value}>{status.label}</option>
+                </>
+              )
+            }
           </select>
           <Label
             htmlFor="priority"
