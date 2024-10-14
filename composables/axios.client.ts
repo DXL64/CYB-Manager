@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from 'js-cookie'
+import { useRouter } from "next/navigation";
 
 const axiosClient = axios.create()
 
@@ -13,18 +14,23 @@ axiosClient.interceptors.request.use((config) => {
     return Promise.reject(err)
 })
 
-// Cấu hình response interceptor để xử lý lỗi
 axiosClient.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Kiểm tra và xử lý lỗi
     if (error.response) {
-      // Hiển thị lỗi với React Toastify
-      toast.error(`Error: ${error.response.status} - ${error.response.data.message || error.message}`);
+      const status = error.response.status;
+      const message = error.response.data.message || error.message;
+
+      toast.error(`Error: ${status} - ${message}`);
+
+      if (status === 401) {
+        const router = useRouter();
+        router.push('/sign-in');
+      }
     } else if (error.request) {
-      toast.error("No response from server. Please try again.");
+      toast.error('No response from server. Please try again.');
     } else {
       toast.error(`Request Error: ${error.message}`);
     }
